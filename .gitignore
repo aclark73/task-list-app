@@ -1,7 +1,6 @@
 ### PROJECT ###
 dist
 node_modules
-prod
 
 ### OSX ###
 .DS_Store
