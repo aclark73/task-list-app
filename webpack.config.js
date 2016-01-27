@@ -14,7 +14,11 @@ module.exports = {
     path: __dirname + '/dist'
   },
   devServer: {
-    contentBase: './build'
+    contentBase: './build',
+    historyApiFallback: true,
+    hot: true,
+    inline: true,
+    progress: true
   },
   resolve: {
     extensions: ['', '.js', '.jsx', '.css', '.json', '.scss']
@@ -43,8 +47,8 @@ module.exports = {
   },
   plugins: [
     new CopyWebpackPlugin([
-       { from: './../prod', to: './../dist' },
-       { from: './main.js', to: './../dist/main.js' }
+      { from: './../prod', to: './../dist' },
+      { from: './main.js', to: './../dist/main.js' }
     ])
   ]
 }
