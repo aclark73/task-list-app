@@ -4,7 +4,7 @@
   "description": "",
   "main": "./app/main.js",
   "author": "Giuseppe Germinaro",
-  "license": "MIT",
+  "license": "UNLICENSE",
   "scripts": {
     "start": "node ./node_modules/concurrently/src/main.js --kill-others \"npm run watch\" \"npm run electron\"",
     "electron": "node_modules/electron-prebuilt/dist/Electron.app/Contents/MacOS/Electron .",
