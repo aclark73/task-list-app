@@ -1,19 +1,12 @@
 'use strict'
 
-/*
-  This file needs to be written in ES5 unfortunately.
-  Everything else can be ES6 :)
-*/
-
 const electron = require('electron')
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
-
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-function createWindow () {
+
+function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -28,20 +21,20 @@ function createWindow () {
     mainWindow.webContents.openDevTools()
   */
 
-  mainWindow.on('closed', function() {
+  mainWindow.on('closed', () => {
     mainWindow = null
   })
 }
 
 app.on('ready', createWindow)
 
-app.on('window-all-closed', function () {
+app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
 })
 
-app.on('activate', function () {
+app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
   }

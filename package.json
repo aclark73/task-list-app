@@ -1,15 +1,15 @@
 {
-  "name": "mediabox",
+  "name": "electron-react-es6-boilerplate",
   "version": "0.1.0",
-  "description": "Browse and manage your Dropbox pictures with ease.",
+  "description": "",
   "main": "./app/main.js",
   "author": "Giuseppe Germinaro",
-  "license": "© Giuseppe Germinaro",
+  "license": "MIT",
   "scripts": {
     "start": "node ./node_modules/concurrently/src/main.js --kill-others \"npm run watch\" \"npm run electron\"",
     "electron": "node_modules/electron-prebuilt/dist/Electron.app/Contents/MacOS/Electron .",
     "watch": "node_modules/.bin/webpack-dev-server --hot --quiet --progress --colors",
-    "build": "webpack . && node_modules/.bin/electron-packager ./dist Mediabox --platform=darwin --arch=x64 --version=0.36.5 --asar=true && rm -rf ./dist"
+    "build": "node_modules/.bin/webpack . && node_modules/.bin/electron-packager ./dist Electron --platform=darwin --arch=x64 --version=0.36.5 --asar=true && rm -rf ./dist"
   },
   "devDependencies": {
     "babel-loader": "^6.2.1",

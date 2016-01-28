@@ -7,11 +7,12 @@ module.exports = {
   context: __dirname + '/app',
   devtool: 'source-map',
   entry: {
-    index: './index.js'
+    index: './index.js',
+    main: './main.js'
   },
   output: {
     filename: '[name].js',
-    path: __dirname + '/dist'
+    path: __dirname + '/dist/app'
   },
   devServer: {
     contentBase: './build',
@@ -47,8 +48,24 @@ module.exports = {
   },
   plugins: [
     new CopyWebpackPlugin([
-      { from: './../prod', to: './../dist' },
-      { from: './main.js', to: './../dist/main.js' }
+      { from: './../prod.html', to: './../app/index.html' },
+      { from: './main.js', to: './../app/main.js' },
+      { from: './../package.json', to: './../package.json'}
     ])
-  ]
+  ],
+  externals: {
+    commonjs: [
+      'desktop-capturer',
+      'electron',
+      'ipc',
+      'ipc-renderer',
+      'native-image',
+      'remote',
+      'web-frame',
+      'clipboard',
+      'crash-reporter',
+      'screen',
+      'shell'
+    ]
+  }
 }
