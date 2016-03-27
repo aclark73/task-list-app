@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import './redmine';
 
 class Row extends Component {
   handleClick() {
@@ -27,11 +28,14 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rows: []
+      tasks: []
     };
   }
   handleUpdate() {
-    this.setState({rows: ROWS});
+    const parser = new redmine.RedmineTaskParser();
+    parser.load().then(function(tasks) {
+      this.setState({tasks: tasks});
+    });
   }
   handleRowClick(row) {
     console.log("Clicked on row: " + row);
@@ -39,8 +43,8 @@ export default class App extends Component {
   render() {
     const rows = [];
     const handleRowClick = this.handleRowClick.bind(this);
-    this.state.rows.forEach(function(row) {
-      rows.push(<Row key={row.label} label={row.label} handleClick={handleRowClick} />);
+    this.state.tasks.forEach(function(task) {
+      rows.push(<Row key={task.getUID()} label={task.getLabel()} handleClick={handleRowClick} />);
     });
     const handleUpdate = this.handleUpdate.bind(this);
     return(
