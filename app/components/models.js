@@ -10,7 +10,7 @@ function getTaskUID(task) {
 	  return "T." + task.source + "." + task.issue_id;
   }
   else {
-	return "T." + task.source + "." + task.project + "." + task.title;
+    return "T." + task.source + "." + task.project + "." + task.title;
   }  
 }
 

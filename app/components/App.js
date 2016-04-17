@@ -1,18 +1,37 @@
 import React, { Component } from 'react';
-import './redmine';
+import RedmineTaskParser from './redmine';
+import Task from './task';
 
 class Row extends Component {
   handleClick() {
-    this.props.handleClick(this.props.label);
+    this.props.handleClick(Task.getUID(this.props.task));
+  }
+  handleToggle() {
+    this.setState({toggle: !this.state.toggle});
   }
   render() {
     const handleClick = this.handleClick.bind(this);
-    return (
-      <li>
-        {this.props.label}
-        <button type="button" onClick={handleClick} />
-      </li>
-    );
+    const handleToggle = this.handleToggle.bind(this);
+    if (Task.isProject(this.props.task)) {
+      const rows = [];
+      this.props.task.tasks.forEach( (task) => {
+        if (task) {
+          rows.push(<Row key={Task.getUID(task)} task={task} handleClick={this.props.handleClick} />);
+        }
+      });
+      return (
+        <li>
+          <div className="project"><input type="checkbox" checked="{this.state.toggle}" onChange={handleToggle} /><a href="#" onClick={handleClick} >{Task.getLabel(this.props.task)}</a></div>
+          <ul>{rows}</ul>
+        </li>
+      );
+    } else {
+      return (
+        <li>
+          <div className="task"><a href="#" onClick={handleClick} >{Task.getLabel(this.props.task)}</a></div>
+        </li>
+      );
+    }
   }
 }
 
@@ -24,52 +43,20 @@ const ROWS = [
   {label: "Item 5"}
 ];
 
-const Task = {
-  isProject: function(task) {
-    return !task.title;
-  },
-  getProjectUID: function(project) {
-    return "P." + project.project;
-  },
-  getTaskUID: function(task) {
-    if (task.issue_id) {
-      return "T." + task.source + "." + task.issue_id;
-    } else {
-    	return "T." + task.source + "." + task.project + "." + task.title;
-    }  
-  },
-  getUID: function(task) {
-		if (Task.isProject(task)) {
-      return Task.getProjectUID(task);
-    } else {
-      return Task.getTaskUID(task);
-    }
-  },
-  getLabel: function(task) {
-    if (Task.isProject(task)) {
-      return task.project;
-    } else if (task.issue_id) {
-      return '#' + task.issue_id + ' - ' + task.title;
-    } else {
-      return task.title;
-    }
-  }
-};
-
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tasks: []
+      projects: []
     };
   }
   getUID(task) {
     
   }
   handleUpdate() {
-    const parser = new redmine.RedmineTaskParser();
-    parser.load().then(function(tasks) {
-      this.setState({tasks: tasks});
+    const parser = new RedmineTaskParser();
+    parser.load().then( (projects) => {
+      this.setState({projects: projects});
     });
   }
   handleRowClick(row) {
@@ -77,15 +64,16 @@ export default class App extends Component {
   }
   render() {
     const rows = [];
-    const handleRowClick = this.handleRowClick.bind(this);
-    this.state.tasks.forEach(function(task) {
-      rows.push(<Row key={Task.getUID(task)} label={Task.getLabel(task)} handleClick={handleRowClick} />);
+    this.state.projects.forEach( (project) => {
+      if (project) {
+        rows.push(<Row key={Task.getUID(project)} task={project} handleClick={this.handleRowClick} />);
+      }
     });
-    const handleUpdate = this.handleUpdate.bind(this);
+    const this_handleUpdate = this.handleUpdate.bind(this);
     return(
       <div >
-        <h1>Hello World 3</h1>
-        <div><button type="button" onClick={handleUpdate}>Update</button></div>
+        <h1>Hello World</h1>
+        <div><button type="button" onClick={this_handleUpdate}>Update</button></div>
         <ul>{rows}</ul>
       </div>
     );
