@@ -28,8 +28,8 @@
   "dependencies": {
     "electron-prebuilt": "^0.36.5",
     "react": "^0.14.6",
-    "react-dom": "^0.14.6",
-    "orm": "2.x",
-    "sqlite3": "3.x"
+    "react-dom": "^0.14.6"
+    //"orm": "2.x",
+    //"sqlite3": "3.x"
   }
 }
