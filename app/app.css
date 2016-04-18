@@ -1,0 +1,49 @@
+.tasks ul {
+    list-style: none;
+    padding: 0;
+}
+
+.tasks li {
+    position: relative;
+}
+
+.tasks .label {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+li.task {
+    padding-left: 1.5em;
+}
+
+
+.controls {
+    white-space: normal;
+    text-align: right;
+    position: absolute;
+    right: 0;
+    top: 0; 
+    background: #ccc;
+    display: none;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.label:hover .controls {
+    display: initial;
+}
+
+.controls a {
+    display: block;
+    width: 150px;
+    height: 1em;
+    margin-right: 4em;
+}
+
+.controls a:hover {
+    height: auto;
+}
+
+.controls button {
+    float: right;
+}
