@@ -42,6 +42,7 @@ export default class App extends Component {
     const context = {
       setTask: this.setTask.bind(this),
       refresh: this.refresh.bind(this),
+      start: this.start.bind(this),
       selectedTaskId: this.state.taskId
     };
     
@@ -52,29 +53,34 @@ export default class App extends Component {
       }
     });
     return(
-      <div >
+      <div>
         <h1>Tasks</h1>
+        <div>Current: {this.state.taskId}</div>
+        <div>{this.state.timeElapsed} / {this.state.timeRemaining}</div>
         <div><button type="button" onClick={context.refresh}>Update</button></div>
         <div className="tasks"><ul>{rows}</ul></div>
       </div>
     );
   }
   setTask(taskId) {
-    console.log("setTask: " + taskId);
-    this.setState({
-      taskId: taskId,
-    });
+    if (taskId != this.state.taskId) {
+      this.stop();
+      console.log("setTask: " + taskId);
+      this.setState({
+        taskId: taskId,
+      });
+    }
   }
   
   /* Timer */
-  startTimer(taskId) {
+  start() {
+    console.log("start");
     var tick = this.tick.bind(this);
     this.setState({
-      taskId: taskId,
       startTime: new Date(),
       timeElapsed: 0,
       timeRemaining: this.state.workTime,
-      timer: window.setTimeout(tick, 1000)
+      timer: window.setInterval(tick, 1000)
     });
   }
   tick() {
@@ -83,14 +89,14 @@ export default class App extends Component {
       timeRemaining: this.state.timeRemaining - 1
     });
     if (this.state.timeRemaining <= 0) {
-      this.expire();
+      this.stop();
     }
   }
-  expire() {
+  stop() {
     if (this.state.startTime) {
       this.log(this.state);
     }
-    window.cancelTimeout(this.state.timer);
+    window.clearInterval(this.state.timer);
   }
   log(state) {
     console.log("LOG: task: %s startTime: %s timeElapsed: %s");

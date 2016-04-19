@@ -5,6 +5,9 @@ export class TaskWidget extends Component {
   select() {
     this.props.context.setTask(Task.getUID(this.props.task));
   }
+  start() {
+    this.props.context.start();
+  }
   info() {
     console.log("Task: " + Task.getLabel(this.props.task));
   }
@@ -13,10 +16,11 @@ export class TaskWidget extends Component {
   }
   renderInner() {
     const select = this.select.bind(this);
+    const start = this.start.bind(this);
     const info = this.info.bind(this);
-    const selected = this.selected() ? 'selected' : '';
+    const className = 'label' + (this.selected() ? ' selected' : '');
     return (
-      <div className="label {selected}">
+      <div className={className} onClick={select} onDoubleClick={start}>
         {Task.getLabel(this.props.task)}
         <div className="controls">
           <button onClick={select}>Select</button>         
@@ -28,8 +32,9 @@ export class TaskWidget extends Component {
   
   render() {
     const inner = this.renderInner();
+    const selected = this.selected() ? 'selected' : '';
     return (
-      <li className="task {selected}">
+      <li className="task">
         {inner}
       </li>
     );
@@ -37,9 +42,14 @@ export class TaskWidget extends Component {
 }
 
 export class ProjectWidget extends TaskWidget {
+  constructor(props) {
+    super(props);
+    this.state = {
+      toggle: true
+    };
+  }
   toggle() {
-    this.props.toggle = !this.props.toggle;
-    this.setState({toggle: this.props.toggle});
+    this.setState({toggle: !this.state.toggle});
   }
   render() {
     const rows = [];
@@ -50,24 +60,12 @@ export class ProjectWidget extends TaskWidget {
     });
     const inner = this.renderInner();
     const toggle = this.toggle.bind(this);
+    const className = 'project' + (this.state.toggle ? ' toggled' : '');
     return (
-      <li className="task {selected}">
-        <input type="checkbox" checked="{this.props.toggle}" onChange={toggle} />
+      <li className={className}>
+        <input type="checkbox" onChange={toggle} />
         {inner}
         <ul>{rows}</ul>
-      </li>
-    );
-        
-    const select = this.select.bind(this);
-    const info = this.info.bind(this);
-    const selected = this.selected() ? 'selected' : '';
-    return (
-      <li className="project {selected}">
-        {Task.getLabel(this.props.task)}
-        <div className="controls">
-          <button onClick={select}>Select</button>
-          <a href="#" onClick={info} >{Task.getLabel(this.props.task)}</a>
-        </div>
       </li>
     );
   }

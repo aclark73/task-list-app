@@ -10,6 +10,14 @@
 .tasks .label {
     white-space: nowrap;
     overflow: hidden;
+    border: 1px solid #ccc;
+    height: 1.1em;
+    margin-bottom: 2px;
+    cursor: pointer;
+}
+
+.tasks input[type=checkbox] {
+    float: left;
 }
 
 li.task {
@@ -46,4 +54,16 @@ li.task {
 
 .controls button {
     float: right;
+}
+
+.toggled ul {
+  display: none;
+}
+
+.label.selected {
+    background: #eef;
+}
+
+.label:hover {
+    background: #ffe;
 }
