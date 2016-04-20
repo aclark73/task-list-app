@@ -7,63 +7,25 @@
     position: relative;
 }
 
-.tasks .label {
-    white-space: nowrap;
-    overflow: hidden;
+.task-item {
     border: 1px solid #ccc;
     height: 1.1em;
     margin-bottom: 2px;
     cursor: pointer;
-}
-
-.tasks input[type=checkbox] {
-    float: left;
-}
-
-li.task {
-    padding-left: 1.5em;
-}
-
-
-.controls {
-    white-space: normal;
-    text-align: right;
-    position: absolute;
-    right: 0;
-    top: 0; 
-    background: #ccc;
-    display: none;
+    white-space: nowrap;
     overflow: hidden;
-    z-index: 1;
+    /* text-overflow: ellipsis; */
 }
 
-.label:hover .controls {
-    display: initial;
+.tasks ul ul {
+    margin-left: 1.5em;
 }
 
-.controls a {
-    display: block;
-    width: 150px;
-    height: 1em;
-    margin-right: 4em;
-}
-
-.controls a:hover {
-    height: auto;
-}
-
-.controls button {
-    float: right;
-}
-
-.toggled ul {
+.toggled + ul {
   display: none;
 }
 
-.label.selected {
-    background: #eef;
-}
-
-.label:hover {
-    background: #ffe;
+.task-item > a {
+    float: left;
+    padding: 0 4px;
 }

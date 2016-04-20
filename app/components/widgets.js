@@ -14,30 +14,39 @@ export class TaskWidget extends Component {
   selected() {
     return (this.props.context.selectedTaskId == Task.getUID(this.props.task));
   }
-  renderInner() {
+  renderInner(className, toggleWidget, rows) {
     const select = this.select.bind(this);
     const start = this.start.bind(this);
     const info = this.info.bind(this);
-    const className = 'label' + (this.selected() ? ' selected' : '');
+    
+    className = className + ' task-item';
+    if (this.selected()) {
+      className = className + ' selected';
+    }
+    if (rows) {
+      rows = (
+        <ul>
+          {rows}
+        </ul>
+      );
+    }
+    
     return (
-      <div className={className} onClick={select} onDoubleClick={start}>
-        {Task.getLabel(this.props.task)}
-        <div className="controls">
-          <button onClick={select}>Select</button>         
-          <a href="#" onClick={info} >{Task.getLabel(this.props.task)}</a>
+      <li>
+        <div className={className}>
+          {toggleWidget}
+          <a href="#" onClick={start}>Go</a>
+          <div onClick={select} onDoubleClick={start}>
+            {Task.getLabel(this.props.task)}
+          </div>
         </div>
-      </div>
+        {rows}
+      </li>
     );
   }
   
   render() {
-    const inner = this.renderInner();
-    const selected = this.selected() ? 'selected' : '';
-    return (
-      <li className="task">
-        {inner}
-      </li>
-    );
+    return this.renderInner('task', '', '');
   }
 }
 
@@ -58,16 +67,14 @@ export class ProjectWidget extends TaskWidget {
         rows.push(<TaskWidget key={Task.getUID(task)} task={task} context={this.props.context} />);
       }
     });
-    const inner = this.renderInner();
+
     const toggle = this.toggle.bind(this);
-    const className = 'project' + (this.state.toggle ? ' toggled' : '');
-    return (
-      <li className={className}>
-        <input type="checkbox" onChange={toggle} />
-        {inner}
-        <ul>{rows}</ul>
-      </li>
+    const toggleWidget = (
+      <a href="#" className="toggle" onClick={toggle}>+</a>
     );
+
+    const className = 'project' + (this.state.toggle ? ' toggled' : '');
+    return this.renderInner(className, toggleWidget, rows);
   }
   
 }
