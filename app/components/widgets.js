@@ -6,7 +6,7 @@ export class TaskWidget extends Component {
     this.props.context.setTask(Task.getUID(this.props.task));
   }
   start() {
-    this.props.context.start();
+    this.props.context.start(Task.getUID(this.props.task));
   }
   info() {
     console.log("Task: " + Task.getLabel(this.props.task));
@@ -35,8 +35,8 @@ export class TaskWidget extends Component {
       <li>
         <div className={className}>
           {toggleWidget}
-          <a href="#" onClick={start}>Go</a>
-          <div onClick={select} onDoubleClick={start}>
+          <a href="#" onClick={start}><i className="fa fa-clock-o"></i></a>
+          <div className="label" onClick={select} onDoubleClick={start}>
             {Task.getLabel(this.props.task)}
           </div>
         </div>
@@ -69,8 +69,9 @@ export class ProjectWidget extends TaskWidget {
     });
 
     const toggle = this.toggle.bind(this);
+    const toggleClass = 'fa fa-chevron-circle-' + (this.state.toggle ? 'down' : 'right');
     const toggleWidget = (
-      <a href="#" className="toggle" onClick={toggle}>+</a>
+      <a href="#" className="toggle" onClick={toggle}><i className={toggleClass}></i></a>
     );
 
     const className = 'project' + (this.state.toggle ? ' toggled' : '');

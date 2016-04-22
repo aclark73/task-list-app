@@ -9,23 +9,42 @@
 
 .task-item {
     border: 1px solid #ccc;
-    height: 1.1em;
     margin-bottom: 2px;
     cursor: pointer;
-    white-space: nowrap;
     overflow: hidden;
     /* text-overflow: ellipsis; */
 }
 
-.tasks ul ul {
-    margin-left: 1.5em;
+.compact .task-item {
+    white-space: nowrap;
+    /* height: 1.1em; */
 }
 
-.toggled + ul {
-  display: none;
+.tasks ul ul {
+    margin-left: 1.5em;
+    display: none;
+}
+
+.tasks .toggled + ul {
+  display: inherit;
 }
 
 .task-item > a {
     float: left;
     padding: 0 4px;
+    border: 1px solid #ccc;
+    margin: -1px;
+}
+
+.task-item > a:hover {
+    background: #eee;
+}
+
+a.toggle {
+    position: absolute;
+    left: 1px;
+}
+
+.task-item .label {
+  padding-left: 2em;
 }
