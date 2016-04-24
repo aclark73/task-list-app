@@ -8,20 +8,32 @@
 }
 
 .task-item {
-    border: 1px solid #ccc;
-    margin-bottom: 2px;
+    line-height: 1em;
+}
+
+.task-item .btn, .task-item .label {
+    border: 1px solid #ddd;
     cursor: pointer;
     overflow: hidden;
-    /* text-overflow: ellipsis; */
+}
+
+.task-item .label {
+    margin-bottom: 2px;
+}
+
+.task-item:hover .label {
+    background: #dfd;
+}
+
+.task-item.selected .label {
+    background: #ddd;
 }
 
 .compact .task-item {
     white-space: nowrap;
-    /* height: 1.1em; */
 }
 
 .tasks ul ul {
-    margin-left: 1.5em;
     display: none;
 }
 
@@ -29,22 +41,24 @@
   display: inherit;
 }
 
-.task-item > a {
-    float: left;
-    padding: 0 4px;
-    border: 1px solid #ccc;
-    margin: -1px;
+.btn {
+    position: absolute;
+    width: 18px;
+    text-align: center;
 }
 
-.task-item > a:hover {
+.task-item .btn:hover {
     background: #eee;
 }
 
-a.toggle {
-    position: absolute;
-    left: 1px;
+.task-item .btn-toggle {
+    left: 0;
+}
+
+.task-item .btn-start {
+    left: 18px;
 }
 
 .task-item .label {
-  padding-left: 2em;
+  margin-left: 38px;
 }
