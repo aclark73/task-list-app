@@ -3,10 +3,10 @@ import Task from './task';
 
 export class TaskWidget extends Component {
   select() {
-    this.props.context.setTask(Task.getUID(this.props.task));
+    this.props.context.setTask(this.props.task);
   }
   start() {
-    this.props.context.start(Task.getUID(this.props.task));
+    this.props.context.start(this.props.task);
   }
   info() {
     console.log("Task: " + Task.getLabel(this.props.task));
