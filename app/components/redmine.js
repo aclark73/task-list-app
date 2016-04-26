@@ -1,5 +1,10 @@
 const fs = require('fs');
+const request = require('ajax-request');
 // const models = require('./models');
+
+const BASE_URL = 'http://dmscode.iris.washington.edu';
+const ISSUES_URL = BASE_URL + '/issues.json?key=example&assigned_to_id=me&sort=updated_on:desc&status_id=open&limit=200';
+
 
 export default class RedmineTaskParser {
 
@@ -7,7 +12,7 @@ export default class RedmineTaskParser {
       this.source = 'redmine';
       this.promises = {};
     }
-    
+
     createProject(name) {
       return {
         project: name,
@@ -16,7 +21,7 @@ export default class RedmineTaskParser {
         tasks: []
       };
     };
-    
+
     createTask(json) {
       /*
        * {  "id":1130,
@@ -37,16 +42,16 @@ export default class RedmineTaskParser {
         issue_id: json.id
       };
     }
-      
+
     parse(json) {
       /*
        * {"issues":[ ... ]}
        */
       const issues = json.issues;
-      
+
       const projects = [];
       const projectsByName = {};
-      
+
       for (var i=0; i<issues.length; i++) {
         var task = this.createTask(issues[i]);
         var project = projectsByName[task.project];
@@ -59,19 +64,26 @@ export default class RedmineTaskParser {
       }
       return Promise.resolve(projects);
     }
-    
+
     fetch() {
       return new Promise(function(resolve, reject) {
-        fs.readFile('redmine.json', 'utf8', function (err,data) {
+        request(ISSUES_URL, function(err, res, body) {
           if (err) {
             reject(err);
           } else {
-            resolve(JSON.parse(data));
+            resolve(JSON.parse(body));
           }
         });
+//        fs.readFile('redmine.json', 'utf8', function (err,data) {
+//          if (err) {
+//            reject(err);
+//          } else {
+//            resolve(JSON.parse(data));
+//          }
+//        });
       });
     }
-    
+
     load() {
       return this.fetch().then(function(json) {
         return this.parse(json);

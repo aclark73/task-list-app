@@ -45,11 +45,11 @@ export default class App extends Component {
     var s = t%60;
     var m = (Math.trunc(t/60)%60);
     var h = Math.trunc(t/3600);
-    
+
     function pad2(d) {
       return (d >= 10 ? '' : '0') + d;
     }
-    
+
     if (h > 0) {
       return '' + h + ':' + pad2(m) + ':' + pad2(s);
     } else {
@@ -77,11 +77,11 @@ export default class App extends Component {
       setTask: this.setTask.bind(this),
       refresh: this.refresh.bind(this),
       start: this.start.bind(this),
-      toggleCompactView: this.toggleCompactView.bind(this),
-      toggleProjects: this.toggleProjects.bind(this),
-      selectedTaskId: this.state.taskId
+      compactView: this.compactView.bind(this),
+      selectedTaskId: this.state.taskId,
+      isRunning: !!(this.state.timer)
     };
-    
+
     const rows = [];
     this.state.projects.forEach( (project) => {
       if (project) {
@@ -90,17 +90,18 @@ export default class App extends Component {
     });
     const timeElapsed = this.formatTime(this.state.timeElapsed);
     const timeRemaining = this.formatTime(this.state.timeRemaining);
-      
+    const className = (this.state.timer ? 'running' : '');
+    const currentTask = this.state.taskLabel;
     const tasksClassName = 'tasks' + (this.state.compactView ? ' compact' : '');
-    const toggleButtonClassName = 'fa fa-toggle-' + (this.state.compactView ? 'down' : 'up');
+    const compactButtonClassName = 'fa fa-toggle-' + (this.state.compactView ? 'down' : 'up');
     return(
-      <div>
-        <h1>Tasks</h1>
-        <div>Elapsed: <span className="time-elapsed">{timeElapsed}</span></div>
-        <div>Remaining: <span className="time-remaining">{timeRemaining}</span></div>
-        <div>
-          <button type="button" onClick={context.refresh}><i className="fa fa-refresh"></i></button>
-          <button type="button" onClick={context.toggleCompactView}><i className={toggleButtonClassName}></i></button>
+      <div className={className}>
+        <div><label>Remaining:</label><span className="time-remaining">{timeRemaining}</span></div>
+        <div><label>Elapsed:</label><span className="time-elapsed">{timeElapsed}</span></div>
+        <div><label>Current:</label><span className="current-task">{currentTask}</span></div>
+        <div className="btns">
+          <span className="btn" onClick={context.refresh}><i className="fa fa-refresh"></i></span>
+          <span className="btn" onClick={context.compactView}><i className={compactButtonClassName}></i></span>
         </div>
         <div className={tasksClassName}><ul>{rows}</ul></div>
       </div>
@@ -120,13 +121,10 @@ export default class App extends Component {
       });
     }
   }
-  toggleCompactView() {
+  compactView() {
     this.setState({
       compactView: !this.state.compactView
     });
-  }
-  toggleProjects() {
-    
   }
   /* Timer */
   start(taskId) {
@@ -181,5 +179,5 @@ export default class App extends Component {
     const startTime = state.startTime.toISOString();
     console.log(`LOG: task: ${state.taskId} startTime: ${startTime} timeElapsed: ${state.timeElapsed}`);
   }
-  
+
 }

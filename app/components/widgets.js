@@ -18,7 +18,7 @@ export class TaskWidget extends Component {
     const select = this.select.bind(this);
     const start = this.start.bind(this);
     const info = this.info.bind(this);
-    
+
     className = className + ' task-item';
     if (this.selected()) {
       className = className + ' selected';
@@ -30,7 +30,7 @@ export class TaskWidget extends Component {
         </ul>
       );
     }
-    
+
     return (
       <li>
         <div className={className}>
@@ -44,7 +44,7 @@ export class TaskWidget extends Component {
       </li>
     );
   }
-  
+
   render() {
     return this.renderInner('task', '', '');
   }
@@ -54,7 +54,7 @@ export class ProjectWidget extends TaskWidget {
   constructor(props) {
     super(props);
     this.state = {
-      toggle: true
+      toggle: !!props.toggle
     };
   }
   toggle() {
@@ -77,5 +77,5 @@ export class ProjectWidget extends TaskWidget {
     const className = 'project' + (this.state.toggle ? ' toggled' : '');
     return this.renderInner(className, toggleWidget, rows);
   }
-  
+
 }
