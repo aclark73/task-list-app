@@ -25,13 +25,18 @@ export default class App extends Component {
       workTime: 60*5,
       breakTime: 60,
       timer: null,
-      log: []
+      log: [],
+      messages: []
     };
   }
   loadRedmine() {
     const parser = new RedmineTaskParser();
     parser.load().then( (projects) => {
       this.setState({projects: projects});
+    }, (err) => {
+      this.setState({
+        messages: this.state.messages.concat(['' + err])
+      });
     });
   }
   refresh() {
@@ -84,9 +89,15 @@ export default class App extends Component {
 
     const rows = [];
     this.state.projects.forEach( (project) => {
-      if (project) {
-        rows.push(<ProjectWidget key={Task.getUID(project)} task={project} context={context} />);
-      }
+      rows.push(<ProjectWidget key={Task.getUID(project)} task={project} context={context} />);
+    });
+    const logRows = []
+    this.state.log.forEach( (logEntry, i) => {
+      logRows.push(<li key={i}>{logEntry.taskLabel}</li>);
+    });
+    const messageRows = []
+    this.state.messages.forEach( (message, i) => {
+      messageRows.push(<li key={i}>{message}</li>);
     });
     const timeElapsed = this.formatTime(this.state.timeElapsed);
     const timeRemaining = this.formatTime(this.state.timeRemaining);
@@ -102,7 +113,11 @@ export default class App extends Component {
         <div className="btns">
           <span className="btn" onClick={context.refresh}><i className="fa fa-refresh"></i></span>
           <span className="btn" onClick={context.compactView}><i className={compactButtonClassName}></i></span>
+          <span className="btn" onClick={context.compactView}><i className="fa fa-exclamation-triangle"></i></span>
+          <span className="btn" onClick={context.compactView}><i className="fa fa-history"></i></span>
         </div>
+        <div className="messages"><ul>{messageRows}</ul></div>
+        <div className="log"><ul>{logRows}</ul></div>
         <div className={tasksClassName}><ul>{rows}</ul></div>
       </div>
     );

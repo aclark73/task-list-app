@@ -67,20 +67,20 @@ export default class RedmineTaskParser {
 
     fetch() {
       return new Promise(function(resolve, reject) {
-        request(ISSUES_URL, function(err, res, body) {
+        //request(ISSUES_URL, function(err, res, body) {
+        //  if (err) {
+        //    reject(err);
+        //  } else {
+        //    resolve(JSON.parse(body));
+        //  }
+        //});
+        fs.readFile('redmine.json', 'utf8', function (err,data) {
           if (err) {
             reject(err);
           } else {
-            resolve(JSON.parse(body));
+            resolve(JSON.parse(data));
           }
         });
-//        fs.readFile('redmine.json', 'utf8', function (err,data) {
-//          if (err) {
-//            reject(err);
-//          } else {
-//            resolve(JSON.parse(data));
-//          }
-//        });
       });
     }
 
