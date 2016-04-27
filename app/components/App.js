@@ -26,7 +26,9 @@ export default class App extends Component {
       breakTime: 60,
       timer: null,
       log: [],
-      messages: []
+      showLog: false,
+      messages: [],
+      showMessages: false
     };
   }
   loadRedmine() {
@@ -78,13 +80,22 @@ export default class App extends Component {
     return foundTask;
   }
   render() {
-    const context = {
+    const actions = {
       setTask: this.setTask.bind(this),
       refresh: this.refresh.bind(this),
       start: this.start.bind(this),
-      compactView: this.compactView.bind(this),
+      toggleCompactView: this.toggleCompactView.bind(this),
+      showLog: this.showLog.bind(this),
+      showMessages: this.showMessages.bind(this),
+      dismissPopups: this.dismissPopups.bind(this)
+    };
+    const context = {
       selectedTaskId: this.state.taskId,
-      isRunning: !!(this.state.timer)
+      isRunning: !!(this.state.timer),
+      actions: {
+        setTask: actions.setTask,
+        start: actions.start
+      }
     };
 
     const rows = [];
@@ -101,24 +112,32 @@ export default class App extends Component {
     });
     const timeElapsed = this.formatTime(this.state.timeElapsed);
     const timeRemaining = this.formatTime(this.state.timeRemaining);
-    const className = (this.state.timer ? 'running' : '');
+    const className = 'main' +
+      (this.state.timer ? ' running' : '') +
+      (this.state.compactView ? ' compact' : '') + 
+      (this.state.showLog ? ' show-backdrop show-log' : '') +
+      (this.state.showMessages ? '  show-backdrop show-messages' : '');
     const currentTask = this.state.taskLabel;
-    const tasksClassName = 'tasks' + (this.state.compactView ? ' compact' : '');
     const compactButtonClassName = 'fa fa-toggle-' + (this.state.compactView ? 'down' : 'up');
     return(
       <div className={className}>
-        <div><label>Remaining:</label><span className="time-remaining">{timeRemaining}</span></div>
-        <div><label>Elapsed:</label><span className="time-elapsed">{timeElapsed}</span></div>
-        <div><label>Current:</label><span className="current-task">{currentTask}</span></div>
-        <div className="btns">
-          <span className="btn" onClick={context.refresh}><i className="fa fa-refresh"></i></span>
-          <span className="btn" onClick={context.compactView}><i className={compactButtonClassName}></i></span>
-          <span className="btn" onClick={context.compactView}><i className="fa fa-exclamation-triangle"></i></span>
-          <span className="btn" onClick={context.compactView}><i className="fa fa-history"></i></span>
+        <div className="top-panel">
+          <div className="time-remaining"><label>Remaining:</label><span>{timeRemaining}</span></div>
+          <div className="time-elapsed"><label>Elapsed:</label><span>{timeElapsed}</span></div>
+          <div className="current-task"><label>Current:</label><span>{currentTask}</span></div>
         </div>
-        <div className="messages"><ul>{messageRows}</ul></div>
-        <div className="log"><ul>{logRows}</ul></div>
-        <div className={tasksClassName}><ul>{rows}</ul></div>
+        <div>
+          <div className="btns">
+            <span className="btn" onClick={actions.refresh}><i className="fa fa-refresh"></i></span>
+            <span className="btn" onClick={actions.toggleCompactView}><i className={compactButtonClassName}></i></span>
+            <span className="btn" onClick={actions.showMessages}><i className="fa fa-exclamation-triangle"></i></span>
+            <span className="btn" onClick={actions.showLog}><i className="fa fa-history"></i></span>
+          </div>
+          <div className="popup messages"><ul><li className="header">Messages</li>{messageRows}</ul></div>
+          <div className="popup log"><ul><li className="header">History</li>{logRows}</ul></div>
+        </div>
+        <div className="tasks"><ul>{rows}</ul></div>
+        <div className="backdrop" onClick={actions.dismissPopups}></div>
       </div>
     );
   }
@@ -136,9 +155,25 @@ export default class App extends Component {
       });
     }
   }
-  compactView() {
+  toggleCompactView() {
     this.setState({
       compactView: !this.state.compactView
+    });
+  }
+  showLog() {
+    this.setState({
+      showLog: true
+    });
+  }
+  showMessages() {
+    this.setState({
+      showMessages: true
+    });
+  }
+  dismissPopups() {
+    this.setState({
+      showLog: false,
+      showMessages: false
     });
   }
   /* Timer */
