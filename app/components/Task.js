@@ -13,13 +13,15 @@ const Task = {
     }  
   },
   getUID: function(task) {
-	if (Task.isProject(task)) {
+    if (!task.source) { return ''; }
+  	if (Task.isProject(task)) {
       return Task.getProjectUID(task);
     } else {
       return Task.getTaskUID(task);
     }
   },
   getLabel: function(task) {
+    if (!task.source) { return ''; }
     if (Task.isProject(task)) {
       return task.project;
     } else if (task.issue_id) {

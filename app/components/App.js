@@ -24,6 +24,7 @@ export default class App extends Component {
       timeRemaining: 0,
       workTime: 60*5,
       breakTime: 60,
+      currently: 'stopped',
       timer: null,
       log: [],
       showLog: false,
@@ -31,17 +32,21 @@ export default class App extends Component {
       showMessages: false
     };
   }
+  addMessage(message) {
+    this.setState({
+      messages: this.state.messages.concat(['' + message])
+    });
+  }
   loadRedmine() {
     const parser = new RedmineTaskParser();
     parser.load().then( (projects) => {
       this.setState({projects: projects});
     }, (err) => {
-      this.setState({
-        messages: this.state.messages.concat(['' + err])
-      });
+      this.addMessage(err);
     });
   }
   refresh() {
+    this.addMessage("Loading Redmine");
     console.log("refresh");
     this.loadRedmine();
   }
@@ -81,9 +86,11 @@ export default class App extends Component {
   }
   render() {
     const actions = {
+      start: this.start.bind(this),
+      stop: this.stop.bind(this),
+      pause: this.pause.bind(this),
       setTask: this.setTask.bind(this),
       refresh: this.refresh.bind(this),
-      start: this.start.bind(this),
       toggleCompactView: this.toggleCompactView.bind(this),
       showLog: this.showLog.bind(this),
       showMessages: this.showMessages.bind(this),
@@ -91,7 +98,7 @@ export default class App extends Component {
     };
     const context = {
       selectedTaskId: this.state.taskId,
-      isRunning: !!(this.state.timer),
+      currently: this.state.currently,
       actions: {
         setTask: actions.setTask,
         start: actions.start
@@ -113,7 +120,7 @@ export default class App extends Component {
     const timeElapsed = this.formatTime(this.state.timeElapsed);
     const timeRemaining = this.formatTime(this.state.timeRemaining);
     const className = 'main' +
-      (this.state.timer ? ' running' : '') +
+      ' ' + this.state.currently +
       (this.state.compactView ? ' compact' : '') + 
       (this.state.showLog ? ' show-backdrop show-log' : '') +
       (this.state.showMessages ? '  show-backdrop show-messages' : '');
@@ -121,11 +128,6 @@ export default class App extends Component {
     const compactButtonClassName = 'fa fa-toggle-' + (this.state.compactView ? 'down' : 'up');
     return(
       <div className={className}>
-        <div className="top-panel">
-          <div className="time-remaining"><label>Remaining:</label><span>{timeRemaining}</span></div>
-          <div className="time-elapsed"><label>Elapsed:</label><span>{timeElapsed}</span></div>
-          <div className="current-task"><label>Current:</label><span>{currentTask}</span></div>
-        </div>
         <div>
           <div className="btns">
             <span className="btn" onClick={actions.refresh}><i className="fa fa-refresh"></i></span>
@@ -135,6 +137,17 @@ export default class App extends Component {
           </div>
           <div className="popup messages"><ul><li className="header">Messages</li>{messageRows}</ul></div>
           <div className="popup log"><ul><li className="header">History</li>{logRows}</ul></div>
+        </div>
+        <div className="timer-btn timer-start" onClick={actions.start}>
+          <div className="time-remaining"><span>{timeRemaining}</span></div>
+          <div className="current-task"><label>Task:</label><span>{currentTask}</span></div>
+          <div className="time-elapsed"><label>Elapsed:</label><span>{timeElapsed}</span></div>
+        </div>
+        <div className="timer-btn timer-stop" onClick={actions.stop}>
+          Stop
+        </div>
+        <div className="timer-btn timer-pause" onClick={actions.pause}>
+          Pause
         </div>
         <div className="tasks"><ul>{rows}</ul></div>
         <div className="backdrop" onClick={actions.dismissPopups}></div>
@@ -177,56 +190,99 @@ export default class App extends Component {
     });
   }
   /* Timer */
-  start(taskId) {
-    const changedTask = (taskId && taskId != this.state.taskId);
+  start(task) {
+    if (!task.source) { task = null; }
+    const changedTask = (task && Task.getUID(task) != this.state.taskId);
     if (changedTask) {
-      this.setTask(taskId);
+      this.setTask(task);
     }
-    if (!changedTask && this.state.timer) {
-      console.log("restart");
+    else if (this.state.currently == "working") {
+      console.log("extend");
       // Don't interfere with timer, just reset the remaining time
       this.setState({
         timeRemaining: this.state.workTime
       });
-    } else {
-      console.log("start");
-      var tick = this.tick.bind(this);
-      this.setState({
-        startTime: new Date(),
-        timeElapsed: 0,
-        timeRemaining: this.state.workTime,
-        timer: window.setInterval(tick, 1000)
-      });
+      return;
     }
+    if (! this.state.taskId) { return; }
+    this.setState({
+      currently: "working",
+      timeRemaining: this.state.workTime
+    });
+    this.startTimer();
   }
   tick() {
     if (this.state.timer) {
+      if (this.state.currently == "working") {
+        this.setState({
+          timeElapsed: this.state.timeElapsed + 1,
+        });
+      }
       this.setState({
-        timeElapsed: this.state.timeElapsed + 1,
         timeRemaining: this.state.timeRemaining - 1
       });
       if (this.state.timeRemaining <= 0) {
-        this.stop();
+        this.timeUp();
       }
     }
+  }
+  timeUp() {
+    switch (this.state.currently) {
+      case "working":
+        this.pause();
+        break;
+      case "paused":
+        this.log("Timed out in pause");
+        this.stop();
+    }
+  }
+  startTimer() {
+    this.stopTimer();
+    var tick = this.tick.bind(this);
+    this.setState({
+      timer: window.setInterval(tick, 1000)
+    });
+  }
+  stopTimer() {
+    if (this.state.timer) {
+      window.clearInterval(this.state.timer);
+    }
+    this.setState({
+      timer: null
+    });
+  }
+  pause() {
+    if (! this.state.taskId) { return; }
+    if (this.state.currently == "paused") { return; }
+    this.setState({
+      currently: "paused",
+      timeRemaining: this.state.breakTime
+    });
+    this.startTimer();
   }
   stop() {
-    if (this.state.timer) {
-      if (this.state.startTime) {
-        this.log(this.state);
-      }
-      window.clearInterval(this.state.timer);
-      this.setState({
-        startTime: null,
-        timer: null
-      });
+    if (this.state.currently == "stopped") {
+      return;
     }
+    if (this.state.startTime) {
+      this.log(this.state);
+    }
+    if (this.state.timer) {
+      window.clearInterval(this.state.timer);
+    }
+    this.setState({
+      currently: "stopped",
+      timeRemaining: 0,
+      timeElapsed: 0,
+      startTime: null,
+      timer: null
+    });
   }
   log(state) {
-    this.setState({
-      log: this.state.log.concat([state])
-    });
     const startTime = state.startTime.toISOString();
+    this.setState({
+      log: this.state.log.concat([`task: ${state.taskId} startTime: ${startTime} timeElapsed: ${state.timeElapsed}`])
+    });
     console.log(`LOG: task: ${state.taskId} startTime: ${startTime} timeElapsed: ${state.timeElapsed}`);
   }
 

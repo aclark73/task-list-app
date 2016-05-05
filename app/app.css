@@ -1,25 +1,65 @@
 body {
   font-family: Helvetica;
   font-size: 14px;
-  line-height: 1.2em;
+  line-height: 1.2;
 }
 
-.top-panel > div {
+.timer-btn {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px;
+    cursor: pointer;
+}
+.timer-btn > div {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow-x: hidden;
-  text-align: right;
 }
 
-.top-panel label {
-  float: left;
+.timer-btn label {
   font-size: 12px;
   color: #333;
 }
 
+.timer-start {
+  float: left;
+  width: 70%;
+  border-color: #0f0;
+}
+.timer-start:hover {
+  background: #efe;
+}
+.working .timer-start {
+  background: #cfc;
+}
+
+.timer-stop, .timer-pause {
+  margin-left: 80%;
+}
+
+.timer-stop {
+  border-color: #f00;
+}
+.timer-stop:hover {
+  background: #fee;
+}
+.stopped .timer-stop {
+  background: #fcc;
+}
+
+.timer-pause {
+  border-color: #990;
+}
+.timer-pause:hover {
+  background: #ffe;
+}
+.paused .timer-pause {
+  background: #ffc;
+}
+
 .tasks {
     position: fixed;
-    top: 6em;
+    top: 8em;
     bottom: 0;
     left: 0;
     right: 0;
@@ -48,7 +88,7 @@ body {
     cursor: pointer;
     overflow: hidden;
     padding: 1px 0;
-    line-height: 1em;
+    line-height: 1.2;
 }
 
 .task-item .label {
@@ -137,19 +177,19 @@ body {
     font-size: 24px;
 }
 
-.running .task-item .label {
+.working .task-item .label {
     background: #fcfffc;
     color: #666;
 }
 
-.running .task-item.selected .label {
+.working .task-item.selected .label {
     background: #dfd;
     color: #093;
 }
-.running .selected .btn-start {
+.working .selected .btn-start {
     color: #0c3;
 }
-.running .time-remaining {
+.working .time-remaining {
     color: #0c3;
 }
 
