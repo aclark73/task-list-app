@@ -268,7 +268,7 @@ export default class App extends Component {
       });
       this.startTimer();
     } else {
-      this.start();
+      this.start(this.getTask(this.state.taskId));
     }
   }
   stop() {

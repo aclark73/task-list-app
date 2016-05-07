@@ -21,15 +21,15 @@ body {
   color: #333;
 }
 
-.timer-btn-start {
+.timer-btn-task {
   float: left;
   width: 70%;
   border-color: #0f0;
 }
-.timer-btn-start:hover {
+.timer-btn-task:hover {
   background: #efe;
 }
-.working .timer-btn-start {
+.working .timer-btn-task {
   background: #cfc;
 }
 
