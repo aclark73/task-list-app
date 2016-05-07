@@ -21,39 +21,39 @@ body {
   color: #333;
 }
 
-.timer-start {
+.timer-btn-start {
   float: left;
   width: 70%;
   border-color: #0f0;
 }
-.timer-start:hover {
+.timer-btn-start:hover {
   background: #efe;
 }
-.working .timer-start {
+.working .timer-btn-start {
   background: #cfc;
 }
 
-.timer-stop, .timer-pause {
+.timer-btn-stop, .timer-btn-pause {
   margin-left: 80%;
 }
 
-.timer-stop {
+.timer-btn-stop {
   border-color: #f00;
 }
-.timer-stop:hover {
+.timer-btn-stop:hover {
   background: #fee;
 }
-.stopped .timer-stop {
+.stopped .timer-btn-stop {
   background: #fcc;
 }
 
-.timer-pause {
+.timer-btn-pause {
   border-color: #990;
 }
-.timer-pause:hover {
+.timer-btn-pause:hover {
   background: #ffe;
 }
-.paused .timer-pause {
+.paused .timer-btn-pause {
   background: #ffc;
 }
 

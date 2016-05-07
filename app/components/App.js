@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import RedmineTaskParser from './redmine';
 import Task from './task';
 import { TaskWidget, ProjectWidget } from './widgets';
+import classNames from 'classnames';
+
 
 const ROWS = [
   {label: "Item 1"},
@@ -119,13 +121,22 @@ export default class App extends Component {
     });
     const timeElapsed = this.formatTime(this.state.timeElapsed);
     const timeRemaining = this.formatTime(this.state.timeRemaining);
-    const className = 'main' +
-      ' ' + this.state.currently +
-      (this.state.compactView ? ' compact' : '') + 
-      (this.state.showLog ? ' show-backdrop show-log' : '') +
-      (this.state.showMessages ? '  show-backdrop show-messages' : '');
+    const className = classNames(
+      'main',
+      this.state.currently,
+      {
+       'compact': this.state.compactView,
+       'show-backdrop': (this.state.showLog || this.state.showMessages),
+       'show-log': this.state.showLog,
+       'show-messages': this.state.showMessages
+      });
     const currentTask = this.state.taskLabel;
-    const compactButtonClassName = 'fa fa-toggle-' + (this.state.compactView ? 'down' : 'up');
+    const compactButtonClassName = classNames(
+      'fa',
+      {
+        'fa-toggle-down': !this.state.compactView,
+        'fa-toggle-up': this.state.compactView
+      });
     return(
       <div className={className}>
         <div>
@@ -138,16 +149,13 @@ export default class App extends Component {
           <div className="popup messages"><ul><li className="header">Messages</li>{messageRows}</ul></div>
           <div className="popup log"><ul><li className="header">History</li>{logRows}</ul></div>
         </div>
-        <div className="timer-btn timer-start" onClick={actions.start}>
+        <div className="timer-btn timer-btn-task" onClick={actions.pause}>
           <div className="time-remaining"><span>{timeRemaining}</span></div>
           <div className="current-task"><label>Task:</label><span>{currentTask}</span></div>
           <div className="time-elapsed"><label>Elapsed:</label><span>{timeElapsed}</span></div>
         </div>
-        <div className="timer-btn timer-stop" onClick={actions.stop}>
+        <div className="timer-btn timer-btn-stop" onClick={actions.stop}>
           Stop
-        </div>
-        <div className="timer-btn timer-pause" onClick={actions.pause}>
-          Pause
         </div>
         <div className="tasks"><ul>{rows}</ul></div>
         <div className="backdrop" onClick={actions.dismissPopups}></div>
@@ -253,12 +261,15 @@ export default class App extends Component {
   }
   pause() {
     if (! this.state.taskId) { return; }
-    if (this.state.currently == "paused") { return; }
-    this.setState({
-      currently: "paused",
-      timeRemaining: this.state.breakTime
-    });
-    this.startTimer();
+    if (this.state.currently == "running") {
+      this.setState({
+        currently: "paused",
+        timeRemaining: this.state.breakTime
+      });
+      this.startTimer();
+    } else {
+      this.start();
+    }
   }
   stop() {
     if (this.state.currently == "stopped") {

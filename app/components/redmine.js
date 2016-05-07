@@ -31,7 +31,11 @@ export default class RedmineTaskParser {
        *    "priority":{"id":4,"name":"Normal"},
        *    "author":{"id":3,"name":"Adam Clark"},
        *    "assigned_to":{"id":3,"name":"Adam Clark"},
-       *    "subject":"Tools page should allow filters in the URL"
+       *    "subject":"Tools page should allow filters in the URL",
+       *    "start_date":"2014-02-05",
+       *    "done_ratio":0,
+       *    "created_on":"2014-02-05T23:54:56Z",
+       *    "updated_on":"2014-02-05T23:54:56Z"
        *    ...
        *    }
        */
@@ -39,7 +43,8 @@ export default class RedmineTaskParser {
         project: json.project.name,
         title: json.subject,
         source: this.source,
-        issue_id: json.id
+        issue_id: json.id,
+        updated_on: json.updated_on
       };
     }
 
@@ -54,11 +59,12 @@ export default class RedmineTaskParser {
 
       for (var i=0; i<issues.length; i++) {
         var task = this.createTask(issues[i]);
-        var project = projectsByName[task.project];
+        var projectName = task.project;
+        var project = projectsByName[projectName];
         if (! project) {
-          project = this.createProject(task.project);
+          project = this.createProject(projectName);
           projects.push(project);
-          projectsByName[task.project] = project;
+          projectsByName[projectName] = project;
         }
         project.tasks.push(task);
       }
