@@ -73,7 +73,7 @@ export default class App extends Component {
   getTask(taskId) {
     var foundTask = null;
     function findTask(task) {
-      if (task && Task.getUID(project) == taskId) {
+      if (task && Task.getUID(task) == taskId) {
         foundTask = task;
         return true;
       }
@@ -113,7 +113,7 @@ export default class App extends Component {
     });
     const logRows = []
     this.state.log.forEach( (logEntry, i) => {
-      logRows.push(<li key={i}>{logEntry.taskLabel}</li>);
+      logRows.push(<li key={i}>{logEntry}</li>);
     });
     const messageRows = []
     this.state.messages.forEach( (message, i) => {
@@ -199,7 +199,7 @@ export default class App extends Component {
   }
   /* Timer */
   start(task) {
-    if (!task.source) { task = null; }
+    if (task && !task.source) { task = null; }
     const changedTask = (task && Task.getUID(task) != this.state.taskId);
     if (changedTask) {
       this.setTask(task);
@@ -212,9 +212,10 @@ export default class App extends Component {
       });
       return;
     }
-    if (! this.state.taskId) { return; }
+    if (!task || !Task.getUID(task)) { return; }
     this.setState({
       currently: "working",
+      startTime: new Date(),
       timeRemaining: this.state.workTime
     });
     this.startTimer();
@@ -261,7 +262,7 @@ export default class App extends Component {
   }
   pause() {
     if (! this.state.taskId) { return; }
-    if (this.state.currently == "running") {
+    if (this.state.currently == "working") {
       this.setState({
         currently: "paused",
         timeRemaining: this.state.breakTime
@@ -278,9 +279,7 @@ export default class App extends Component {
     if (this.state.startTime) {
       this.log(this.state);
     }
-    if (this.state.timer) {
-      window.clearInterval(this.state.timer);
-    }
+    this.stopTimer();
     this.setState({
       currently: "stopped",
       timeRemaining: 0,
