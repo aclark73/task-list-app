@@ -295,7 +295,7 @@ export default class App extends Component {
     });
   }
   log(state) {
-    const startTime = state.startTime.toISOString();
+    const startTime = this.state.startTime ? this.state.startTime.toISOString() : "?";
     this.setState({
       log: this.state.log.concat([`task: ${state.taskId} startTime: ${startTime} timeElapsed: ${state.timeElapsed}`])
     });
