@@ -4,7 +4,6 @@ import Task from './task';
 import { TaskWidget, ProjectWidget } from './widgets';
 import classNames from 'classnames';
 
-
 const ROWS = [
   {label: "Item 1"},
   {label: "Item 2"},
@@ -17,17 +16,21 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      projects: [],
       compactView: false,
+      workTime: 60,
+      breakTime: 60,
+
+      projects: [],
+      tasks: [],
+
       taskId: null,
       taskLabel: '-',
       startTime: null,
       timeElapsed: 0,
       timeRemaining: 0,
-      workTime: 60*5,
-      breakTime: 60,
       currently: 'stopped',
       timer: null,
+
       log: [],
       showLog: false,
       messages: [],
@@ -41,8 +44,8 @@ export default class App extends Component {
   }
   loadRedmine() {
     const parser = new RedmineTaskParser();
-    parser.load().then( (projects) => {
-      this.setState({projects: projects});
+    parser.load().then( (data) => {
+      this.setState({projects: data.projects, tasks: data.tasks});
     }, (err) => {
       this.addMessage(err);
     });
@@ -56,6 +59,8 @@ export default class App extends Component {
     console.log("Clicked on row: " + row);
   }
   formatTime(t) {
+    var neg = (t < 0);
+    t = Math.abs(t);
     var s = t%60;
     var m = (Math.trunc(t/60)%60);
     var h = Math.trunc(t/3600);
@@ -64,10 +69,11 @@ export default class App extends Component {
       return (d >= 10 ? '' : '0') + d;
     }
 
+    var sign = neg ? '-' : '';
     if (h > 0) {
-      return '' + h + ':' + pad2(m) + ':' + pad2(s);
+      return sign + h + ':' + pad2(m) + ':' + pad2(s);
     } else {
-      return '' + m + ':' + pad2(s);
+      return sign + m + ':' + pad2(s);
     }
   }
   getTask(taskId) {

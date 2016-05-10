@@ -2,6 +2,18 @@ body {
   font-family: Helvetica;
   font-size: 14px;
   line-height: 1.2;
+  margin: 0;
+  /* padding: 8px; */
+  /* position: relative; */
+}
+
+.main {
+    /* position: absolute; */
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px;
 }
 
 .timer-btn {
@@ -18,33 +30,51 @@ body {
 
 .timer-btn label {
   font-size: 12px;
-  color: #333;
+  /* color: #333; */
 }
 
 .timer-btn-task {
-  float: left;
+  display: inline-block;
   width: 70%;
-  border-color: #0f0;
-}
-.timer-btn-task:hover {
+  border-color: #0d0;
   background: #efe;
 }
+.working .timer-btn-task:hover {
+  background: #00FD00;
+}
 .working .timer-btn-task {
-  background: #cfc;
+  background: #A0FFA0;
+  color: #090;
+}
+.paused .timer-btn-task {
+  border-color: #990;
+  background: #ffc;
+  color: #990;
+}
+
+.paused .timer-btn-task:hover {
+    background: #ffa;
 }
 
 .timer-btn-stop, .timer-btn-pause {
-  margin-left: 80%;
+  float: right;
 }
 
 .timer-btn-stop {
-  border-color: #f00;
+  border-color: hsl(11, 100%, 26%);
+  color: hsl(11, 100%, 26%);
+  font-weight: bold;
+  background: hsl(11, 100%, 80%);
+  text-align: center;
 }
 .timer-btn-stop:hover {
-  background: #fee;
+  background: hsl(11, 97%, 68%);
+  /* color: hsl(0, 100%, 100%); */
 }
 .stopped .timer-btn-stop {
-  background: #fcc;
+  background: hsl(11, 84%, 95%);
+  color: hsl(0, 34%, 66%);
+  cursor: inherit;
 }
 
 .timer-btn-pause {
@@ -61,7 +91,7 @@ body {
     position: fixed;
     top: 8em;
     bottom: 0;
-    left: 0;
+    left: 8px;
     right: 0;
     overflow-y: scroll;
 }
@@ -101,7 +131,7 @@ body {
 }
 
 .task-item.selected .label {
-    background: #ddd;
+    background: #f0f0f0;
 }
 
 .compact .task-item {
@@ -162,36 +192,52 @@ body {
 }
 
 .task-item .btn-toggle {
-    left: 0;
+    right: 0;
 }
 
 .task-item .btn-start {
-    left: 19px;
+    left: 0;
 }
 
 .task-item .label {
-  margin-left: 38px;
+  margin-left: 19px;
 }
 
 .time-remaining {
     font-size: 24px;
 }
 
-.working .task-item .label {
-    background: #fcfffc;
-    color: #666;
+.working {
+    background-image: linear-gradient(to top, #fff, #dfd);
+    color: #060;
+}
+.paused {
+    background-image: linear-gradient(to top, #fff, #ffd);
+    color: #660;
 }
 
 .working .task-item.selected .label {
     background: #dfd;
-    color: #093;
+    color: #060;
+}
+.paused .task-item.selected .label {
+    background: #ffd;
+    color: #660;
 }
 .working .selected .btn-start {
-    color: #0c3;
+    color: #0a0;
+    text-shadow: 0 1px 0 #afa;
+}
+.paused .selected .btn-start {
+    color: #aa0;
+    text-shadow: 0 1px 0 #ffa;
 }
 .working .time-remaining {
-    color: #0c3;
+    /* color: #008E23; */
 }
+
+
+
 
 .popup {
   display: none;

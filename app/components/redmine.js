@@ -56,21 +56,27 @@ export default class RedmineTaskParser {
          */
         const issues = json.issues;
 
+        const tasks = [];
         const projects = [];
         const projectsByName = {};
 
         for (var i=0; i<issues.length; i++) {
             var task = this.createTask(issues[i]);
+            tasks.push(task);
             var projectName = task.project;
             var project = projectsByName[projectName];
             if (! project) {
                 project = this.createProject(projectName);
                 projects.push(project);
+                tasks.push(project);
                 projectsByName[projectName] = project;
             }
             project.tasks.push(task);
         }
-        return Promise.resolve(projects);
+        return Promise.resolve({
+          tasks: tasks,
+          projects: projects
+        });
     }
 
     fetch() {
