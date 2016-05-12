@@ -28,63 +28,69 @@ body {
   overflow-x: hidden;
 }
 
+.timer-btn {
+    position: relative;
+}
+
+.timer-btn-help {
+    position: absolute;
+    top: 2px;
+    right: 6px;
+    font-size: 90%;
+    font-weight: bold;
+    display: none;
+}
+.timer-btn:hover .timer-btn-help {
+  display: inherit;
+}
+
 .timer-btn label {
-  font-size: 12px;
+  font-size: 10px;
   /* color: #333; */
+  margin-right: 4px;
+  /* width: 4em; */
+  display: inline-block;
+  background: rgba(0,0,0,.1);
+  border-radius: 3px;
+  /* color: #ddd; */
+  font-weight: bold;
+  padding: 0 3px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(0,0,0,.2);
 }
 
 .timer-btn-task {
   display: inline-block;
   width: 70%;
-  border-color: #0d0;
-  background: #efe;
+  border-color: #B5B5B5;
+  background: #ddd;
+  color: #666;
 }
-.working .timer-btn-task:hover {
-  background: #00FD00;
-}
-.working .timer-btn-task {
-  background: #A0FFA0;
-  color: #090;
-}
-.paused .timer-btn-task {
-  border-color: #990;
-  background: #ffc;
-  color: #990;
-}
-
-.paused .timer-btn-task:hover {
-    background: #ffa;
+.timer-btn-task:hover {
+  background: #9f9;
 }
 
 .timer-btn-stop, .timer-btn-pause {
   float: right;
+  font-weight: bold;
+  text-align: center;
 }
 
 .timer-btn-stop {
-  border-color: hsl(11, 100%, 26%);
-  color: hsl(11, 100%, 26%);
-  font-weight: bold;
-  background: hsl(11, 100%, 80%);
-  text-align: center;
+  border-color: hsl(4, 43%, 72%);
+  color: hsl(4, 49%, 59%);
+  background: hsl(5, 100%, 88%);
 }
 .timer-btn-stop:hover {
-  background: hsl(11, 97%, 68%);
+  background: hsl(5, 100%, 82%);
   /* color: hsl(0, 100%, 100%); */
 }
 .stopped .timer-btn-stop {
-  background: hsl(11, 84%, 95%);
-  color: hsl(0, 34%, 66%);
+  background: hsl(5, 84%, 95%);
+  color: hsl(5, 34%, 66%);
+  border-color: hsl(5, 34%, 66%);
   cursor: inherit;
-}
-
-.timer-btn-pause {
-  border-color: #990;
-}
-.timer-btn-pause:hover {
-  background: #ffe;
-}
-.paused .timer-btn-pause {
-  background: #ffc;
 }
 
 .tasks {
@@ -127,11 +133,11 @@ body {
 }
 
 .task-item:hover .label {
-    background: #eee;
+    background: rgba(0,0,0,.1);
 }
 
-.task-item.selected .label {
-    background: #f0f0f0;
+.task-item.selected {
+    background: #ddd;
 }
 
 .compact .task-item {
@@ -206,37 +212,6 @@ body {
 .time-remaining {
     font-size: 24px;
 }
-
-.working {
-    background-image: linear-gradient(to top, #fff, #dfd);
-    color: #060;
-}
-.paused {
-    background-image: linear-gradient(to top, #fff, #ffd);
-    color: #660;
-}
-
-.working .task-item.selected .label {
-    background: #dfd;
-    color: #060;
-}
-.paused .task-item.selected .label {
-    background: #ffd;
-    color: #660;
-}
-.working .selected .btn-start {
-    color: #0a0;
-    text-shadow: 0 1px 0 #afa;
-}
-.paused .selected .btn-start {
-    color: #aa0;
-    text-shadow: 0 1px 0 #ffa;
-}
-.working .time-remaining {
-    /* color: #008E23; */
-}
-
-
 
 
 .popup {
@@ -318,3 +293,69 @@ body {
   animation-timing-function: ease;
   animation-duration: 5s;
 }			
+
+
+.if-stopped, .if-paused, .if-working {
+    display: none;
+}
+
+.stopped .if-stopped {
+    display: initial;
+}
+
+.paused .if-paused {
+    display: initial;
+}
+
+.working .if-working {
+    display: initial;
+}
+
+.working {
+    background-image: linear-gradient(to top, #fff, #dfd);
+    color: #060;
+}
+.working .task-item.selected .label {
+    background: #9f9;
+    color: #060;
+}
+
+.working .selected .btn-start {
+    color: #0a0;
+    text-shadow: 0 1px 0 #afa;
+}
+.working .time-remaining {
+    /* color: #008E23; */
+}
+.working .timer-btn-task {
+  background: #9f9;
+  color: #060;
+  border-color: #0d0;
+}
+.working .timer-btn-task:hover {
+  background: #6f6;
+}
+
+
+.paused {
+    background-image: linear-gradient(to top, #fff, #ffd);
+    color: #660;
+}
+
+.paused .task-item.selected .label {
+    background: #ffc;
+    color: #660;
+}
+.paused .selected .btn-start {
+    color: #990;
+    text-shadow: 0 1px 0 #ffa;
+}
+
+.paused .timer-btn-task {
+  border-color: #dd9;
+  background: #ffc;
+  color: #aa0;
+}
+.paused .timer-btn-task:hover {
+    background: #ff9;
+}
