@@ -19,6 +19,7 @@ export default class App extends Component {
       compactView: false,
       workTime: 60,
       breakTime: 60,
+      alertTime: 60,
 
       projects: [],
       tasks: [],
@@ -34,7 +35,11 @@ export default class App extends Component {
       log: [],
       showLog: false,
       messages: [],
-      showMessages: false
+      showMessages: false,
+      
+      alertMessage: "",
+      showAlert: false,
+      afterWaiting: null
     };
   }
   addMessage(message) {
@@ -132,9 +137,10 @@ export default class App extends Component {
       this.state.currently,
       {
        'compact': this.state.compactView,
-       'show-backdrop': (this.state.showLog || this.state.showMessages),
+       'show-backdrop': (this.state.showLog || this.state.showMessages || this.state.showAlert),
        'show-log': this.state.showLog,
-       'show-messages': this.state.showMessages
+       'show-messages': this.state.showMessages,
+       'show-alert': this.state.showAlert
       });
     const currentTask = this.state.taskLabel;
     const compactButtonClassName = classNames(
@@ -154,6 +160,7 @@ export default class App extends Component {
           </div>
           <div className="popup messages"><ul><li className="header">Messages</li>{messageRows}</ul></div>
           <div className="popup log"><ul><li className="header">History</li>{logRows}</ul></div>
+          <div className="popup alert"><ul><li className="header">Alert</li><li>{this.state.alertMessage}</li></ul></div>
         </div>
         <div className="timer-btn timer-btn-task" onClick={actions.pause}>
           <div className="time-remaining"><span>{timeRemaining}</span></div>
@@ -200,7 +207,31 @@ export default class App extends Component {
   dismissPopups() {
     this.setState({
       showLog: false,
-      showMessages: false
+      showMessages: false,
+      showAlert: false
+    });
+    if (this.state.afterWaiting) {
+      this.afterWaiting(this.state.afterWaiting);
+    }
+  }
+  afterWaiting(next) {
+    const timerPeriod = (next == "working") ? this.state.workTime : (
+      (next == "paused") ? this.state.breakTime : 0);
+    this.setState({
+      currently: next,
+      afterWaiting: null,
+      timeRemaining: timerPeriod || 0
+    });
+    if (timerPeriod) {
+      this.startTimer();
+    }
+  }
+  waitForUser(message, next) {
+    this.setState({
+      showAlert: true,
+      alertMessage: message,
+      timeRemaining: this.state.alertTime,
+      afterWaiting: next
     });
   }
   /* Timer */
@@ -242,13 +273,14 @@ export default class App extends Component {
     }
   }
   timeUp() {
+    this.stopTimer();
     switch (this.state.currently) {
       case "working":
-        this.pause();
+        this.waitForUser("Time for a break!", "paused");
         break;
       case "paused":
-        this.log("Timed out in pause");
-        this.stop();
+        this.waitForUser("Ready to go!", "working");
+        break;
     }
   }
   startTimer() {
