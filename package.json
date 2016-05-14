@@ -33,6 +33,6 @@
     "react-dom": "^0.14.6",
     "flux-reactions": "0.0.2",
     "classnames": "2.2.5",
-    "configstore",
+    "configstore": "*"
   }
 }
