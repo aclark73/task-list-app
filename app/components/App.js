@@ -41,6 +41,20 @@ export default class App extends Component {
       showAlert: false,
       afterWaiting: null
     };
+    this.actions = {
+      start: this.start.bind(this),
+      stop: this.stop.bind(this),
+      pause: this.pause.bind(this),
+      setTask: this.setTask.bind(this),
+      refresh: this.refresh.bind(this),
+      toggleCompactView: this.toggleCompactView.bind(this),
+      showLog: this.showLog.bind(this),
+      showMessages: this.showMessages.bind(this),
+      dismissPopups: this.dismissPopups.bind(this)
+    };
+  }
+  componentWillMount() {
+    this.refresh();
   }
   addMessage(message) {
     this.setState({
@@ -98,24 +112,13 @@ export default class App extends Component {
     return foundTask;
   }
   render() {
-    const actions = {
-      start: this.start.bind(this),
-      stop: this.stop.bind(this),
-      pause: this.pause.bind(this),
-      setTask: this.setTask.bind(this),
-      refresh: this.refresh.bind(this),
-      toggleCompactView: this.toggleCompactView.bind(this),
-      showLog: this.showLog.bind(this),
-      showMessages: this.showMessages.bind(this),
-      dismissPopups: this.dismissPopups.bind(this)
-    };
+    // All the available callbacks from the UI
+    const actions = this.actions;
+    // Context provided to children (eg. task widgets)
     const context = {
       selectedTaskId: this.state.taskId,
       currently: this.state.currently,
-      actions: {
-        setTask: actions.setTask,
-        start: actions.start
-      }
+      actions: actions
     };
 
     const rows = [];
@@ -136,6 +139,7 @@ export default class App extends Component {
       'main',
       this.state.currently,
       {
+       'has-task': this.state.taskId,
        'compact': this.state.compactView,
        'show-backdrop': (this.state.showLog || this.state.showMessages || this.state.showAlert),
        'show-log': this.state.showLog,
@@ -145,10 +149,8 @@ export default class App extends Component {
     const currentTask = this.state.taskLabel;
     const compactButtonClassName = classNames(
       'fa',
-      {
-        'fa-toggle-down': !this.state.compactView,
-        'fa-toggle-up': this.state.compactView
-      });
+      (this.state.compactView ? 'fa-toggle-up' : 'fa-toggle-down')
+      );
     return(
       <div className={className}>
         <div>
@@ -164,8 +166,8 @@ export default class App extends Component {
         </div>
         <div className="timer-btn timer-btn-task" onClick={actions.pause}>
           <div className="time-remaining"><span>{timeRemaining}</span></div>
-          <div className="current-task"><label>Task:</label><span>{currentTask}</span></div>
-          <div className="time-elapsed"><label>Elapsed:</label><span>{timeElapsed}</span></div>
+          <div className="current-task"><label>Task</label><span>{currentTask}</span></div>
+          <div className="time-elapsed"><label>Elapsed</label><span>{timeElapsed}</span></div>
         </div>
         <div className="timer-btn timer-btn-stop" onClick={actions.stop}>
           Stop

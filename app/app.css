@@ -67,7 +67,7 @@ body {
   background: #ddd;
   color: #666;
 }
-.timer-btn-task:hover {
+.has-task .timer-btn-task:hover {
   background: #9f9;
 }
 
@@ -136,7 +136,7 @@ body {
     background: rgba(0,0,0,.1);
 }
 
-.task-item.selected {
+.task-item.selected .label {
     background: #ddd;
 }
 
@@ -146,6 +146,7 @@ body {
 
 .tasks ul ul {
     display: none;
+    padding-left: 19px;
 }
 
 .tasks .toggled + ul {
@@ -193,20 +194,27 @@ body {
 }
 
 .task-item .label {
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
+    border-radius: 4px;
 }
 
 .task-item .btn-toggle {
-    right: 0;
+    left: 0;
 }
 
 .task-item .btn-start {
     left: 0;
 }
 
+.task-item.project .btn-start {
+    left: 19px;
+}
+
 .task-item .label {
   margin-left: 19px;
+}
+
+.task-item.project .label {
+    margin-left: 38px;
 }
 
 .time-remaining {
@@ -267,6 +275,14 @@ body {
   display: block;
 }
 
+.alert li + li {
+  padding: 20%;
+  font-size: 24px;
+  text-align: center;
+  background: #cdf;
+  color: #f63;
+}
+
 .backdrop {
   display: none;
   position: absolute;
@@ -283,8 +299,8 @@ body {
 
 @keyframes blinker {  
   from { opacity: 1.0; }
-  20% { opacity: 0.0; }
-  40% { opacity: 1.0; }
+  80% { opacity: 1.0; }
+  90% { opacity: 0.0; }
   to { opacity: 1.0; }
 }
 .show-alert .alert {
