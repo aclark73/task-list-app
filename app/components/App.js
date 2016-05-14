@@ -3,6 +3,9 @@ import RedmineTaskParser from './redmine';
 import Task from './task';
 import { TaskWidget, ProjectWidget } from './widgets';
 import classNames from 'classnames';
+import Configstore from 'configstore';
+// import pkg from '../../package.json';
+const pkg = {name: 'task-list-app'};
 
 const ROWS = [
   {label: "Item 1"},
@@ -47,23 +50,35 @@ export default class App extends Component {
       pause: this.pause.bind(this),
       setTask: this.setTask.bind(this),
       refresh: this.refresh.bind(this),
+      save: this.save.bind(this),
       toggleCompactView: this.toggleCompactView.bind(this),
       showLog: this.showLog.bind(this),
       showMessages: this.showMessages.bind(this),
       dismissPopups: this.dismissPopups.bind(this)
     };
+    this.conf = new Configstore(pkg.name);
   }
   componentWillMount() {
-    this.refresh();
+    this.load().then(this.refresh.bind(this));
   }
   addMessage(message) {
     this.setState({
       messages: this.state.messages.concat(['' + message])
     });
   }
+  save() {
+    console.log("Saving");
+    this.conf.set('log', this.state.log);
+  }
+  load() {
+    const s = {};
+    s['log'] = this.conf.get('log') || this.state.log;
+    this.setState(s);
+    return Promise.resolve();
+  }
   loadRedmine() {
     const parser = new RedmineTaskParser();
-    parser.load().then( (data) => {
+    return parser.load().then( (data) => {
       this.setState({projects: data.projects, tasks: data.tasks});
     }, (err) => {
       this.addMessage(err);
@@ -72,7 +87,7 @@ export default class App extends Component {
   refresh() {
     this.addMessage("Loading Redmine");
     console.log("refresh");
-    this.loadRedmine();
+    return this.loadRedmine();
   }
   handleRowClick(row) {
     console.log("Clicked on row: " + row);
@@ -159,6 +174,7 @@ export default class App extends Component {
             <span className="btn" onClick={actions.toggleCompactView}><i className={compactButtonClassName}></i></span>
             <span className="btn" onClick={actions.showMessages}><i className="fa fa-exclamation-triangle"></i></span>
             <span className="btn" onClick={actions.showLog}><i className="fa fa-history"></i></span>
+            <span className="btn" onClick={actions.save}><i className="fa fa-history"></i></span>
           </div>
           <div className="popup messages"><ul><li className="header">Messages</li>{messageRows}</ul></div>
           <div className="popup log"><ul><li className="header">History</li>{logRows}</ul></div>
@@ -217,12 +233,14 @@ export default class App extends Component {
     }
   }
   afterWaiting(next) {
-    const timerPeriod = (next == "working") ? this.state.workTime : (
-      (next == "paused") ? this.state.breakTime : 0);
+    const timerPeriod =
+      (next == "working") ? this.state.workTime : (
+      (next == "paused") ? this.state.breakTime :
+      0);
     this.setState({
       currently: next,
       afterWaiting: null,
-      timeRemaining: timerPeriod || 0
+      timeRemaining: timerPeriod
     });
     if (timerPeriod) {
       this.startTimer();
