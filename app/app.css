@@ -199,8 +199,10 @@ body {
 
 .task-item .updated_on {
     float: right;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1;
+    padding: 0 2px;
+    /* font-family: monospace; */
 }
 
 .task-item .btn-toggle {
@@ -221,6 +223,8 @@ body {
 
 .task-item.project .label {
     margin-left: 38px;
+    /* background: #f6f6f6; */
+    font-weight: bold;
 }
 
 .time-remaining {
