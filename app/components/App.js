@@ -19,7 +19,6 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      compactView: false,
       workTime: 60,
       breakTime: 60,
       alertTime: 60,
@@ -27,6 +26,9 @@ export default class App extends Component {
       projects: [],
       tasks: [],
 
+      view: 'projects',
+      compactView: false,
+      
       taskId: null,
       taskLabel: '-',
       startTime: null,
@@ -51,6 +53,7 @@ export default class App extends Component {
       setTask: this.setTask.bind(this),
       refresh: this.refresh.bind(this),
       save: this.save.bind(this),
+      toggleView: this.toggleView.bind(this),
       toggleCompactView: this.toggleCompactView.bind(this),
       showLog: this.showLog.bind(this),
       showMessages: this.showMessages.bind(this),
@@ -137,12 +140,18 @@ export default class App extends Component {
     };
 
     const rows = [];
-    this.state.projects.forEach( (project) => {
-      rows.push(<ProjectWidget key={Task.getUID(project)} task={project} context={context} />);
-    });
+    if (this.state.view == 'projects') {
+      this.state.projects.forEach( (project) => {
+        rows.push(<ProjectWidget key={Task.getUID(project)} task={project} context={context} />);
+      });
+    } else {
+      this.state.tasks.forEach( (task) => {
+        rows.push(<TaskWidget key={Task.getUID(task)} task={task} context={context} />);
+      });
+    }
     const logRows = []
     this.state.log.forEach( (logEntry, i) => {
-      logRows.push(<li key={i}>{logEntry.task} (logEntry.timeElapsed</li>);
+      logRows.push(<li key={i}>{logEntry.task} ({this.formatTime(logEntry.timeElapsed)})</li>);
     });
     const messageRows = []
     this.state.messages.forEach( (message, i) => {
@@ -174,7 +183,7 @@ export default class App extends Component {
             <span className="btn" onClick={actions.toggleCompactView}><i className={compactButtonClassName}></i></span>
             <span className="btn" onClick={actions.showMessages}><i className="fa fa-exclamation-triangle"></i></span>
             <span className="btn" onClick={actions.showLog}><i className="fa fa-history"></i></span>
-            <span className="btn" onClick={actions.save}><i className="fa fa-history"></i></span>
+            <span className="btn" onClick={actions.toggleView}><i className="fa fa-question"></i></span>
           </div>
         </div>
         <div className="timer-btn timer-btn-task" onClick={actions.pause}>
@@ -208,6 +217,11 @@ export default class App extends Component {
         timeRemaining: 0
       });
     }
+  }
+  toggleView() {
+    this.setState({
+      view: (this.state.view == 'projects' ? 'tasks' : 'projects')
+    });
   }
   toggleCompactView() {
     this.setState({
@@ -337,7 +351,7 @@ export default class App extends Component {
       return;
     }
     if (this.state.startTime) {
-      this.log(this.state);
+      this.log();
     }
     this.stopTimer();
     this.setState({
@@ -348,18 +362,20 @@ export default class App extends Component {
       timer: null
     });
   }
-  log(state) {
-    const startTime = this.state.startTime ? this.state.startTime.toISOString() : "?";
+  log() {
+    const logEntry = {
+      task: this.state.taskId,
+      startTime: this.state.startTime,
+      endTime: (new Date()).toISOString(),
+      timeElapsed: this.state.timeElapsed
+    }
     this.setState({
-      log: this.state.log.concat([{
-        task: this.state.taskId,
-        startTime: this.state.startTime,
-        timeElapsed: this.state.timeElapsed
-      }])
+      log: this.state.log.concat([logEntry])
     }, (err) => {
       if (!err) { this.save(); }
     });
-    console.log(`LOG: task: ${state.taskId} startTime: ${startTime} timeElapsed: ${state.timeElapsed}`);
+    const logEntryStr = JSON.stringify(logEntry);
+    console.log(`LOG: task: ${logEntryStr}`);
   }
 
 }

@@ -68,7 +68,6 @@ export default class RedmineTaskParser {
             if (! project) {
                 project = this.createProject(projectName);
                 projects.push(project);
-                tasks.push(project);
                 projectsByName[projectName] = project;
             }
             project.tasks.push(task);

@@ -31,12 +31,14 @@ export class TaskWidget extends Component {
       );
     }
 
+    const updated_on = (this.props.task.updated_on || "").split('T',2);
     return (
       <li>
         <div className={className}>
           {toggleWidget}
           <span className="btn btn-start" onClick={start}><i className="fa fa-clock-o"></i></span>
           <div className="label" onClick={select} onDoubleClick={start}>
+            <div className="updated_on">{updated_on[0]}<br/>{updated_on[1]}</div>
             {Task.getLabel(this.props.task)}&nbsp;
           </div>
         </div>
