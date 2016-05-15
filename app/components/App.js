@@ -67,7 +67,7 @@ export default class App extends Component {
     });
   }
   save() {
-    console.log("Saving");
+    console.log("Saving to conf");
     this.conf.set('log', this.state.log);
   }
   load() {
@@ -142,6 +142,7 @@ export default class App extends Component {
     });
     const logRows = []
     this.state.log.forEach( (logEntry, i) => {
+      logEntry = "" + logEntry;
       logRows.push(<li key={i}>{logEntry}</li>);
     });
     const messageRows = []
@@ -349,7 +350,13 @@ export default class App extends Component {
   log(state) {
     const startTime = this.state.startTime ? this.state.startTime.toISOString() : "?";
     this.setState({
-      log: this.state.log.concat([`task: ${state.taskId} startTime: ${startTime} timeElapsed: ${state.timeElapsed}`])
+      log: this.state.log.concat([{
+        task: this.state.taskId,
+        startTime: this.state.startTime,
+        timeElapsed: this.state.timeElapsed
+      }])
+    }, (err) => {
+      if (!err) { this.save(); }
     });
     console.log(`LOG: task: ${state.taskId} startTime: ${startTime} timeElapsed: ${state.timeElapsed}`);
   }
