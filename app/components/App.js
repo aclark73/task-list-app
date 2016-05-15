@@ -142,8 +142,7 @@ export default class App extends Component {
     });
     const logRows = []
     this.state.log.forEach( (logEntry, i) => {
-      logEntry = "" + logEntry;
-      logRows.push(<li key={i}>{logEntry}</li>);
+      logRows.push(<li key={i}>{logEntry.task} (logEntry.timeElapsed</li>);
     });
     const messageRows = []
     this.state.messages.forEach( (message, i) => {
@@ -157,7 +156,7 @@ export default class App extends Component {
       {
        'has-task': this.state.taskId,
        'compact': this.state.compactView,
-       'show-backdrop': (this.state.showLog || this.state.showMessages || this.state.showAlert),
+       'show-popup': (this.state.showLog || this.state.showMessages || this.state.showAlert),
        'show-log': this.state.showLog,
        'show-messages': this.state.showMessages,
        'show-alert': this.state.showAlert
@@ -177,9 +176,6 @@ export default class App extends Component {
             <span className="btn" onClick={actions.showLog}><i className="fa fa-history"></i></span>
             <span className="btn" onClick={actions.save}><i className="fa fa-history"></i></span>
           </div>
-          <div className="popup messages"><ul><li className="header">Messages</li>{messageRows}</ul></div>
-          <div className="popup log"><ul><li className="header">History</li>{logRows}</ul></div>
-          <div className="popup alert"><ul><li className="header">Alert</li><li>{this.state.alertMessage}</li></ul></div>
         </div>
         <div className="timer-btn timer-btn-task" onClick={actions.pause}>
           <div className="time-remaining"><span>{timeRemaining}</span></div>
@@ -190,7 +186,12 @@ export default class App extends Component {
           Stop
         </div>
         <div className="tasks"><ul>{rows}</ul></div>
-        <div className="backdrop" onClick={actions.dismissPopups}></div>
+
+        <div className="popup messages"><ul><li className="header">Messages</li>{messageRows}</ul></div>
+        <div className="popup log"><ul><li className="header">History</li>{logRows}</ul></div>
+        <div className="popup alert"><ul><li className="header">Alert</li><li>{this.state.alertMessage}</li></ul></div>
+        <div className="popup-backdrop"></div>
+        <div className="popup-click" onClick={actions.dismissPopups}></div>
       </div>
     );
   }
