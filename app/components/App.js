@@ -19,7 +19,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      workTime: 60,
+      workTime: 30*60,
       breakTime: 60,
       alertTime: 60,
 
@@ -288,7 +288,7 @@ export default class App extends Component {
     if (!task || !Task.getUID(task)) { return; }
     this.setState({
       currently: "working",
-      startTime: new Date(),
+      startTime: this.state.startTime || new Date(),
       timeRemaining: this.state.workTime
     });
     this.startTimer();
