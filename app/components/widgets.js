@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Task from './task';
+import humanize from 'humanize';
 
 export class TaskWidget extends Component {
   select() {
@@ -31,14 +32,20 @@ export class TaskWidget extends Component {
       );
     }
 
-    const updated_on = (this.props.task.updated_on || "").split('T',2);
+    const updated_on = ((updated_on) => {
+      if (updated_on) {
+        var d = new Date(updated_on);
+        return humanize.relativeTime(d.getTime() / 1000);
+      }
+      return "";
+    })(this.props.task.updated_on);
     return (
       <li>
         <div className={className}>
           {toggleWidget}
           <span className="btn btn-start" onClick={start}><i className="fa fa-clock-o"></i></span>
           <div className="label" onClick={select} onDoubleClick={start}>
-            <div className="updated_on">{updated_on[0]}<br/>{updated_on[1]}</div>
+            <div className="updated_on">{updated_on}</div>
             {Task.getLabel(this.props.task)}&nbsp;
           </div>
         </div>
