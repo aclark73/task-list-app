@@ -39,3 +39,33 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+/*
+const Tray = electron.Tray
+const Menu = electron.Menu
+
+let appIcon = null;
+app.on('ready', () => {
+  appIcon = new Tray('/tmp/icon.png');
+  const contextMenu = Menu.buildFromTemplate([
+    {label: 'Item1', type: 'radio'},
+    {label: 'Item2', type: 'radio'},
+    {label: 'Item3', type: 'radio', checked: true},
+    {label: 'Item4', type: 'radio'}
+  ]);
+  appIcon.setToolTip('This is my application.');
+  appIcon.setContextMenu(contextMenu);
+});
+*/
+
+const Menu = electron.Menu;
+
+const dockMenu = Menu.buildFromTemplate([
+  { label: 'New Window', click() { console.log('New Window'); } },
+  { label: 'New Window with Settings', submenu: [
+    { label: 'Basic' },
+    { label: 'Pro'}
+  ]},
+  { label: 'New Command...'}
+]);
+app.dock.setMenu(dockMenu);
