@@ -44,25 +44,26 @@ body {
   display: inherit;
 }
 
-.timer-btn label {
-  font-size: 10px;
+.timer-btn label, .updated_on {
+  font-size: 75%;
   /* color: #333; */
   margin-right: 4px;
   /* width: 4em; */
   display: inline-block;
-  background: rgba(0,0,0,.1);
+  background: rgba(0,0,0,.05);
   border-radius: 3px;
   /* color: #ddd; */
   font-weight: bold;
-  padding: 0 3px;
+  padding: 1px 3px;
   border-width: 1px;
   border-style: solid;
   border-color: rgba(0,0,0,.2);
+  line-height: 1em;
 }
 
 .timer-btn-task {
-  display: inline-block;
-  width: 70%;
+  display: block;
+  margin-right: 100px;
   border-color: #B5B5B5;
   background: #ddd;
   color: #666;
@@ -75,6 +76,7 @@ body {
   float: right;
   font-weight: bold;
   text-align: center;
+  width: 75px;
 }
 
 .timer-btn-stop {
@@ -199,10 +201,11 @@ body {
 
 .task-item .updated_on {
     float: right;
-    font-size: 12px;
-    line-height: 1;
-    padding: 0 2px;
+    font-size: 64%;
+    /* line-height: 1; */
+    /* padding: 0 2px; */
     /* font-family: monospace; */
+    font-weight: normal;
 }
 
 .task-item .btn-toggle {

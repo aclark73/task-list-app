@@ -32,12 +32,14 @@ export class TaskWidget extends Component {
       );
     }
 
-    const updated_on = ((updated_on) => {
+    const updated_on_div = ((updated_on) => {
       if (updated_on) {
         var d = new Date(updated_on);
-        return humanize.relativeTime(d.getTime() / 1000);
+        d = humanize.relativeTime(d.getTime() / 1000);
+        return (<div className="updated_on">{d}</div>);
+      } else {
+        return "";
       }
-      return "";
     })(this.props.task.updated_on);
     return (
       <li>
@@ -45,7 +47,7 @@ export class TaskWidget extends Component {
           {toggleWidget}
           <span className="btn btn-start" onClick={start}><i className="fa fa-clock-o"></i></span>
           <div className="label" onClick={select} onDoubleClick={start}>
-            <div className="updated_on">{updated_on}</div>
+            {updated_on_div}
             {Task.getLabel(this.props.task)}&nbsp;
           </div>
         </div>

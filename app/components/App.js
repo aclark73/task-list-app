@@ -7,14 +7,6 @@ import Configstore from 'configstore';
 // import pkg from '../../package.json';
 const pkg = {name: 'task-list-app'};
 
-const ROWS = [
-  {label: "Item 1"},
-  {label: "Item 2"},
-  {label: "Item 3"},
-  {label: "Item 4"},
-  {label: "Item 5"}
-];
-
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -22,6 +14,7 @@ export default class App extends Component {
       workTime: 30*60,
       breakTime: 60,
       alertTime: 60,
+      idleTime: 6,
 
       projects: [],
       tasks: [],
@@ -34,6 +27,7 @@ export default class App extends Component {
       startTime: null,
       timeElapsed: 0,
       timeRemaining: 0,
+      timeIdle: 0,
       currently: 'stopped',
       timer: null,
 
@@ -47,6 +41,7 @@ export default class App extends Component {
       afterWaiting: null
     };
     this.actions = {
+      click: this.click.bind(this),
       start: this.start.bind(this),
       stop: this.stop.bind(this),
       pause: this.pause.bind(this),
@@ -62,11 +57,16 @@ export default class App extends Component {
     this.conf = new Configstore(pkg.name);
   }
   componentWillMount() {
-    this.load().then(this.refresh.bind(this));
+    this.load().then(this.refresh.bind(this)).then(this.stop.bind(this));
   }
   addMessage(message) {
     this.setState({
       messages: this.state.messages.concat(['' + message])
+    });
+  }
+  click() {
+    this.setState({
+      timeIdle: 0
     });
   }
   save() {
@@ -159,9 +159,14 @@ export default class App extends Component {
     });
     const timeElapsed = this.formatTime(this.state.timeElapsed);
     const timeRemaining = this.formatTime(this.state.timeRemaining);
+    var idleLevel = '';
+    if (this.state.timeIdle > 5) { idleLevel = 'idle-1'; }
+    if (this.state.timeIdle > 10) { idleLevel = 'idle-2'; }
+    
     const className = classNames(
       'main',
       this.state.currently,
+      idleLevel,
       {
        'has-task': this.state.taskId,
        'compact': this.state.compactView,
@@ -176,7 +181,7 @@ export default class App extends Component {
       (this.state.compactView ? 'fa-toggle-up' : 'fa-toggle-down')
       );
     return(
-      <div className={className}>
+      <div className={className} onClick={actions.click}>
         <div>
           <div className="btns">
             <span className="btn" onClick={actions.refresh}><i className="fa fa-refresh"></i></span>
@@ -186,13 +191,14 @@ export default class App extends Component {
             <span className="btn" onClick={actions.toggleView}><i className="fa fa-question"></i></span>
           </div>
         </div>
+        <div className="timer-btn timer-btn-stop" onClick={actions.stop}>
+          Stop
+        </div>
         <div className="timer-btn timer-btn-task" onClick={actions.pause}>
           <div className="time-remaining"><span>{timeRemaining}</span></div>
           <div className="current-task"><label>Task</label><span>{currentTask}</span></div>
           <div className="time-elapsed"><label>Elapsed</label><span>{timeElapsed}</span></div>
-        </div>
-        <div className="timer-btn timer-btn-stop" onClick={actions.stop}>
-          Stop
+          {/* <div className="time-idle"><label>Idle</label><span>{this.formatTime(this.state.timeIdle)}</span></div> */}
         </div>
         <div className="tasks"><ul>{rows}</ul></div>
 
@@ -249,15 +255,17 @@ export default class App extends Component {
     }
   }
   afterWaiting(next) {
-    const timerPeriod =
-      (next == "working") ? this.state.workTime : (
-      (next == "paused") ? this.state.breakTime :
-      0);
+    const timerPeriod = ({
+      working: this.state.workTime,
+      paused: this.state.breakTime,
+      stopped: 0
+    })[next];
     this.setState({
       currently: next,
       afterWaiting: null,
       timeRemaining: timerPeriod
     });
+    this.stopTimer();
     if (timerPeriod) {
       this.startTimer();
     }
@@ -266,7 +274,6 @@ export default class App extends Component {
     this.setState({
       showAlert: true,
       alertMessage: message,
-      timeRemaining: this.state.alertTime,
       afterWaiting: next
     });
   }
@@ -294,28 +301,31 @@ export default class App extends Component {
     this.startTimer();
   }
   tick() {
-    if (this.state.timer) {
-      if (this.state.currently == "working") {
-        this.setState({
-          timeElapsed: this.state.timeElapsed + 1,
-        });
-      }
-      this.setState({
-        timeRemaining: this.state.timeRemaining - 1
-      });
-      if (this.state.timeRemaining <= 0) {
-        this.timeUp();
-      }
+    const state = {};
+    if (this.state.currently == "working") {
+      state.timeElapsed = this.state.timeElapsed + 1;
+    }
+    if (this.state.timeRemaining > 0) {
+      state.timeRemaining = this.state.timeRemaining - 1;
+    }
+    if (this.state.currently == "stopped" || this.state.showAlert) {
+      state.timeIdle = this.state.timeIdle + 1;
+    }
+    this.setState(state);
+    if (state.timeRemaining === 0) {
+      this.timeUp();
     }
   }
   timeUp() {
-    this.stopTimer();
     switch (this.state.currently) {
       case "working":
         this.waitForUser("Time for a break!", "paused");
         break;
       case "paused":
         this.waitForUser("Ready to go!", "working");
+        break;
+      case "stopped":
+        this.waitForUser("Hello!", "stopped");
         break;
     }
   }
@@ -329,10 +339,10 @@ export default class App extends Component {
   stopTimer() {
     if (this.state.timer) {
       window.clearInterval(this.state.timer);
+      this.setState({
+        timer: null
+      });
     }
-    this.setState({
-      timer: null
-    });
   }
   pause() {
     if (! this.state.taskId) { return; }
@@ -347,20 +357,16 @@ export default class App extends Component {
     }
   }
   stop() {
-    if (this.state.currently == "stopped") {
-      return;
-    }
     if (this.state.startTime) {
       this.log();
     }
-    this.stopTimer();
     this.setState({
       currently: "stopped",
       timeRemaining: 0,
       timeElapsed: 0,
       startTime: null,
-      timer: null
     });
+    this.startTimer();
   }
   log() {
     const logEntry = {
