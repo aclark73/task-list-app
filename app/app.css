@@ -315,19 +315,35 @@ body {
   display: block;
 }
 
+@keyframes bouncer {  
+  from { top: 10%; }
+  50% { top: 10%; }
+  95% { top: 50%; }
+  to { top: 10%; }
+}
 @keyframes blinker {  
   from { opacity: 1.0; }
   90% { opacity: 1.0; }
   95% { opacity: 0.0; }
   to { opacity: 1.0; }
 }
+@keyframes flasher {  
+  from { background: #fff; }
+  50% { background: #ff0; }
+  to { background: #fff; }
+}
 .show-alert .alert {
-  animation-name: blinker;
+  animation-name: bouncer;
   animation-iteration-count: infinite;
-  animation-timing-function: ease;
+  animation-timing-function: ease-in;
   animation-duration: 15s;
 }			
-
+.show-alert .alert li + li {
+  animation-name: flasher;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease;
+  animation-duration: 1s;
+}
 
 .if-stopped, .if-paused, .if-working {
     display: none;
