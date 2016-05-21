@@ -8,11 +8,10 @@ const ISSUES_URL = BASE_URL + '/issues.json?key=example&assigned_to_id=me&sort=u
 
 const DEBUG = (os.hostname().indexOf('honu') < 0);
 
-export default class RedmineTaskParser {
+export default class RedmineClient {
 
     constructor() {
         this.source = 'redmine';
-        this.promises = {};
     }
 
     createProject(name) {
@@ -105,4 +104,42 @@ export default class RedmineTaskParser {
             return this.parse(json);
         }.bind(this));
     }
+
+  getIssueId(taskId) {
+    const parts = taskId.split('.');
+    if (parts.length == 3) {
+      return parts[2];
+    } else {
+      return "";
+    }
+  }
+  upload(logs) {
+    const timePerIssuePerDay = {};
+    logs.forEach((log) => {
+      const issue_id = this.getIssueId(log.task);
+      const day = log.startTime.split('T')[0];
+      if (!timePerIssuePerDay[issue_id]) {
+        timePerIssuePerDay[issue_id] = {};
+      }
+      if (!timePerIssuePerDay[issue_id][day]) {
+        timePerIssuePerDay[issue_id][day] = 0;
+      }
+      timePerIssuePerDay[issue_id][day] += log.timeElapsed;
+    });
+    console.log(timePerIssuePerDay);
+    for (let issue_id in timePerIssuePerDay) {
+      for (let day in timePerIssuePerDay[issue_id]) {
+        const hours = timePerIssuePerDay[issue_id][day] / 3600;
+        const rest_dict = {
+          'time_entry': {
+            'issue_id': parseInt(issue_id),
+            'spent_on': day,
+            'hours': hours
+          }
+        };
+        console.log(rest_dict);
+        
+      }
+    }
+  }
 }

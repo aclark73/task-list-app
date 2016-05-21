@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import RedmineTaskParser from './redmine';
+import RedmineClient from './redmine';
 import Task from './task';
 import { TaskWidget, ProjectWidget } from './widgets';
 import classNames from 'classnames';
@@ -77,6 +77,8 @@ export default class App extends Component {
   save() {
     console.log("Saving to conf");
     this.conf.set('log', this.state.log);
+    const redmine = new RedmineClient();
+    redmine.upload(this.state.log);
   }
   load() {
     const s = {};
@@ -85,8 +87,8 @@ export default class App extends Component {
     return Promise.resolve();
   }
   loadRedmine() {
-    const parser = new RedmineTaskParser();
-    return parser.load().then( (data) => {
+    const redmine = new RedmineClient();
+    return redmine.load().then( (data) => {
       this.setState({projects: data.projects, tasks: data.tasks});
     }, (err) => {
       this.addMessage(err);
@@ -377,8 +379,8 @@ export default class App extends Component {
   log() {
     const logEntry = {
       task: this.state.taskId,
-      startTime: this.state.startTime,
-      endTime: this.state.lastWorkTime,
+      startTime: this.state.startTime.toISOString(),
+      endTime: this.state.lastWorkTime.toISOString(),
       timeElapsed: this.state.timeElapsed
     }
     this.setState({
