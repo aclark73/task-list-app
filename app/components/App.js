@@ -25,6 +25,7 @@ export default class App extends Component {
       taskId: null,
       taskLabel: '-',
       startTime: null,
+      lastWorkTime: null,
       timeElapsed: 0,
       timeRemaining: 0,
       timeIdle: 0,
@@ -58,6 +59,10 @@ export default class App extends Component {
   }
   componentWillMount() {
     this.load().then(this.refresh.bind(this)).then(this.stop.bind(this));
+  }
+  componentWillUnmount() {
+    this.stop();
+    this.save();
   }
   addMessage(message) {
     this.setState({
@@ -304,12 +309,13 @@ export default class App extends Component {
     const state = {};
     if (this.state.currently == "working") {
       state.timeElapsed = this.state.timeElapsed + 1;
-    }
-    if (this.state.timeRemaining > 0) {
-      state.timeRemaining = this.state.timeRemaining - 1;
+      state.lastWorkTime = new Date();
     }
     if (this.state.currently == "stopped" || this.state.showAlert) {
       state.timeIdle = this.state.timeIdle + 1;
+    }
+    if (this.state.timeRemaining > 0) {
+      state.timeRemaining = this.state.timeRemaining - 1;
     }
     this.setState(state);
     if (state.timeRemaining === 0) {
@@ -372,7 +378,7 @@ export default class App extends Component {
     const logEntry = {
       task: this.state.taskId,
       startTime: this.state.startTime,
-      endTime: (new Date()).toISOString(),
+      endTime: this.state.lastWorkTime,
       timeElapsed: this.state.timeElapsed
     }
     this.setState({
