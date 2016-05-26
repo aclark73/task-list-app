@@ -44,7 +44,7 @@ body {
   display: inherit;
 }
 
-.timer-btn label, .updated_on {
+.timer-btn label, .label {
   font-size: 75%;
   /* color: #333; */
   margin-right: 4px;
@@ -95,7 +95,7 @@ body {
   cursor: inherit;
 }
 
-.tasks {
+.task-list {
     position: fixed;
     top: 8em;
     bottom: 0;
@@ -104,16 +104,16 @@ body {
     overflow-y: scroll;
 }
 
-.tasks > ul {
+.task-list > ul {
     margin: 0;
 }
 
-.tasks ul {
+.task-list ul {
     list-style: none;
     padding: 0;
 }
 
-.tasks li {
+.task-list li {
     position: relative;
 }
 
@@ -121,7 +121,7 @@ body {
     /* line-height: 1em; */
 }
 
-.task-item .btn, .task-item .label {
+.task-item .btn, .task-item .task-label {
     border: 1px solid #ddd;
     cursor: pointer;
     overflow: hidden;
@@ -129,16 +129,16 @@ body {
     line-height: 1.2;
 }
 
-.task-item .label {
+.task-item .task-label {
     margin-bottom: 2px;
     padding-left: 4px;
 }
 
-.task-item:hover .label {
+.task-item:hover .task-label {
     background: rgba(0,0,0,.1);
 }
 
-.task-item.selected .label {
+.task-item.selected .task-label {
     background: #ddd;
 }
 
@@ -146,12 +146,12 @@ body {
     white-space: nowrap;
 }
 
-.tasks ul ul {
+.task-list ul ul {
     display: none;
     padding-left: 19px;
 }
 
-.tasks .toggled + ul {
+.task-list .toggled + ul {
   display: inherit;
 }
 
@@ -195,11 +195,11 @@ body {
     border-radius: 0;
 }
 
-.task-item .label {
+.task-item .task-label {
     border-radius: 4px;
 }
 
-.task-item .updated_on {
+.task-item .label {
     float: right;
     font-size: 64%;
     /* line-height: 1; */
@@ -220,11 +220,11 @@ body {
     left: 19px;
 }
 
-.task-item .label {
+.task-item .task-label {
   margin-left: 19px;
 }
 
-.task-item.project .label {
+.task-item.project .task-label {
     margin-left: 38px;
     /* background: #f6f6f6; */
     font-weight: bold;
@@ -368,7 +368,7 @@ body {
     background-image: linear-gradient(to top, #fff, #dfd);
     color: #060;
 }
-.working .task-item.selected .label {
+.working .task-item.selected .task-label {
     background: #9f9;
     color: #060;
 }
@@ -395,7 +395,7 @@ body {
     color: #660;
 }
 
-.paused .task-item.selected .label {
+.paused .task-item.selected .task-label {
     background: #ffc;
     color: #660;
 }

@@ -32,11 +32,18 @@ export class TaskWidget extends Component {
       );
     }
 
-    const updated_on_div = ((updated_on) => {
+    const project_label = ((view, project) => {
+      if (view == 'tasks') {
+        return (<div className="label project-label">{project}</div>);
+      } else {
+        return "";
+      }
+    })(this.props.context.view, this.props.task.project);
+    const updated_label = ((updated_on) => {
       if (updated_on) {
         var d = new Date(updated_on);
         d = humanize.relativeTime(d.getTime() / 1000);
-        return (<div className="updated_on">{d}</div>);
+        return (<div className="label updated-label">{d}</div>);
       } else {
         return "";
       }
@@ -46,8 +53,9 @@ export class TaskWidget extends Component {
         <div className={className}>
           {toggleWidget}
           <span className="btn btn-start" onClick={start}><i className="fa fa-clock-o"></i></span>
-          <div className="label" onClick={select} onDoubleClick={start}>
-            {updated_on_div}
+          <div className="task-label" onClick={select} onDoubleClick={start}>
+            {project_label}
+            {updated_label}
             {Task.getLabel(this.props.task)}&nbsp;
           </div>
         </div>

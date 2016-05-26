@@ -165,7 +165,8 @@ export default class App extends Component {
     const context = {
       selectedTaskId: this.state.taskId,
       currently: this.state.currently,
-      actions: actions
+      actions: actions,
+      view: this.state.view
     };
 
     const rows = [];
@@ -229,7 +230,7 @@ export default class App extends Component {
           <div className="time-elapsed"><label>Elapsed</label><span>{timeElapsed}</span></div>
           {/* <div className="time-idle"><label>Idle</label><span>{this.formatTime(this.state.timeIdle)}</span></div> */}
         </div>
-        <div className="tasks"><ul>{rows}</ul></div>
+        <div className="task-list"><ul className={this.state.view}>{rows}</ul></div>
 
         <div className="popup messages"><ul><li className="header">Messages</li>{messageRows}</ul></div>
         <div className="popup log"><ul><li className="header">History</li>{logRows}</ul></div>
