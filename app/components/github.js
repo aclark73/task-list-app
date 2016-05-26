@@ -1,9 +1,10 @@
 import fs from 'fs';
-import request from 'ajax-request';
+import request from 'request';
 //const models = require('./models');
 import os from 'os';
 
-const BASE_URL = 'https://api.github.com';
+const USER_PASS = "user:pass@";
+const BASE_URL = 'https://' + USER_PASS + 'api.github.com';
 const ISSUES_URL = BASE_URL + '/issues'
 
 const DEBUG = (os.hostname().indexOf('honu') < 0);
@@ -88,7 +89,12 @@ export default class GitHubClient {
                     }
                 });
             } else {
-                request(ISSUES_URL, function(err, res, body) {
+                request({
+                  url: ISSUES_URL,
+                  headers: {
+                      'User-Agent': 'Mozilla/5.0 (Mac OS X) task-list-app'
+                  }
+                }, function(err, res, body) {
                     if (err) {
                         reject(err);
                     } else {

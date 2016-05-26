@@ -26,7 +26,7 @@
     "electron-rebuild": "~1.1.3"
   },
   "dependencies": {
-    "ajax-request": "1.2.1",
+    "request": "2.72.0",
     "electron-json-storage": "2.0.0",
     "electron-prebuilt": "^0.36.5",
     "react": "^0.14.6",

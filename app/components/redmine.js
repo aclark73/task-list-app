@@ -1,5 +1,5 @@
 import fs from 'fs';
-import request from 'ajax-request';
+import request from 'request';
 //const models = require('./models');
 import os from 'os';
 
