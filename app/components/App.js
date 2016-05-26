@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import RedmineClient from './redmine';
+import GitHubClient from './github';
 import Task from './task';
 import { TaskWidget, ProjectWidget } from './widgets';
 import classNames from 'classnames';
@@ -94,10 +95,31 @@ export default class App extends Component {
       this.addMessage(err);
     });
   }
+  loadGitHub() {
+    const github = new GitHubClient();
+    return github.load().then( (data) => {
+      this.setState({projects: data.projects, tasks: data.tasks});
+    }, (err) => {
+      this.addMessage(err);
+    });
+  }
   refresh() {
     this.addMessage("Loading Redmine");
     console.log("refresh");
-    return this.loadRedmine();
+
+    const redmine = new RedmineClient();
+    const github = new GitHubClient();
+    
+    return Promise.all([
+      redmine.load(),
+      github.load()
+    ]).then( (data) => {
+      var projects = [].concat(data[0].projects, data[1].projects);
+      var tasks = [].concat(data[0].tasks, data[1].tasks);
+      this.setState({projects: projects, tasks: tasks});
+    }, (err) => {
+      this.addMessage(err);
+    });
   }
   handleRowClick(row) {
     console.log("Clicked on row: " + row);
