@@ -26,6 +26,7 @@
     "electron-rebuild": "~1.1.3"
   },
   "dependencies": {
+    "ajax-request": "1.2.1",
     "request": "2.72.0",
     "electron-json-storage": "2.0.0",
     "electron-prebuilt": "^0.36.5",
@@ -33,6 +34,7 @@
     "react-dom": "^0.14.6",
     "classnames": "2.2.5",
     "configstore": "2.0.0",
-    "humanize": "0.0.9"
+    "humanize": "0.0.9",
+    "react-d3-basic": "1.6.11"
   }
 }

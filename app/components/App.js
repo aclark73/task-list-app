@@ -5,6 +5,7 @@ import Task from './task';
 import { TaskWidget, ProjectWidget } from './widgets';
 import classNames from 'classnames';
 import Configstore from 'configstore';
+import { LogChart } from './chart';
 // import pkg from '../../package.json';
 const pkg = {name: 'task-list-app'};
 
@@ -183,6 +184,7 @@ export default class App extends Component {
     this.state.log.forEach( (logEntry, i) => {
       logRows.push(<li key={i}>{logEntry.task} ({this.formatTime(logEntry.timeElapsed)})</li>);
     });
+    const logChart = this.state.showLog ? (<LogChart log={this.state.log}/>) : '';
     const messageRows = []
     this.state.messages.forEach( (message, i) => {
       messageRows.push(<li key={i}>{message}</li>);
@@ -233,7 +235,7 @@ export default class App extends Component {
         <div className="task-list"><ul className={this.state.view}>{rows}</ul></div>
 
         <div className="popup messages"><ul><li className="header">Messages</li>{messageRows}</ul></div>
-        <div className="popup log"><ul><li className="header">History</li>{logRows}</ul></div>
+        <div className="popup log"><ul><li className="header">History</li>{logChart}</ul></div>
         <div className="popup alert"><ul><li className="header">Alert</li><li>{this.state.alertMessage}</li></ul></div>
         <div className="popup-backdrop"></div>
         <div className="popup-click" onClick={actions.dismissPopups}></div>
