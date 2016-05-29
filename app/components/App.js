@@ -184,7 +184,7 @@ export default class App extends Component {
     this.state.log.forEach( (logEntry, i) => {
       logRows.push(<li key={i}>{logEntry.task} ({this.formatTime(logEntry.timeElapsed)})</li>);
     });
-    const logChart = this.state.showLog ? (<LogChart log={this.state.log}/>) : '';
+    const logChart = (<LogChart log={this.state.log}/>);
     const messageRows = []
     this.state.messages.forEach( (message, i) => {
       messageRows.push(<li key={i}>{message}</li>);
