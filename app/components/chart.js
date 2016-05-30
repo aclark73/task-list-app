@@ -52,6 +52,47 @@ export class LogChart extends Component {
     );
   }
   
+  renderScatter() {
+    
+    function getTime(d) {
+      return d.split('T')[1].split(':').map((t, i) => {
+        // i = 0/1/2 H/M/S
+        return (i == 0 ? 3600 : (i == 1) ? 60 : 1) * t;
+      }).reduce((a, b) => {
+        return a + b;
+      });
+    }
+
+    const chartSeries = [];
+    const fields = {};
+    this.props.log.forEach((log) => {
+      if (!fields[log.task]) {
+        fields[log.task] = 1;
+        chartSeries.push({ field: log.task, name: log.task });
+      }
+    });
+    
+    const chartProps = {
+      width: 500,
+      height: 300,
+      x: function(d) {
+        return d.startTime.split('T')[0];
+      },
+      y: function(d) {
+        return d ? getTime(d) : 2;
+      },
+      xScale: 'ordinal'
+    };
+
+    return (
+      <ScatterPlot
+        data={this.props.log}
+        chartSeries={chartSeries}
+        {...chartProps}
+      />
+    );
+  }
+  
   renderStacked() {
 
     // load your general data
@@ -100,7 +141,7 @@ export class LogChart extends Component {
   }
   
   render() {
-    return this.renderStacked();
+    return this.renderScatter();
   }
 
 }
