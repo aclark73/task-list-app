@@ -8,8 +8,9 @@ let mainWindow
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 800,
+    width: 400,
     height: 600,
+    alwaysOnTop: true,
     'web-preferences': {
       'web-security': false
     }

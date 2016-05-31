@@ -3,8 +3,10 @@ import request from 'ajax-request';
 //const models = require('./models');
 import os from 'os';
 
+const REDMINE_KEY = 'example';
 const BASE_URL = 'http://dmscode.iris.washington.edu';
-const ISSUES_URL = BASE_URL + '/issues.json?key=example&assigned_to_id=me&sort=updated_on:desc&status_id=open&limit=200';
+const ISSUES_URL = BASE_URL + '/issues.json?key=' + REDMINE_KEY + '&assigned_to_id=me&sort=updated_on:desc&status_id=open&limit=200';
+const TIME_URL = BASE_URL + '/time_entries.json?key=' + REDMINE_KEY;
 
 const DEBUG = (os.hostname().indexOf('honu') < 0);
 
@@ -117,6 +119,9 @@ export default class RedmineClient {
     const timePerIssuePerDay = {};
     logs.forEach((log) => {
       const issue_id = this.getIssueId(log.task);
+      if (!issue_id) {
+        return;
+      }
       const day = log.startTime.split('T')[0];
       if (!timePerIssuePerDay[issue_id]) {
         timePerIssuePerDay[issue_id] = {};
@@ -126,7 +131,8 @@ export default class RedmineClient {
       }
       timePerIssuePerDay[issue_id][day] += log.timeElapsed;
     });
-    console.log(timePerIssuePerDay);
+    console.log(JSON.stringify(timePerIssuePerDay));
+    const requests = [];
     for (let issue_id in timePerIssuePerDay) {
       for (let day in timePerIssuePerDay[issue_id]) {
         const hours = timePerIssuePerDay[issue_id][day] / 3600;
@@ -137,9 +143,28 @@ export default class RedmineClient {
             'hours': hours
           }
         };
-        console.log(rest_dict);
-        
+        requests.push(new Promise(function(resolve, reject) {
+          if (!true) {
+            console.log(JSON.stringify(rest_dict));
+            console.log("Posting");
+            request({
+              method: 'POST',
+              url: TIME_URL,
+              data: rest_dict
+            }, function(err, res, body) {
+              console.log(res);
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+          } else {
+            resolve();
+          }
+        }));
       }
     }
+    return Promise.all(requests);
   }
 }

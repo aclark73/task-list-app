@@ -80,7 +80,12 @@ export default class App extends Component {
     console.log("Saving to conf");
     this.conf.set('log', this.state.log);
     const redmine = new RedmineClient();
-    redmine.upload(this.state.log);
+    redmine.upload(this.state.log).then( () => {
+      console.log("Redmine uploaded");
+      // this.setState({log:[]});
+    }, (err) => {
+      console.log("Error! " + err);
+    });
   }
   load() {
     const s = {};
@@ -111,6 +116,15 @@ export default class App extends Component {
     const redmine = new RedmineClient();
     const github = new GitHubClient();
     
+    const projects = [];
+    const tasks = [];
+    return redmine.load().then( (data) => {
+      Array.prototype.push.apply(projects, data.projects);
+      Array.prototype.push.apply(tasks, data.tasks);
+    }).then( () => {
+      this.setState({projects: projects, tasks: tasks});
+    });
+    /*
     return Promise.all([
       redmine.load(),
       github.load()
@@ -121,6 +135,7 @@ export default class App extends Component {
     }, (err) => {
       this.addMessage(err);
     });
+    */
   }
   handleRowClick(row) {
     console.log("Clicked on row: " + row);
