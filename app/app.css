@@ -346,6 +346,15 @@ body {
   50% { background: #ff0; }
   to { background: #fff; }
 }
+@keyframes flasher2 {  
+  from { background: #fff; }
+  1% { background: #fc0; }
+  2% { background: #fff; }
+  3% { background: #fc0; }
+  4% { background: #fff; }
+  to { background: #fff; }
+}
+/*
 .show-alert .alert {
   animation-name: bouncer;
   animation-iteration-count: infinite;
@@ -357,6 +366,13 @@ body {
   animation-iteration-count: infinite;
   animation-timing-function: ease;
   animation-duration: 1s;
+}
+*/
+.show-alert .alert li + li {
+  animation-name: flasher2;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-duration: 10s;
 }
 
 .if-stopped, .if-paused, .if-working {
