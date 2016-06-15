@@ -51,6 +51,7 @@ export default class App extends Component {
       setTask: this.setTask.bind(this),
       refresh: this.refresh.bind(this),
       save: this.save.bind(this),
+      uploadLogs: this.uploadLogs.bind(this),
       toggleView: this.toggleView.bind(this),
       toggleCompactView: this.toggleCompactView.bind(this),
       showLog: this.showLog.bind(this),
@@ -79,13 +80,6 @@ export default class App extends Component {
   save() {
     console.log("Saving to conf");
     this.conf.set('log', this.state.log);
-    const redmine = new RedmineClient();
-    redmine.upload(this.state.log).then( () => {
-      console.log("Redmine uploaded");
-      // this.setState({log:[]});
-    }, (err) => {
-      console.log("Error! " + err);
-    });
   }
   load() {
     const s = {};
@@ -107,6 +101,16 @@ export default class App extends Component {
       this.setState({projects: data.projects, tasks: data.tasks});
     }, (err) => {
       this.addMessage("Error loading GitHub: " + err);
+    });
+  }
+  uploadLogs() {
+    const redmine = new RedmineClient();
+    redmine.upload(this.state.log).then( (updatedLog) => {
+      console.log("Redmine uploaded");
+      this.setState({log: updatedLog});
+      this.save();
+    }, (err) => {
+      console.log("Error! " + err);
     });
   }
   refresh() {
@@ -255,6 +259,8 @@ export default class App extends Component {
               <i className="fa fa-list"></i> Group</span>
             <span className="btn" title="Toggle compact view" onClick={actions.toggleCompactView}>
               <i className="fa fa-arrows-v"></i> Compact</span>
+            <span className="btn" title="Upload logged time" onClick={actions.uploadLogs}>
+              <i className="fa fa-database"></i> Upload</span>
           </div>
         </div>
         <div className="btn timer-btn timer-btn-stop" onClick={actions.stop}>
@@ -368,12 +374,12 @@ export default class App extends Component {
   }
   tick() {
     const state = {};
-    if (this.state.currently == "working") {
-      state.timeElapsed = this.state.timeElapsed + 1;
-      state.lastWorkTime = new Date();
-    }
     if (this.state.currently == "stopped" || this.state.showAlert) {
       state.timeIdle = this.state.timeIdle + 1;
+    }
+    else if (this.state.currently == "working") {
+      state.timeElapsed = this.state.timeElapsed + 1;
+      state.lastWorkTime = new Date();
     }
     if (this.state.timeRemaining > 0) {
       state.timeRemaining = this.state.timeRemaining - 1;

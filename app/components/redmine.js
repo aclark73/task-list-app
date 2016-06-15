@@ -115,13 +115,32 @@ export default class RedmineClient {
       return "";
     }
   }
+  
+  getSource(taskId) {
+    const parts = taskId.split('.');
+    if (parts.length == 3) {
+      return parts[1];
+    } else {
+      return "";
+    }
+  }
+
   upload(logs) {
     const timePerIssuePerDay = {};
     logs.forEach((log) => {
+      console.log("Looking at " + log.task);
+      if (log.uploadTime) {
+        return;
+      }
+      const source = this.getSource(log.task);
+      if (source != this.source) {
+        return;
+      }
       const issue_id = this.getIssueId(log.task);
       if (!issue_id) {
         return;
       }
+      console.log("Adding " + log.task + " starting at " + log.startTime);
       const day = log.startTime.split('T')[0];
       if (!timePerIssuePerDay[issue_id]) {
         timePerIssuePerDay[issue_id] = {};
@@ -144,27 +163,34 @@ export default class RedmineClient {
           }
         };
         requests.push(new Promise(function(resolve, reject) {
-          if (!true) {
-            console.log(JSON.stringify(rest_dict));
-            console.log("Posting");
-            request({
-              method: 'POST',
-              url: TIME_URL,
-              data: rest_dict
-            }, function(err, res, body) {
-              console.log(res);
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve();
-                }
-            });
-          } else {
-            resolve();
-          }
+          console.log(JSON.stringify(rest_dict));
+          console.log("Posting");
+          request({
+            method: 'POST',
+            url: TIME_URL,
+            data: rest_dict
+          }, function(err, res, body) {
+            console.log(res);
+              if (err) {
+                  reject(err);
+              } else {
+                  resolve();
+              }
+          });
         }));
       }
     }
-    return Promise.all(requests);
+    return Promise.all(requests).then(() => {
+      const uploadTime = (new Date()).toISOString();
+      // Make copy of log entry, since this is from state and thus immutable
+      return logs.map((log) => {
+        const l2 = Object.assign({}, log);
+        const source = this.getSource(l2.task);
+        if (source == this.source && !l2.uploadTime) {
+          l2.uploadTime = uploadTime;
+        }
+        return l2;
+      });
+    });
   }
 }
