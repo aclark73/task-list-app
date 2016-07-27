@@ -93,7 +93,7 @@ export default class App extends Component {
     return redmine.load().then( (data) => {
       this.setState({projects: data.projects, tasks: data.tasks});
     }, (err) => {
-      this.addMessage(err);
+      this.addMessage("Error loading Redmine: " + err);
     });
   }
   loadGitHub() {
@@ -101,7 +101,7 @@ export default class App extends Component {
     return github.load().then( (data) => {
       this.setState({projects: data.projects, tasks: data.tasks});
     }, (err) => {
-      this.addMessage(err);
+      this.addMessage("Error loading GitHub: " + err);
     });
   }
   refresh() {
@@ -173,21 +173,31 @@ export default class App extends Component {
     const rows = [];
     if (this.state.view == 'projects') {
       this.state.projects.forEach( (project) => {
-        rows.push(<ProjectWidget key={Task.getUID(project)} task={project} context={context} />);
+        rows.push(
+          <ProjectWidget key={Task.getUID(project)} task={project} context={context} />
+        );
       });
     } else {
       this.state.tasks.forEach( (task) => {
-        rows.push(<TaskWidget key={Task.getUID(task)} task={task} context={context} />);
+        rows.push(
+          <TaskWidget key={Task.getUID(task)} task={task} context={context} />
+        );
       });
     }
     const logRows = []
     this.state.log.forEach( (logEntry, i) => {
-      logRows.push(<li key={i}>{logEntry.task} ({this.formatTime(logEntry.timeElapsed)})</li>);
+      logRows.push(
+        <li key={i}>{logEntry.task} ({this.formatTime(logEntry.timeElapsed)})</li>
+      );
     });
-    const logChart = (<LogChart log={this.state.log}/>);
+    const logChart = (
+      <LogChart log={this.state.log}/>
+    );
     const messageRows = []
     this.state.messages.forEach( (message, i) => {
-      messageRows.push(<li key={i}>{message}</li>);
+      messageRows.push(
+        <li key={i}>{message}</li>
+      );
     });
     const timeElapsed = this.formatTime(this.state.timeElapsed);
     const timeRemaining = this.formatTime(this.state.timeRemaining);
@@ -214,19 +224,28 @@ export default class App extends Component {
       );
     return(
       <div className={className} onClick={actions.click}>
-        <div>
+        <div className="toolbar">
           <div className="btns">
-            <span className="btn" onClick={actions.refresh}><i className="fa fa-refresh"></i></span>
-            <span className="btn" onClick={actions.toggleCompactView}><i className={compactButtonClassName}></i></span>
-            <span className="btn" onClick={actions.showMessages}><i className="fa fa-exclamation-triangle"></i></span>
-            <span className="btn" onClick={actions.showLog}><i className="fa fa-history"></i></span>
-            <span className="btn" onClick={actions.toggleView}><i className="fa fa-question"></i></span>
+            <span className="btn" title="Refresh task list" onClick={actions.refresh}>
+              <i className="fa fa-refresh"></i> Reload</span>
+          </div>
+          <div className="btns">
+            <span className="btn" title="Show task history" onClick={actions.showLog}>
+              <i className="fa fa-calendar"></i> History</span>
+          </div>
+          <div className="btns">
+            <span className="btn" title="Show messages" onClick={actions.showMessages}>
+              <i className="fa fa-exclamation-triangle"></i> Log</span>
+            <span className="btn" title="Toggle group by project" onClick={actions.toggleView}>
+              <i className="fa fa-list"></i> Group</span>
+            <span className="btn" title="Toggle compact view" onClick={actions.toggleCompactView}>
+              <i className="fa fa-arrows-v"></i> Compact</span>
           </div>
         </div>
-        <div className="timer-btn timer-btn-stop" onClick={actions.stop}>
+        <div className="btn timer-btn timer-btn-stop" onClick={actions.stop}>
           Stop
         </div>
-        <div className="timer-btn timer-btn-task" onClick={actions.pause}>
+        <div className="btn timer-btn timer-btn-task" onClick={actions.pause}>
           <div className="time-remaining"><span>{timeRemaining}</span></div>
           <div className="current-task"><label>Task</label><span>{currentTask}</span></div>
           <div className="time-elapsed"><label>Elapsed</label><span>{timeElapsed}</span></div>
@@ -235,7 +254,7 @@ export default class App extends Component {
         <div className="task-list"><ul className={this.state.view}>{rows}</ul></div>
 
         <div className="popup messages"><ul><li className="header">Messages</li>{messageRows}</ul></div>
-        <div className="popup log"><ul><li className="header">History</li>{logChart}</ul></div>
+        <div className="popup log"><ul><li className="header">History</li>{logRows}</ul></div>
         <div className="popup alert"><ul><li className="header">Alert</li><li>{this.state.alertMessage}</li></ul></div>
         <div className="popup-backdrop"></div>
         <div className="popup-click" onClick={actions.dismissPopups}></div>

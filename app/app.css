@@ -5,6 +5,7 @@ body {
   margin: 0;
   /* padding: 8px; */
   /* position: relative; */
+  white-space: nowrap;
 }
 
 .main {
@@ -16,11 +17,18 @@ body {
     padding: 8px;
 }
 
-.timer-btn {
+.btn {
     border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 8px;
     cursor: pointer;
+    border-radius: 4px;
+    color: #444;
+}
+.btn:hover {
+    background: #ddd;
+}
+
+.timer-btn {
+    padding: 8px;
 }
 .timer-btn > div {
   white-space: nowrap;
@@ -61,10 +69,10 @@ body {
   line-height: 1em;
 }
 
-.timer-btn-task {
+.btn.timer-btn-task {
   display: block;
   margin-right: 100px;
-  border-color: #B5B5B5;
+  border: 1px solid #B5B5B5;
   background: #ddd;
   color: #666;
 }
@@ -119,6 +127,7 @@ body {
 
 .task-item {
     /* line-height: 1em; */
+    white-space: normal;
 }
 
 .task-item .btn, .task-item .task-label {
@@ -155,33 +164,33 @@ body {
   display: inherit;
 }
 
-.btn {
+.toolbar {
+    margin-bottom: .3em;
+}
+
+.toolbar .btn {
     display: inline-block;
-    width: 18px;
-    border: 1px solid #ddd;
-    cursor: pointer;
-    overflow: hidden;
-    padding: 1px 0;
+    font-size: 85%;
+    padding: .1em .3em;
     line-height: 1em;
-    text-align: center;
-    background: linear-gradient(to top, #ddd, #fff);
-    text-shadow: 0 1px 0 #fff;
-    border-radius: 4px;
-    color: #444;
+}
+
+.btns {
+    display: inline-block;
+}
+
+.btns + .btns {
+    margin-left: 5px;
 }
 
 .btns .btn:not(:first-child) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
-.btns .btn + .btn {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
 
-.btn:hover {
-    background: #ddd;
+.btns .btn:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
 .task-item .btn {
@@ -189,6 +198,8 @@ body {
     width: 18px;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    text-align: center;
+    line-height: 1em;
 }
 
 .task-item .btn + .btn {
@@ -196,7 +207,7 @@ body {
 }
 
 .task-item .task-label {
-    border-radius: 4px;
+    border-radius: 0 4px 4px 4px;
 }
 
 .task-item .label {
@@ -388,6 +399,13 @@ body {
 .working .timer-btn-task:hover {
   background: #6f6;
 }
+.working .toolbar .btn {
+  color: #060;
+  border-color: #0d0;
+}
+.working .toolbar .btn:hover {
+  background: #9f9;
+}
 
 
 .paused {
@@ -400,15 +418,21 @@ body {
     color: #660;
 }
 .paused .selected .btn-start {
-    color: #990;
+    color: #660;
     text-shadow: 0 1px 0 #ffa;
 }
 
 .paused .timer-btn-task {
   border-color: #dd9;
   background: #ffc;
-  color: #aa0;
+  color: #660;
 }
 .paused .timer-btn-task:hover {
+    background: #ff9;
+}
+.paused .toolbar .btn {
+  color: #660;
+}
+.paused .toolbar .btn:hover {
     background: #ff9;
 }

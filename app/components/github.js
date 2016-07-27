@@ -5,7 +5,7 @@ import os from 'os';
 
 const USER_PASS = "user:pass@";
 const BASE_URL = 'https://' + USER_PASS + 'api.github.com';
-const ISSUES_URL = BASE_URL + '/issues'
+const ISSUES_URL = BASE_URL + '/issues';
 
 const DEBUG = (os.hostname().indexOf('honu') < 0);
 
@@ -22,7 +22,7 @@ export default class GitHubClient {
             title: '',
             tasks: []
         };
-    };
+    }
 
     createTask(json) {
         /*
@@ -73,8 +73,8 @@ export default class GitHubClient {
             project.tasks.push(task);
         }
         return Promise.resolve({
-          tasks: tasks,
-          projects: projects
+            tasks: tasks,
+            projects: projects
         });
     }
 
@@ -90,15 +90,20 @@ export default class GitHubClient {
                 });
             } else {
                 request({
-                  url: ISSUES_URL,
-                  headers: {
-                      'User-Agent': 'Mozilla/5.0 (Mac OS X) task-list-app'
-                  }
+                    url: ISSUES_URL,
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (Mac OS X) task-list-app'
+                    }
                 }, function(err, res, body) {
                     if (err) {
                         reject(err);
                     } else {
-                        resolve(JSON.parse(body));
+                        try {
+                            resolve(JSON.parse(body));
+                        }
+                        catch (e) {
+                            reject(e);
+                        }
                     }
                 });
             }
@@ -112,11 +117,11 @@ export default class GitHubClient {
     }
 
   getIssueId(taskId) {
-    const parts = taskId.split('.');
-    if (parts.length == 3) {
-      return parts[2];
-    } else {
-      return "";
-    }
+      const parts = taskId.split('.');
+      if (parts.length == 3) {
+          return parts[2];
+      } else {
+          return "";
+      }
   }
 }
