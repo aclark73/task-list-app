@@ -36,6 +36,7 @@ export default class App extends Component {
 
       log: [],
       showLog: false,
+      showTimeline: false,
       messages: [],
       showMessages: false,
       
@@ -54,6 +55,7 @@ export default class App extends Component {
       toggleView: this.toggleView.bind(this),
       toggleCompactView: this.toggleCompactView.bind(this),
       showLog: this.showLog.bind(this),
+      showTimeline: this.showTimeline.bind(this),
       showMessages: this.showMessages.bind(this),
       dismissPopups: this.dismissPopups.bind(this)
     };
@@ -212,8 +214,9 @@ export default class App extends Component {
       {
        'has-task': this.state.taskId,
        'compact': this.state.compactView,
-       'show-popup': (this.state.showLog || this.state.showMessages || this.state.showAlert),
+       'show-popup': (this.state.showLog || this.state.showTimeline || this.state.showMessages || this.state.showAlert),
        'show-log': this.state.showLog,
+       'show-timeline': this.state.showTimeline,
        'show-messages': this.state.showMessages,
        'show-alert': this.state.showAlert
       });
@@ -232,6 +235,8 @@ export default class App extends Component {
           <div className="btns">
             <span className="btn" title="Show task history" onClick={actions.showLog}>
               <i className="fa fa-calendar"></i> History</span>
+            <span className="btn" title="Show timeline" onClick={actions.showTimeline}>
+              <i className="fa fa-calendar"></i> Timeline</span>
           </div>
           <div className="btns">
             <span className="btn" title="Show messages" onClick={actions.showMessages}>
@@ -255,6 +260,7 @@ export default class App extends Component {
 
         <div className="popup messages"><ul><li className="header">Messages</li>{messageRows}</ul></div>
         <div className="popup log"><ul><li className="header">History</li>{logRows}</ul></div>
+        <div className="popup timeline"><ul><li className="header">Timeline</li>{logChart}</ul></div>
         <div className="popup alert"><ul><li className="header">Alert</li><li>{this.state.alertMessage}</li></ul></div>
         <div className="popup-backdrop"></div>
         <div className="popup-click" onClick={actions.dismissPopups}></div>
@@ -290,6 +296,11 @@ export default class App extends Component {
       showLog: true
     });
   }
+  showTimeline() {
+    this.setState({
+      showTimeline: true
+    });
+  }
   showMessages() {
     this.setState({
       showMessages: true
@@ -298,6 +309,7 @@ export default class App extends Component {
   dismissPopups() {
     this.setState({
       showLog: false,
+      showTimeline: false,
       showMessages: false,
       showAlert: false
     });
