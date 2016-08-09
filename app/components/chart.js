@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BarStackChart, ScatterPlot } from 'react-d3-basic';
+import TimelineChart from './TimelineChart';
 import Log from './log';
 
 export class LogChart extends Component {
@@ -11,41 +12,55 @@ export class LogChart extends Component {
   renderTimeline() {
     
     function getTime(d) {
-      return d.split('T')[1].split(':').map((t, i) => {
+      var r = d.split('T')[1].split('.')[0].split(':');
+      console.log(r);
+      r = r.map((t, i) => {
         // i = 0/1/2 H/M/S
         return (i == 0 ? 3600 : (i == 1) ? 60 : 1) * t;
-      }).reduce((a, b) => {
+      });
+      console.log(r);
+      r = r.reduce((a, b) => {
         return a + b;
       });
+      console.log("r is " + r);
+      return r;
     }
 
+    const data = [];
     const chartSeries = [];
     const fields = {};
     this.props.log.forEach((log) => {
+      var point = {
+        startTime: log.startTime,
+        series: log.task
+      };
       if (!fields[log.task]) {
         fields[log.task] = 1;
         chartSeries.push({ field: log.task, name: log.task });
       }
+      data.push(point);
     });
-    
+
     const chartProps = {
       width: 500,
       height: 300,
       x: function(d) {
-        return d.startTime.split('T')[0];
+        console.log("x: d is " + d.startTime);
+        return new Date(d.startTime.split('T')[0]);
       },
       y: function(d) {
+        console.log("y: d is " + d.startTime);
         return d ? getTime(d.startTime) : 0;
       },
-      y1: function(d) {
-        return getTime(d.startTime);
-      },
-      xScale: 'ordinal'
+      //y1: function(d) {
+      //  return getTime(d.startTime);
+      //},
+      xScale: 'time'
     };
 
     return (
-      <ScatterPlot
-        data={this.props.log}
+      <TimelineChart
+        data={data}
         chartSeries={chartSeries}
         {...chartProps}
       />
@@ -55,38 +70,53 @@ export class LogChart extends Component {
   renderScatter() {
     
     function getTime(d) {
-      return d.split('T')[1].split(':').map((t, i) => {
+      var r = d.split('T')[1].split('.')[0].split(':');
+      console.log(r);
+      r = r.map((t, i) => {
         // i = 0/1/2 H/M/S
         return (i == 0 ? 3600 : (i == 1) ? 60 : 1) * t;
-      }).reduce((a, b) => {
+      });
+      console.log(r);
+      r = r.reduce((a, b) => {
         return a + b;
       });
+      console.log("r is " + r);
+      return r;
     }
 
+    const data = [];
     const chartSeries = [];
     const fields = {};
     this.props.log.forEach((log) => {
+      var point = {
+        startTime: log.startTime,
+        series: log.task
+      };
+      point[log.task] = point.startTime;
       if (!fields[log.task]) {
         fields[log.task] = 1;
         chartSeries.push({ field: log.task, name: log.task });
       }
+      data.push(point);
     });
     
     const chartProps = {
       width: 500,
       height: 300,
       x: function(d) {
-        return d.startTime.split('T')[0];
+        console.log("x: d is " + d);
+        return new Date(d.startTime.split('T')[0]);
       },
       y: function(d) {
-        return d ? getTime(d) : 2;
+        console.log("y: d is " + d);
+        return d ? getTime(d) : 0;
       },
-      xScale: 'ordinal'
+      xScale: 'time'
     };
 
     return (
       <ScatterPlot
-        data={this.props.log}
+        data={data}
         chartSeries={chartSeries}
         {...chartProps}
       />
@@ -141,7 +171,7 @@ export class LogChart extends Component {
   }
   
   render() {
-    return this.renderScatter();
+    return this.renderTimeline();
   }
 
 }
