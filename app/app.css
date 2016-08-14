@@ -299,6 +299,10 @@ body {
   display: block;
 }
 
+.show-timeline .timeline {
+  display: block;
+}
+
 .alert li + li {
   padding: 20%;
   font-size: 24px;

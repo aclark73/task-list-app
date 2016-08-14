@@ -26,6 +26,18 @@ export class LogChart extends Component {
       return r;
     }
 
+    function pad(d) {
+      return ("0" + d).slice(-2);
+    }
+    
+    function renderTime(t) {
+      var h = Math.floor(t/3600);
+      var m = Math.floor((t/60)%60);
+      var s = t%60;
+      
+      return pad(h) + ":" + pad(m) + ":" + pad(s);
+    }
+
     const data = [];
     const chartSeries = [];
     const fields = {};
@@ -49,13 +61,15 @@ export class LogChart extends Component {
         return new Date(d.startTime.split('T')[0]);
       },
       y: function(d) {
-        console.log("y: d is " + d.startTime);
+        console.log("y: d is " + (d && d.startTime));
         return d ? getTime(d.startTime) : 0;
       },
       //y1: function(d) {
       //  return getTime(d.startTime);
       //},
-      xScale: 'time'
+      xScale: 'time',
+      yTickFormat: renderTime,
+      yDomain: [0, 60*60*24]
     };
 
     return (
