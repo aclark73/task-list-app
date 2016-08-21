@@ -251,28 +251,41 @@ export default class App extends Component {
       'fa',
       (this.state.compactView ? 'fa-toggle-up' : 'fa-toggle-down')
       );
+    
+    const toolbar = (
+      <div className="toolbar">
+        <div className="btns">
+          <span className="btn" title="Refresh task list" onClick={actions.refresh}>
+            <i className="fa fa-refresh"></i> Reload</span>
+        </div>
+        <div className="btns">
+          <span className="btn" title="Show log" onClick={actions.showLog}>
+            <i className="fa fa-calendar"></i> Log</span>
+          <span className="btn" title="Upload logged time" onClick={actions.uploadLogs}>
+            <i className="fa fa-database"></i> Upload</span>
+        </div>
+        <div className="btns">
+          <span className="btn" title="Show debug messages" onClick={actions.showMessages}>
+            <i className="fa fa-exclamation-triangle"></i> Debug</span>
+          <span className="btn" title="Toggle group by project" onClick={actions.toggleView}>
+            <i className="fa fa-list"></i> Group</span>
+          <span className="btn" title="Toggle compact view" onClick={actions.toggleCompactView}>
+            <i className="fa fa-arrows-v"></i> Compact</span>
+        </div>
+      </div>
+    );
+    const popups = (
+      <div>
+        <div className="popup messages"><ul><li className="header">Messages</li>{messageRows}</ul></div>
+        <div className="popup log"><ul><li className="header">Log</li>{logDisplay}</ul></div>
+        <div className="popup alert"><ul><li className="header">Alert</li><li>{this.state.alertMessage}</li></ul></div>
+        <div className="popup-backdrop"></div>
+        <div className="popup-click" onClick={actions.dismissPopups}></div>
+      </div>
+    );
     return(
       <div className={className} onClick={actions.click}>
-        <div className="toolbar">
-          <div className="btns">
-            <span className="btn" title="Refresh task list" onClick={actions.refresh}>
-              <i className="fa fa-refresh"></i> Reload</span>
-          </div>
-          <div className="btns">
-            <span className="btn" title="Show task log" onClick={actions.showLog}>
-              <i className="fa fa-calendar"></i> Log</span>
-          </div>
-          <div className="btns">
-            <span className="btn" title="Show debug messages" onClick={actions.showMessages}>
-              <i className="fa fa-exclamation-triangle"></i> Debug</span>
-            <span className="btn" title="Toggle group by project" onClick={actions.toggleView}>
-              <i className="fa fa-list"></i> Group</span>
-            <span className="btn" title="Toggle compact view" onClick={actions.toggleCompactView}>
-              <i className="fa fa-arrows-v"></i> Compact</span>
-            <span className="btn" title="Upload logged time" onClick={actions.uploadLogs}>
-              <i className="fa fa-database"></i> Upload</span>
-          </div>
-        </div>
+        {toolbar}
         <div className="btn timer-btn timer-btn-stop" onClick={actions.stop}>
           Stop
         </div>
@@ -282,13 +295,10 @@ export default class App extends Component {
           <div className="time-elapsed"><label>Elapsed</label><span>{timeElapsed}</span></div>
           {/* <div className="time-idle"><label>Idle</label><span>{this.formatTime(this.state.timeIdle)}</span></div> */}
         </div>
+        
         <div className="task-list"><ul className={this.state.view}>{taskList}</ul></div>
 
-        <div className="popup messages"><ul><li className="header">Messages</li>{messageRows}</ul></div>
-        <div className="popup log"><ul><li className="header">Log</li>{logDisplay}</ul></div>
-        <div className="popup alert"><ul><li className="header">Alert</li><li>{this.state.alertMessage}</li></ul></div>
-        <div className="popup-backdrop"></div>
-        <div className="popup-click" onClick={actions.dismissPopups}></div>
+        {popups}
       </div>
     );
   }
