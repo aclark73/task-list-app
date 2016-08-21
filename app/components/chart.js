@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { BarStackChart } from 'react-d3-basic';
-import Log from './log';
+import { BarStackChart, ScatterPlot } from 'react-d3-basic';
+import Utils from './utils';
 
 export class LogChart extends Component {
 
@@ -12,7 +12,7 @@ export class LogChart extends Component {
 
     // load your general data
     
-    const timePerDayPerTask = Log.TimePerDayPerTask(this.props.log);
+    const timePerDayPerTask = Utils.TimePerDayPerTask(this.props.log);
     const days = Object.keys(timePerDayPerTask).sort();
     
     const tasks = {};

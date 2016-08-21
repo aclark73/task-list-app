@@ -6,6 +6,8 @@ import { TaskWidget, ProjectWidget } from './widgets';
 import classNames from 'classnames';
 import Configstore from 'configstore';
 import { LogChart } from './chart';
+import Log from './log';
+import TaskList from './tasklist';
 // import pkg from '../../package.json';
 const pkg = {name: 'task-list-app'};
 
@@ -83,7 +85,7 @@ export default class App extends Component {
   }
   load() {
     const s = {};
-    s['log'] = this.conf.get('log') || this.state.log;
+    s.log = this.conf.get('log') || this.state.log;
     this.setState(s);
     return Promise.resolve();
   }
@@ -189,6 +191,11 @@ export default class App extends Component {
       view: this.state.view
     };
 
+    const taskList = (
+      <TaskList projects={this.state.project} tasks={this.state.tasks}
+        context={context} />
+    );
+    /*
     const rows = [];
     if (this.state.view == 'projects') {
       this.state.projects.forEach( (project) => {
@@ -203,15 +210,18 @@ export default class App extends Component {
         );
       });
     }
+    */
+    const logDisplay = (
+      <Log log={this.state.log}/>
+    );
+    /*
     const logRows = []
     this.state.log.forEach( (logEntry, i) => {
       logRows.push(
         <li key={i}>{logEntry.task} ({this.formatTime(logEntry.timeElapsed)})</li>
       );
     });
-    const logChart = (
-      <LogChart log={this.state.log}/>
-    );
+    */
     const messageRows = []
     this.state.messages.forEach( (message, i) => {
       messageRows.push(
@@ -249,12 +259,12 @@ export default class App extends Component {
               <i className="fa fa-refresh"></i> Reload</span>
           </div>
           <div className="btns">
-            <span className="btn" title="Show task history" onClick={actions.showLog}>
-              <i className="fa fa-calendar"></i> History</span>
+            <span className="btn" title="Show task log" onClick={actions.showLog}>
+              <i className="fa fa-calendar"></i> Log</span>
           </div>
           <div className="btns">
-            <span className="btn" title="Show messages" onClick={actions.showMessages}>
-              <i className="fa fa-exclamation-triangle"></i> Log</span>
+            <span className="btn" title="Show debug messages" onClick={actions.showMessages}>
+              <i className="fa fa-exclamation-triangle"></i> Debug</span>
             <span className="btn" title="Toggle group by project" onClick={actions.toggleView}>
               <i className="fa fa-list"></i> Group</span>
             <span className="btn" title="Toggle compact view" onClick={actions.toggleCompactView}>
@@ -272,10 +282,10 @@ export default class App extends Component {
           <div className="time-elapsed"><label>Elapsed</label><span>{timeElapsed}</span></div>
           {/* <div className="time-idle"><label>Idle</label><span>{this.formatTime(this.state.timeIdle)}</span></div> */}
         </div>
-        <div className="task-list"><ul className={this.state.view}>{rows}</ul></div>
+        <div className="task-list"><ul className={this.state.view}>{taskList}</ul></div>
 
         <div className="popup messages"><ul><li className="header">Messages</li>{messageRows}</ul></div>
-        <div className="popup log"><ul><li className="header">History</li>{logRows}</ul></div>
+        <div className="popup log"><ul><li className="header">Log</li>{logDisplay}</ul></div>
         <div className="popup alert"><ul><li className="header">Alert</li><li>{this.state.alertMessage}</li></ul></div>
         <div className="popup-backdrop"></div>
         <div className="popup-click" onClick={actions.dismissPopups}></div>
