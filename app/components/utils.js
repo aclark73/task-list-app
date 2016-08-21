@@ -1,5 +1,5 @@
 const Utils = {
-  formatTime: function(t) {
+  formatTimespan: function(t) {
     var neg = (t < 0);
     t = Math.abs(t);
     var s = t%60;
@@ -16,6 +16,14 @@ const Utils = {
     } else {
       return sign + m + ':' + pad2(s);
     }
+  },
+  
+  getDay: function(timestamp) {
+    return timestamp.split('T')[0];
+  },
+  
+  getTime: function(timestamp) {
+    return timestamp.split('T')[1].split('.')[0];
   },
   
   timePerTaskPerDay: function(log) {

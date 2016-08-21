@@ -2,6 +2,7 @@ import fs from 'fs';
 import request from 'ajax-request';
 //const models = require('./models');
 import os from 'os';
+import Utils from './utils';
 
 const REDMINE_KEY = 'example';
 const BASE_URL = 'http://dmscode.iris.washington.edu';
@@ -128,27 +129,29 @@ export default class RedmineClient {
   upload(logs) {
     const timePerIssuePerDay = {};
     logs.forEach((log) => {
-      console.log("Looking at " + log.task);
+      const taskId = log.taskId || log.task;
+      console.log("Looking at " + taskId);
       if (log.uploadTime) {
         return;
       }
-      const source = this.getSource(log.task);
+      const source = this.getSource(taskId);
       if (source != this.source) {
         return;
       }
-      const issue_id = this.getIssueId(log.task);
-      if (!issue_id) {
+      const issueId = this.getIssueId(taskId);
+      if (!issueId) {
         return;
       }
-      console.log("Adding " + log.task + " starting at " + log.startTime);
-      const day = log.startTime.split('T')[0];
-      if (!timePerIssuePerDay[issue_id]) {
-        timePerIssuePerDay[issue_id] = {};
+      console.log("Adding " + taskId + " starting at " + log.startTime);
+
+      const day = Utils.getDay(log.startTime);
+      if (!timePerIssuePerDay[issueId]) {
+        timePerIssuePerDay[issueId] = {};
       }
-      if (!timePerIssuePerDay[issue_id][day]) {
-        timePerIssuePerDay[issue_id][day] = 0;
+      if (!timePerIssuePerDay[issueId][day]) {
+        timePerIssuePerDay[issueId][day] = 0;
       }
-      timePerIssuePerDay[issue_id][day] += log.timeElapsed;
+      timePerIssuePerDay[issueId][day] += log.timeElapsed;
     });
     console.log(JSON.stringify(timePerIssuePerDay));
     const requests = [];

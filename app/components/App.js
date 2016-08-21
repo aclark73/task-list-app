@@ -462,8 +462,10 @@ export default class App extends Component {
     this.startTimer();
   }
   log() {
+    const task = this.getTask(this.state.taskId);
     const logEntry = {
-      task: this.state.taskId,
+      taskId: this.state.taskId,
+      taskName: Task.getLabel(task), 
       startTime: this.state.startTime.toISOString(),
       endTime: this.state.lastWorkTime.toISOString(),
       timeElapsed: this.state.timeElapsed
