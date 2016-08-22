@@ -395,7 +395,7 @@ export default class App extends Component {
         this.waitForUser("Time for a break!", "paused");
         break;
       case "paused":
-        this.waitForUser("Ready to go!", "working");
+        this.waitForUser("Ready to go!", "paused");
         break;
       case "stopped":
         this.waitForUser("Hello!", "stopped");
