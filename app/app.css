@@ -300,11 +300,11 @@ body {
 }
 
 .alert li + li {
-  padding: 20%;
+  padding: 50% 20%;
   font-size: 24px;
   text-align: center;
   background: #fff;
-  color: #f63;
+  color: #963;
 }
 
 .popup-backdrop, .popup-click {
@@ -354,6 +354,14 @@ body {
   4% { background: #fff; }
   to { background: #fff; }
 }
+@keyframes flasher3 {  
+  from { background: #fc0; }
+  5% { background: #f00; }
+  10% { background: #fc0; }
+  15% { background: #fff; }
+  to { background: #fff; }
+}
+
 /*
 .show-alert .alert {
   animation-name: bouncer;
@@ -369,9 +377,9 @@ body {
 }
 */
 .show-alert .alert li + li {
-  animation-name: flasher2;
+  animation-name: flasher3;
   animation-iteration-count: infinite;
-  animation-timing-function: linear;
+  animation-timing-function: step-end;
   animation-duration: 10s;
 }
 
