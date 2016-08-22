@@ -32,13 +32,18 @@ export default class Log extends Component {
     const rows = [];
     days.forEach((day) => {
       rows.push((
-        <tr key={day.day}><th colspan="3">{day.day}</th></tr>
+        <tr key={day.day}><th colSpan="3">{day.day}</th></tr>
       ));
       Array.prototype.push.apply(rows, day.entries);
     });
     
     return (
-      <table>{rows}</table>
+      <table>
+        <thead><tr><th>Date</th><th>Task</th><th>Time Spent</th></tr></thead>
+        <tbody>
+          {rows}
+        </tbody>
+      </table>
     );    
   }
 }

@@ -464,6 +464,10 @@ body {
     background: #ff9;
 }
 
+.log table {
+  width: 100%;
+}
+
 .log li.day {
   padding: 0;
 }

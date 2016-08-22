@@ -8,7 +8,7 @@ export default class TaskList extends Component {
   render() {
     const rows = [];
     console.log("render tasklist");
-    if (this.props.view == 'projects') {
+    if (this.props.context.view == 'projects') {
       this.props.projects.forEach( (project) => {
         rows.push(
           <ProjectWidget key={Task.getUID(project)} task={project} context={this.props.context} />

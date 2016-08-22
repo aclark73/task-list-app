@@ -192,7 +192,7 @@ export default class App extends Component {
     };
 
     const taskList = (
-      <TaskList projects={this.state.project} tasks={this.state.tasks}
+      <TaskList projects={this.state.projects} tasks={this.state.tasks}
         context={context} />
     );
     /*
