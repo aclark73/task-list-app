@@ -80,12 +80,19 @@ export default class GitHubClient {
 
     fetch() {
         return new Promise(function(resolve, reject) {
-            if (DEBUG) {
+            console.log("Fetching github");
+            if (false) {
                 fs.readFile('github.json', 'utf8', function (err,data) {
                     if (err) {
                         reject(err);
                     } else {
-                        resolve(JSON.parse(data));
+                        try {
+                            resolve(JSON.parse(data));
+                        }
+                        catch (e) {
+                            console.log(data);
+                            reject(e);
+                        }
                     }
                 });
             } else {
@@ -102,6 +109,7 @@ export default class GitHubClient {
                             resolve(JSON.parse(body));
                         }
                         catch (e) {
+                            console.log(body);
                             reject(e);
                         }
                     }

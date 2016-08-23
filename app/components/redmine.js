@@ -82,6 +82,7 @@ export default class RedmineClient {
 
     fetch() {
         return new Promise(function(resolve, reject) {
+            console.log("Fetching redmine");
             if (DEBUG) {
                 fs.readFile('redmine.json', 'utf8', function (err,data) {
                     if (err) {
@@ -153,7 +154,7 @@ export default class RedmineClient {
       }
       timePerIssuePerDay[issueId][day] += log.timeElapsed;
     });
-    console.log(JSON.stringify(timePerIssuePerDay));
+    // console.log(JSON.stringify(timePerIssuePerDay));
     const requests = [];
     for (let issue_id in timePerIssuePerDay) {
       for (let day in timePerIssuePerDay[issue_id]) {
@@ -168,18 +169,22 @@ export default class RedmineClient {
         requests.push(new Promise(function(resolve, reject) {
           console.log(JSON.stringify(rest_dict));
           console.log("Posting");
-          request({
-            method: 'POST',
-            url: TIME_URL,
-            data: rest_dict
-          }, function(err, res, body) {
-            console.log(res);
-              if (err) {
-                  reject(err);
-              } else {
-                  resolve();
-              }
-          });
+          if (DEBUG) {
+            resolve();
+          } else {
+            request({
+              method: 'POST',
+              url: TIME_URL,
+              data: rest_dict
+            }, function(err, res, body) {
+              console.log(res);
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+          }
         }));
       }
     }
