@@ -276,11 +276,11 @@ export default class App extends Component {
     );
     const popups = (
       <div>
+        <div className="popup-backdrop"></div>
+        <div className="popup-click" onClick={actions.dismissPopups}></div>
         <div className="popup messages"><ul><li className="header">Messages</li>{messageRows}</ul></div>
         <div className="popup log"><ul><li className="header">Log</li>{logDisplay}</ul></div>
         <div className="popup alert"><ul><li className="header">Alert</li><li>{this.state.alertMessage}</li></ul></div>
-        <div className="popup-backdrop"></div>
-        <div className="popup-click" onClick={actions.dismissPopups}></div>
       </div>
     );
     return(
@@ -471,7 +471,7 @@ export default class App extends Component {
       timeElapsed: this.state.timeElapsed
     }
     this.setState({
-      log: this.state.log.concat([logEntry])
+      log: [logEntry].concat(this.state.log)
     }, (err) => {
       if (!err) { this.save(); }
     });

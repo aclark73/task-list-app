@@ -245,13 +245,21 @@ body {
     font-size: 24px;
 }
 
-
 .popup {
   display: none;
-  position: absolute;
+  position: fixed;
   z-index: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
   left: 5%;
   right: 5%;
+  top: 20%;
+  max-height: 75%;
+
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px 1px rgba(0,0,0,.2);
 }
 
 .popup ul {
@@ -259,13 +267,6 @@ body {
   padding: 0;
   font-size: 13px;
   margin: 0;
-}
-
-.popup > ul {
-  background: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 1px 2px 1px rgba(0,0,0,.2);
 }
 
 .popup li {
@@ -279,15 +280,8 @@ body {
     font-size: 12px;
 }
 
-.popup li:first-child {
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-}
-
 .popup li:last-child {
   border-bottom: none;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
 }
 
 .show-messages .messages {
@@ -464,23 +458,21 @@ body {
     background: #ff9;
 }
 
+.log tbody th {
+    background: #ddd;
+    text-align: left;
+}
+
 .log table {
+  border-spacing: 0;
+  border-collapse: collapse;
   width: 100%;
 }
-
-.log li.day {
-  padding: 0;
-}
-.log h4 {
-  margin: 0;
-  padding: 0 10px;
-  border-bottom: 1px solid #ddd;
-}
-.log li ul {
-    border-left: 5px solid #eee;
-}
-.log li li {
-  padding-left: 10px;
+.log td {
+  vertical-align: top;
+  border: 1px solid #ccc;
 }
 
-
+.log td.task {
+    white-space: normal;
+}

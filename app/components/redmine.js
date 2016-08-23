@@ -24,7 +24,7 @@ export default class RedmineClient {
             title: '',
             tasks: []
         };
-    };
+    }
 
     createTask(json) {
         /*

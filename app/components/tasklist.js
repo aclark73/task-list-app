@@ -5,9 +5,16 @@ import { TaskWidget, ProjectWidget } from './widgets';
 
 export default class TaskList extends Component {
 
+  shouldComponentUpdate(nextProps, nextState) {
+    // console.log("nextProps.context: " + JSON.stringify(nextProps.context));
+    return (nextProps.projects != this.props.projects) ||
+        (nextProps.tasks != this.props.tasks) ||
+        (JSON.stringify(nextProps.context) != JSON.stringify(this.props.context));
+  }
+
   render() {
     const rows = [];
-    console.log("render tasklist");
+    console.log("rendering tasklist");
     if (this.props.context.view == 'projects') {
       this.props.projects.forEach( (project) => {
         rows.push(
@@ -21,6 +28,7 @@ export default class TaskList extends Component {
         );
       });
     }
+    // console.log("done rendering tasklist?");
     return (
       <div>{rows}</div>
     );
