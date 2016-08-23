@@ -193,7 +193,7 @@ export default class RedmineClient {
       // Make copy of log entry, since this is from state and thus immutable
       return logs.map((log) => {
         const l2 = Object.assign({}, log);
-        const source = this.getSource(l2.task);
+        const source = this.getSource(l2.taskId);
         if (source == this.source && !l2.uploadTime) {
           l2.uploadTime = uploadTime;
         }
