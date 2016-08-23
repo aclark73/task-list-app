@@ -89,22 +89,6 @@ export default class App extends Component {
     this.setState(s);
     return Promise.resolve();
   }
-  loadRedmine() {
-    const redmine = new RedmineClient();
-    return redmine.load().then( (data) => {
-      this.setState({projects: data.projects, tasks: data.tasks});
-    }, (err) => {
-      this.addMessage("Error loading Redmine: " + err);
-    });
-  }
-  loadGitHub() {
-    const github = new GitHubClient();
-    return github.load().then( (data) => {
-      this.setState({projects: data.projects, tasks: data.tasks});
-    }, (err) => {
-      this.addMessage("Error loading GitHub: " + err);
-    });
-  }
   uploadLogs() {
     const redmine = new RedmineClient();
     redmine.upload(this.state.log).then( (updatedLog) => {
