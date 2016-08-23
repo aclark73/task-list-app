@@ -1,4 +1,8 @@
 const Utils = {
+  pad2: function(d) {
+    return (d >= 10 ? '' : '0') + d;
+  },
+
   formatTimespan: function(t) {
     var neg = (t < 0);
     t = Math.abs(t);
@@ -6,24 +10,25 @@ const Utils = {
     var m = (Math.trunc(t/60)%60);
     var h = Math.trunc(t/3600);
 
-    function pad2(d) {
-      return (d >= 10 ? '' : '0') + d;
-    }
-
     var sign = neg ? '-' : '';
     if (h > 0) {
-      return sign + h + ':' + pad2(m) + ':' + pad2(s);
+      return sign + h + ':' + Utils.pad2(m) + ':' + Utils.pad2(s);
     } else {
-      return sign + m + ':' + pad2(s);
+      return sign + m + ':' + Utils.pad2(s);
     }
   },
   
   getDay: function(timestamp) {
-    return timestamp.split('T')[0];
+    const d = new Date(timestamp);
+    return "" + d.getFullYear() + "-" +
+      Utils.pad2(d.getMonth() + 1) + "-" +
+      Utils.pad2(d.getDate());
   },
   
   getTime: function(timestamp) {
-    return timestamp.split('T')[1].split('.')[0];
+    const d = new Date(timestamp);
+    return "" + Utils.pad2(d.getHours()) + ":" +
+      Utils.pad2(d.getMinutes());
   },
   
   timePerTaskPerDay: function(log) {
