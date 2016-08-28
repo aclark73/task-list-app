@@ -19,6 +19,7 @@ const Utils = {
   },
   
   getDay: function(timestamp) {
+    if (!timestamp) { return '-'; }
     const d = new Date(timestamp);
     return "" + d.getFullYear() + "-" +
       Utils.pad2(d.getMonth() + 1) + "-" +
@@ -26,6 +27,7 @@ const Utils = {
   },
   
   getTime: function(timestamp) {
+    if (!timestamp) { return '-'; }
     const d = new Date(timestamp);
     return "" + Utils.pad2(d.getHours()) + ":" +
       Utils.pad2(d.getMinutes());

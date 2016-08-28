@@ -80,11 +80,14 @@ body {
   background: #9f9;
 }
 
-.timer-btn-stop, .timer-btn-pause {
+.timer-btns-side {
   float: right;
+  width: 75px;
+}
+
+.timer-btn-stop, .timer-btn-rewind {
   font-weight: bold;
   text-align: center;
-  width: 75px;
 }
 
 .timer-btn-stop {
@@ -103,9 +106,25 @@ body {
   cursor: inherit;
 }
 
+.timer-btn-rewind {
+  border-color: #999;
+  color: #777;
+  background: #eee;
+  font-size: 85%;
+  padding: 4px;
+}
+.timer-btn-rewind:hover {
+  background: #ccc;
+}
+.stopped .timer-btn-rewind {
+  background: #eee;
+  color: #999;
+  cursor: inherit;
+}
+
 .task-list {
     position: fixed;
-    top: 8em;
+    top: 9em;
     bottom: 0;
     left: 8px;
     right: 0;
@@ -174,6 +193,13 @@ body {
     padding: .1em .3em;
     line-height: 1em;
 }
+
+@media (max-width: 400px) {
+    .toolbar .btn span  {
+        display: none;
+    }
+}
+
 
 .btns {
     display: inline-block;

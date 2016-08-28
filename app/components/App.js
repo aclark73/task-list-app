@@ -8,6 +8,7 @@ import Configstore from 'configstore';
 import { LogChart } from './chart';
 import Log from './log';
 import TaskList from './tasklist';
+import Utils from './utils';
 // import pkg from '../../package.json';
 const pkg = {name: 'task-list-app'};
 
@@ -19,6 +20,7 @@ export default class App extends Component {
       breakTime: 60,
       alertTime: 60,
       idleTime: 6,
+      rewindTime: 10,
 
       projects: [],
       tasks: [],
@@ -50,6 +52,7 @@ export default class App extends Component {
       start: this.start.bind(this),
       stop: this.stop.bind(this),
       pause: this.pause.bind(this),
+      rewind: this.rewind.bind(this),
       setTask: this.setTask.bind(this),
       refresh: this.refresh.bind(this),
       save: this.save.bind(this),
@@ -130,24 +133,6 @@ export default class App extends Component {
   handleRowClick(row) {
     console.log("Clicked on row: " + row);
   }
-  formatTime(t) {
-    var neg = (t < 0);
-    t = Math.abs(t);
-    var s = t%60;
-    var m = (Math.trunc(t/60)%60);
-    var h = Math.trunc(t/3600);
-
-    function pad2(d) {
-      return (d >= 10 ? '' : '0') + d;
-    }
-
-    var sign = neg ? '-' : '';
-    if (h > 0) {
-      return sign + h + ':' + pad2(m) + ':' + pad2(s);
-    } else {
-      return sign + m + ':' + pad2(s);
-    }
-  }
   getTask(taskId) {
     var foundTask = null;
     function findTask(task) {
@@ -212,8 +197,9 @@ export default class App extends Component {
         <li key={i}>{message}</li>
       );
     });
-    const timeElapsed = this.formatTime(this.state.timeElapsed);
-    const timeRemaining = this.formatTime(this.state.timeRemaining);
+    const startTime = Utils.getTime(this.state.startTime);
+    const timeElapsed = Utils.formatTimespan(this.state.timeElapsed);
+    const timeRemaining = Utils.formatTimespan(this.state.timeRemaining);
     var idleLevel = '';
     if (this.state.timeIdle > 5) { idleLevel = 'idle-1'; }
     if (this.state.timeIdle > 10) { idleLevel = 'idle-2'; }
@@ -270,14 +256,21 @@ export default class App extends Component {
     return(
       <div className={className} onClick={actions.click}>
         {toolbar}
-        <div className="btn timer-btn timer-btn-stop" onClick={actions.stop}>
-          Stop
+        <div className="timer-btns-side">
+          <div className="btn timer-btn timer-btn-stop" onClick={actions.stop}>
+            Stop
+          </div>
+          <div className="btn timer-btn timer-btn-rewind" onClick={actions.rewind}>
+            Rewind
+          </div>
         </div>
         <div className="btn timer-btn timer-btn-task" onClick={actions.pause}>
           <div className="time-remaining"><span>{timeRemaining}</span></div>
           <div className="current-task"><label>Task</label><span>{currentTask}</span></div>
-          <div className="time-elapsed"><label>Elapsed</label><span>{timeElapsed}</span></div>
-          {/* <div className="time-idle"><label>Idle</label><span>{this.formatTime(this.state.timeIdle)}</span></div> */}
+          <div className="started-elapsed">
+            <label>Started</label><span>{startTime}</span>
+            <label>Elapsed</label><span>{timeElapsed}</span>
+          </div>
         </div>
         
         <div className="task-list"><ul className={this.state.view}>{taskList}</ul></div>
@@ -444,6 +437,14 @@ export default class App extends Component {
       startTime: null,
     });
     this.startTimer();
+  }
+  rewind() {
+    if (this.state.startTime) {
+      this.setState({
+        startTime: new Date(this.state.startTime - 1000*60*this.state.rewindTime),
+        timeElapsed: this.state.timeElapsed + 60*this.state.rewindTime
+      });
+    }
   }
   log() {
     const task = this.getTask(this.state.taskId);
