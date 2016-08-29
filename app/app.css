@@ -71,7 +71,7 @@ body {
 
 .btn.timer-btn-task {
   display: block;
-  margin-right: 100px;
+  margin-right: 80px;
   border: 1px solid #B5B5B5;
   background: #ddd;
   color: #666;
@@ -257,13 +257,8 @@ body {
     left: 19px;
 }
 
-.task-item .task-label {
-  margin-left: 19px;
-}
-
 .task-item.project .task-label {
-    margin-left: 38px;
-    /* background: #f6f6f6; */
+    margin-left: 19px;
     font-weight: bold;
 }
 

@@ -52,7 +52,6 @@ export class TaskWidget extends Component {
       <li>
         <div className={className}>
           {toggleWidget}
-          <span className="btn btn-start" onClick={start}><i className="fa fa-clock-o"></i></span>
           <div className="task-label" onClick={select} onDoubleClick={start}>
             {project_label}
             {updated_label}
