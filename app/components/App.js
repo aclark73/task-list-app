@@ -87,9 +87,19 @@ export default class App extends Component {
     this.conf.set('log', this.state.log);
   }
   load() {
-    const s = {};
-    s.log = this.conf.get('log') || this.state.log;
-    this.setState(s);
+    let log = this.conf.get('log');
+    if (log) {
+      log.sort(function(a, b) {
+        const as = a.startTime;
+        const bs = b.startTime;
+        if (as < bs) { return 1; }
+        else if (as > bs) { return -1; }
+        else { return 0; }
+      });
+      this.setState({
+        log: log
+      });
+    }
     return Promise.resolve();
   }
   uploadLogs() {

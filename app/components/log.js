@@ -21,31 +21,29 @@ export default class Log extends Component {
   render() {
     // group by day
     const days = [];
+    const entriesByDay = {};
     let lastDay = -1;
     this.props.log.forEach( (logEntry, i) => {
       const day = Utils.getDay(logEntry.startTime);
       // create new day if necessary
-      if (lastDay < 0 || days[lastDay].day != day) {
-        days.push({
-          day: day,
-          entries: []
-        });
-        lastDay = days.length - 1;
+      if (!entriesByDay[day]) {
+        days.push(day);
+        entriesByDay[day] = [];
       }
-      days[lastDay].entries.push(logEntry);
+      entriesByDay[day].push(logEntry);
     });
     const rows = [];
     days.forEach((day) => {
       // append the day and its rows
       rows.push((
-        <tr key={day.day}><th colSpan="5">{day.day}</th></tr>
+        <tr key={day}><th colSpan="5">{day}</th></tr>
       ));
-      day.entries.forEach( (logEntry, i) => {
+      entriesByDay[day].forEach( (logEntry, i) => {
         const label = logEntry.taskName || logEntry.task;
         const duration = this.getDuration(logEntry.startTime, logEntry.endTime);
         const utilization = Math.floor((logEntry.timeElapsed * 100) / duration);
         rows.push((
-          <tr key={day.day + i}>
+          <tr key={day + 'r' + i}>
             <td className="time">{Utils.getTime(logEntry.startTime)}</td>
             <td className="task">{label}</td>
             <td className="time">{Utils.formatTimespan(duration)}</td>
