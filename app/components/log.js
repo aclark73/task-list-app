@@ -35,29 +35,42 @@ export default class Log extends Component {
     const rows = [];
     days.forEach((day) => {
       // append the day and its rows
-      rows.push((
-        <tr key={day}><th colSpan="5">{day}</th></tr>
-      ));
+      const entryRows = [];
+      const dayStats = {
+        duration: 0,
+        worked: 0
+      };
       entriesByDay[day].forEach( (logEntry, i) => {
         const label = logEntry.taskName || logEntry.task;
         const duration = this.getDuration(logEntry.startTime, logEntry.endTime);
         const utilization = Math.floor((logEntry.timeElapsed * 100) / duration);
-        rows.push((
+        dayStats.duration += duration;
+        dayStats.worked += logEntry.timeElapsed;
+        entryRows.push((
           <tr key={day + 'r' + i}>
             <td className="time">{Utils.getTime(logEntry.startTime)}</td>
             <td className="task">{label}</td>
-            <td className="time">{Utils.formatTimespan(duration)}</td>
+            <td className="duration">{Utils.formatTimespan(duration)}</td>
             <td className="work">{Utils.formatTimespan(logEntry.timeElapsed)}</td>
             <td className="util">{utilization}%</td>
           </tr>
         ));
       });
+      rows.push((
+        <tr key={day}>
+          <th colSpan="2">{day}</th>
+          <th>{Utils.formatTimespan(dayStats.duration)}</th>
+          <th>{Utils.formatTimespan(dayStats.worked)}</th>
+          <th></th>
+        </tr>
+      ));
+      Array.prototype.push.apply(rows, entryRows);
     });
     
     return (
       <li>
         <table>
-          <thead><tr><th>Time</th><th>Task</th><th>Time</th><th>Work</th><th>Util</th></tr></thead>
+          <thead><tr><th>Time</th><th>Task</th><th>Total</th><th>Work</th><th>Util</th></tr></thead>
           <tbody>
             {rows}
           </tbody>
