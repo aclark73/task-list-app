@@ -85,6 +85,10 @@ body {
   width: 75px;
 }
 
+.timer-btns-side .btn {
+  margin-bottom: 5px;
+}
+
 .timer-btn-stop, .timer-btn-rewind {
   font-weight: bold;
   text-align: center;
@@ -147,6 +151,7 @@ body {
 .task-item {
     /* line-height: 1em; */
     white-space: normal;
+    margin-bottom: 2px;
 }
 
 .task-item .btn, .task-item .task-label {
@@ -158,7 +163,6 @@ body {
 }
 
 .task-item .task-label {
-    margin-bottom: 2px;
     padding-left: 4px;
 }
 
