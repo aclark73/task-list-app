@@ -40,6 +40,7 @@ export default class App extends Component {
 
       log: [],
       showLog: false,
+      showChart: false,
       messages: [],
       showMessages: false,
       
@@ -60,6 +61,7 @@ export default class App extends Component {
       toggleView: this.toggleView.bind(this),
       toggleCompactView: this.toggleCompactView.bind(this),
       showLog: this.showLog.bind(this),
+      showChart: this.showChart.bind(this),
       showMessages: this.showMessages.bind(this),
       dismissPopups: this.dismissPopups.bind(this)
     };
@@ -174,33 +176,14 @@ export default class App extends Component {
       <TaskList projects={this.state.projects} tasks={this.state.tasks}
         context={context} />
     );
-    /*
-    const rows = [];
-    if (this.state.view == 'projects') {
-      this.state.projects.forEach( (project) => {
-        rows.push(
-          <ProjectWidget key={Task.getUID(project)} task={project} context={context} />
-        );
-      });
-    } else {
-      this.state.tasks.forEach( (task) => {
-        rows.push(
-          <TaskWidget key={Task.getUID(task)} task={task} context={context} />
-        );
-      });
-    }
-    */
+
     const logDisplay = (
       <Log log={this.state.log}/>
     );
-    /*
-    const logRows = []
-    this.state.log.forEach( (logEntry, i) => {
-      logRows.push(
-        <li key={i}>{logEntry.task} ({this.formatTime(logEntry.timeElapsed)})</li>
-      );
-    });
-    */
+    const logChart = (
+      <LogChart log={this.state.log}/>
+    );
+
     const messageRows = []
     this.state.messages.forEach( (message, i) => {
       messageRows.push(
@@ -221,8 +204,9 @@ export default class App extends Component {
       {
        'has-task': this.state.taskId,
        'compact': this.state.compactView,
-       'show-popup': (this.state.showLog || this.state.showMessages || this.state.showAlert),
+       'show-popup': (this.state.showLog || this.state.showChart || this.state.showMessages || this.state.showAlert),
        'show-log': this.state.showLog,
+       'show-timeline': this.state.showChart,
        'show-messages': this.state.showMessages,
        'show-alert': this.state.showAlert
       });
@@ -245,6 +229,8 @@ export default class App extends Component {
             <i className="fa fa-database"></i> Upload</span>
         </div>
         <div className="btns">
+          <span className="btn" title="Show chart" onClick={actions.showChart}>
+            <i className="fa fa-area-chart"></i> Debug</span>
           <span className="btn" title="Show debug messages" onClick={actions.showMessages}>
             <i className="fa fa-exclamation-triangle"></i> Debug</span>
           <span className="btn" title="Toggle group by project" onClick={actions.toggleView}>
@@ -260,6 +246,7 @@ export default class App extends Component {
         <div className="popup-click" onClick={actions.dismissPopups}></div>
         <div className="popup messages"><ul><li className="header">Messages</li>{messageRows}</ul></div>
         <div className="popup log"><ul><li className="header">Log</li>{logDisplay}</ul></div>
+        <div className="popup chart"><ul><li className="header">Log Chart</li>{logChart}</ul></div>
         <div className="popup alert"><ul><li className="header">Alert</li><li>{this.state.alertMessage}</li></ul></div>
       </div>
     );
@@ -322,6 +309,11 @@ export default class App extends Component {
       showLog: true
     });
   }
+  showChart() {
+    this.setState({
+      showChart: true
+    });
+  }
   showMessages() {
     this.setState({
       showMessages: true
@@ -330,6 +322,7 @@ export default class App extends Component {
   dismissPopups() {
     this.setState({
       showLog: false,
+      showChart: false,
       showMessages: false,
       showAlert: false
     });

@@ -15,6 +15,9 @@ export default class RedmineClient {
 
     constructor() {
         this.source = 'redmine';
+        if (DEBUG) {
+            console.log("RedmineClient in DEBUG");
+        }
     }
 
     createProject(name) {
@@ -168,10 +171,10 @@ export default class RedmineClient {
         };
         requests.push(new Promise(function(resolve, reject) {
           console.log(JSON.stringify(rest_dict));
-          console.log("Posting");
           if (DEBUG) {
             resolve();
           } else {
+            console.log("Posting");
             request({
               method: 'POST',
               url: TIME_URL,
