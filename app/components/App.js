@@ -27,6 +27,7 @@ export default class App extends Component {
 
       view: 'projects',
       compactView: false,
+      pinnedTasks: [],
       
       taskId: null,
       taskLabel: '-',
@@ -63,7 +64,9 @@ export default class App extends Component {
       showLog: this.showLog.bind(this),
       showChart: this.showChart.bind(this),
       showMessages: this.showMessages.bind(this),
-      dismissPopups: this.dismissPopups.bind(this)
+      dismissPopups: this.dismissPopups.bind(this),
+      pinTask: this.pinTask.bind(this),
+      unpinTask: this.unpinTask.bind(this),
     };
     this.conf = new Configstore(pkg.name);
   }
@@ -174,6 +177,7 @@ export default class App extends Component {
 
     const taskList = (
       <TaskList projects={this.state.projects} tasks={this.state.tasks}
+        pinnedTasks={this.state.pinnedTasks}
         context={context} />
     );
 
@@ -328,6 +332,24 @@ export default class App extends Component {
     });
     if (this.state.afterWaiting) {
       this.afterWaiting(this.state.afterWaiting);
+    }
+  }
+  pinTask(taskId) {
+    const pinnedTasks = this.state.pinnedTasks;
+    this.setState({
+      pinnedTasks: pinnedTasks.concat([taskId])
+    });
+  }
+  unpinTask(taskId) {
+    const pinnedTasks = this.state.pinnedTasks;
+    const idx = pinnedTasks.indexOf(taskId);
+    if (idx > -1) {
+      // Make a copy
+      const pinnedTasks2 = pinnedTasks.slice();
+      pinnedTasks2.splice(idx, 1);
+      this.setState({
+        pinnedTasks: pinnedTasks2
+      });
     }
   }
   afterWaiting(next) {
