@@ -67,6 +67,7 @@ body {
   border-style: solid;
   border-color: rgba(0,0,0,.2);
   line-height: 1em;
+  cursor: inherit;
 }
 
 .btn.timer-btn-task {
@@ -193,9 +194,14 @@ body {
 
 .toolbar .btn {
     display: inline-block;
-    font-size: 85%;
+    font-size: 13px;
     padding: .1em .3em;
     line-height: 1em;
+    vertical-align: bottom;
+}
+
+.toolbar .btn span {
+    font-size: 9px;
 }
 
 @media (max-width: 400px) {

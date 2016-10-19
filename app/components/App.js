@@ -5,7 +5,7 @@ import Task from './task';
 import { TaskWidget, ProjectWidget } from './widgets';
 import classNames from 'classnames';
 import Configstore from 'configstore';
-import { LogChart } from './chart';
+// import { LogChart } from './chart';
 import Log from './log';
 import TaskList from './tasklist';
 import Utils from './utils';
@@ -184,9 +184,8 @@ export default class App extends Component {
     const logDisplay = (
       <Log log={this.state.log}/>
     );
-    const logChart = (
-      <LogChart log={this.state.log}/>
-    );
+    const logChart = '';
+    //  <LogChart log={this.state.log}/>
 
     const messageRows = []
     this.state.messages.forEach( (message, i) => {
@@ -233,8 +232,10 @@ export default class App extends Component {
             <i className="fa fa-database"></i> Upload</span>
         </div>
         <div className="btns">
+        {/*
           <span className="btn" title="Show chart" onClick={actions.showChart}>
-            <i className="fa fa-area-chart"></i> Debug</span>
+            <i className="fa fa-area-chart"></i> Chart</span>
+        */}
           <span className="btn" title="Show debug messages" onClick={actions.showMessages}>
             <i className="fa fa-exclamation-triangle"></i> Debug</span>
           <span className="btn" title="Toggle group by project" onClick={actions.toggleView}>
@@ -369,6 +370,8 @@ export default class App extends Component {
     }
   }
   waitForUser(message, next) {
+    // Pause timer and show the message to the user. When the user
+    // dismisses the dialog, go to the specified next state.
     this.setState({
       showAlert: true,
       alertMessage: message,
@@ -405,7 +408,18 @@ export default class App extends Component {
     }
     else if (this.state.currently == "working") {
       state.timeElapsed = this.state.timeElapsed + 1;
-      state.lastWorkTime = new Date();
+      // Check for long gap (system sleep?)
+      const now = new Date();
+      if (state.lastWorkTime) {
+        const gap = now - state.lastWorkTime();
+        console.log("Gap is " + gap);
+        if (gap > 60000) {
+          console.log("Stopping due to time gap of " + gap);
+          this.waitForUser("Stopping due to time gap of " + gap, "stopped");
+          return;
+        }
+      }
+      state.lastWorkTime = now;
     }
     if (this.state.timeRemaining > 0) {
       state.timeRemaining = this.state.timeRemaining - 1;
