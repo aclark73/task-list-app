@@ -15,6 +15,7 @@ const pkg = {name: 'task-list-app'};
 export default class App extends Component {
   constructor(props) {
     super(props);
+    window.app = this;
     this.state = {
       workTime: 30*60,
       breakTime: 60,
@@ -130,6 +131,7 @@ export default class App extends Component {
       Array.prototype.push.apply(projects, data.projects);
       Array.prototype.push.apply(tasks, data.tasks);
     }).then( () => {
+      this.sortTasks(projects, tasks);
       this.setState({projects: projects, tasks: tasks});
     });
     /*
@@ -145,21 +147,38 @@ export default class App extends Component {
     });
     */
   }
+  sortTasks(projects, tasks) {
+    const lastWork = Utils.lastWorkPerTask(this.state.log);
+    tasks.forEach((task) => {
+      const uid = Task.getUID(task);
+      if (lastWork[uid] && lastWork[uid] > task.updated_on) {
+        task.updated_on = lastWork[uid];
+      }
+    });
+    function taskSort(t1, t2) {
+      if (t2.updated_on > t1.updated_on) { return 1; }
+      else if (t1.updated_on > t2.updated_on) { return -1; }
+      else { return 0; }
+    }
+    tasks.sort(taskSort);
+  }
   handleRowClick(row) {
     console.log("Clicked on row: " + row);
   }
   getTask(taskId) {
     var foundTask = null;
-    function findTask(task) {
+    // Function to check whether a given task matches
+    function matches(task) {
       if (task && Task.getUID(task) == taskId) {
         foundTask = task;
         return true;
       }
     }
+    // Run the function across all tasks until found
     this.state.projects.some( (project) => {
-      return findTask(project) ||
+      return matches(project) ||
         project.tasks.some( (task) => {
-          return findTask(task);
+          return matches(task);
         });
     });
     return foundTask;
@@ -232,10 +251,6 @@ export default class App extends Component {
             <i className="fa fa-database"></i> Upload</span>
         </div>
         <div className="btns">
-        {/*
-          <span className="btn" title="Show chart" onClick={actions.showChart}>
-            <i className="fa fa-area-chart"></i> Chart</span>
-        */}
           <span className="btn" title="Show debug messages" onClick={actions.showMessages}>
             <i className="fa fa-exclamation-triangle"></i> Debug</span>
           <span className="btn" title="Toggle group by project" onClick={actions.toggleView}>

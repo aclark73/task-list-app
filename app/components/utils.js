@@ -67,6 +67,17 @@ const Utils = {
     });
     console.log(days);
     return days;
+  },
+  
+  lastWorkPerTask: function(log) {
+    const lastWork = {};
+    log.forEach((logEntry) => {
+      const taskId = logEntry.task;
+      if (!lastWork[taskId] || lastWork[taskId] < logEntry.startTime) {
+        lastWork[taskId] = logEntry.startTime;
+      }
+    });
+    return lastWork;
   }
   
 };
