@@ -102,6 +102,11 @@ export default class App extends Component {
         else if (as > bs) { return -1; }
         else { return 0; }
       });
+      log.forEach(function(logEntry) {
+        if (!logEntry.taskId) {
+          logEntry.taskId = logEntry.task;
+        }
+      });
       this.setState({
         log: log
       });

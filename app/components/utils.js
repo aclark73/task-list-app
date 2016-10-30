@@ -37,7 +37,7 @@ const Utils = {
     const tasks = {};
     const days = {};
     log.forEach((logEntry) => {
-      const task_id = logEntry.task;
+      const task_id = logEntry.taskId;
       const day = logEntry.startTime.split('T')[0];
       days[day] = 1;
       if (!tasks[task_id]) {
@@ -55,7 +55,7 @@ const Utils = {
   timePerDayPerTask: function(log) {
     const days = {};
     log.forEach((logEntry) => {
-      const task_id = logEntry.task;
+      const task_id = logEntry.taskId;
       const day = logEntry.startTime.split('T')[0];
       if (!days[day]) {
         days[day] = {};
@@ -72,7 +72,7 @@ const Utils = {
   lastWorkPerTask: function(log) {
     const lastWork = {};
     log.forEach((logEntry) => {
-      const taskId = logEntry.task;
+      const taskId = logEntry.taskId;
       if (!lastWork[taskId] || lastWork[taskId] < logEntry.startTime) {
         lastWork[taskId] = logEntry.startTime;
       }
