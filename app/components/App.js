@@ -287,15 +287,17 @@ export default class App extends Component {
           </div>
         </div>
         <div className="btn timer-btn timer-btn-task" onClick={actions.pause}>
+          <div className="times">
+            <div className="start-time">
+              <label>Started</label><div>{startTime}</div>
+            </div>
+            <div className="time-elapsed">
+              <label>Elapsed</label><div>{timeElapsed}</div>
+            </div>
+          </div>
           <div className="time-remaining"><span>{timeRemaining}</span></div>
           <div className="current-task">
-            <label>Task</label><span>{currentTask}</span>
-          </div>
-          <div className="start-time">
-            <label>Started</label><span>{startTime}</span>
-          </div>
-          <div className="time-elapsed">
-            <label>Elapsed</label><span>{timeElapsed}</span>
+            {currentTask}
           </div>
         </div>
         

@@ -81,6 +81,16 @@ body {
   background: #9f9;
 }
 
+.times {
+  float: right;
+  margin-left: 8px;
+}
+
+.current-task {
+  white-space: normal;
+  max-height: 2.5em;
+}
+
 .timer-btns-side {
   float: right;
   width: 75px;
@@ -129,7 +139,7 @@ body {
 
 .task-list {
     position: fixed;
-    top: 9em;
+    top: 8.2em;
     bottom: 0;
     left: 8px;
     right: 0;
