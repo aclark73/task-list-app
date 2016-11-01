@@ -33,7 +33,7 @@ body {
 .timer-btn > div {
   white-space: nowrap;
   text-overflow: ellipsis;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .timer-btn {
@@ -69,7 +69,10 @@ body {
   line-height: 1em;
   cursor: inherit;
 }
-
+.timer-btn label {
+  margin-right: -3px;
+  display: block;
+}
 .btn.timer-btn-task {
   display: block;
   margin-right: 80px;
@@ -84,11 +87,13 @@ body {
 .times {
   float: right;
   margin-left: 8px;
+  text-align: right;
+  padding-right: 3px;
 }
 
 .current-task {
-  white-space: normal;
-  max-height: 2.5em;
+  white-space: normal !important;
+  height: 2.5em;
 }
 
 .timer-btns-side {
@@ -206,20 +211,24 @@ body {
     display: inline-block;
     font-size: 13px;
     padding: .1em .3em;
-    line-height: 1em;
     vertical-align: bottom;
 }
 
-.toolbar .btn span {
+.toolbar .btn-label {
     font-size: 9px;
 }
 
-@media (max-width: 400px) {
-    .toolbar .btn span  {
+@media (max-width: 330px) {
+    .toolbar .btn-sm .btn-label  {
         display: none;
     }
 }
 
+@media (max-width: 240px) {
+    .toolbar .btn-lg .btn-label  {
+        display: none;
+    }
+}
 
 .btns {
     display: inline-block;
@@ -282,8 +291,11 @@ body {
     font-weight: bold;
 }
 
-.time-remaining {
+.time-remaining, .time-idle {
     font-size: 24px;
+}
+.time-idle {
+    color: #caa;
 }
 
 .popup {

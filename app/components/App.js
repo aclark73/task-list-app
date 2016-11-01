@@ -84,9 +84,9 @@ export default class App extends Component {
     });
   }
   click() {
-    this.setState({
-      timeIdle: 0
-    });
+    //this.setState({
+    //  timeIdle: 0
+    //});
   }
   save() {
     console.log("Saving to conf");
@@ -219,7 +219,10 @@ export default class App extends Component {
     });
     const startTime = Utils.getTime(this.state.startTime);
     const timeElapsed = Utils.formatTimespan(this.state.timeElapsed);
-    const timeRemaining = Utils.formatTimespan(this.state.timeRemaining);
+    const isIdle = (!this.state.timeRemaining && this.state.timeIdle);
+    const timeDisplay = Utils.formatTimespan(
+      isIdle ? this.state.timeIdle : this.state.timeRemaining
+    );
     var idleLevel = '';
     if (this.state.timeIdle > 5) { idleLevel = 'idle-1'; }
     if (this.state.timeIdle > 10) { idleLevel = 'idle-2'; }
@@ -243,25 +246,27 @@ export default class App extends Component {
       (this.state.compactView ? 'fa-toggle-up' : 'fa-toggle-down')
       );
     
+    function makeButton(action, label, glyphicon, title) {
+      return (
+          <span className="btn" title={title} onClick={action}>
+            <i className={glyphicon}></i>
+            <span className="btn-label"> {label}</span></span>
+      );
+    }
+    
     const toolbar = (
       <div className="toolbar">
-        <div className="btns">
-          <span className="btn" title="Refresh task list" onClick={actions.refresh}>
-            <i className="fa fa-refresh"></i> Reload</span>
+        <div className="btns btn-lg">
+          {makeButton(actions.refresh, 'Refresh', 'fa fa-refresh', 'Refresh task list')}
         </div>
-        <div className="btns">
-          <span className="btn" title="Show log" onClick={actions.showLog}>
-            <i className="fa fa-calendar"></i> Log</span>
-          <span className="btn" title="Upload logged time" onClick={actions.uploadLogs}>
-            <i className="fa fa-database"></i> Upload</span>
+        <div className="btns btn-lg">
+          {makeButton(actions.showLog, 'Log', 'fa fa-calendar', 'Show log')}
+          {makeButton(actions.uploadLogs, 'Upload', 'fa fa-database', 'Upload logged time')}
         </div>
-        <div className="btns">
-          <span className="btn" title="Show debug messages" onClick={actions.showMessages}>
-            <i className="fa fa-exclamation-triangle"></i> Debug</span>
-          <span className="btn" title="Toggle group by project" onClick={actions.toggleView}>
-            <i className="fa fa-list"></i> Group</span>
-          <span className="btn" title="Toggle compact view" onClick={actions.toggleCompactView}>
-            <i className="fa fa-arrows-v"></i> Compact</span>
+        <div className="btns btn-sm">
+          {makeButton(actions.showMessages, 'Debug', 'fa fa-exclamation-triangle', 'Show debug messages')}
+          {makeButton(actions.toggleView, 'Group', 'fa fa-list', 'Toggle group by project')}
+          {makeButton(actions.toggleCompactView, 'Compact', 'fa fa-arrows-v', 'Toggle compact view')}
         </div>
       </div>
     );
@@ -289,13 +294,13 @@ export default class App extends Component {
         <div className="btn timer-btn timer-btn-task" onClick={actions.pause}>
           <div className="times">
             <div className="start-time">
-              <label>Started</label><div>{startTime}</div>
+              <label>Started</label><div clasName="time">{startTime}</div>
             </div>
             <div className="time-elapsed">
-              <label>Elapsed</label><div>{timeElapsed}</div>
+              <label>Elapsed</label><div className="time">{timeElapsed}</div>
             </div>
           </div>
-          <div className="time-remaining"><span>{timeRemaining}</span></div>
+          <div className={isIdle ? 'time-idle' : 'time-remaining'}><span>{timeDisplay}</span></div>
           <div className="current-task">
             {currentTask}
           </div>
@@ -397,7 +402,8 @@ export default class App extends Component {
     this.setState({
       showAlert: true,
       alertMessage: message,
-      afterWaiting: next
+      afterWaiting: next,
+      timeIdle: 0
     });
   }
   /* Timer */
@@ -419,7 +425,8 @@ export default class App extends Component {
     this.setState({
       currently: "working",
       startTime: this.state.startTime || new Date(),
-      timeRemaining: this.state.workTime
+      timeRemaining: this.state.workTime,
+      timeIdle: 0
     });
     this.startTimer();
   }
@@ -484,7 +491,8 @@ export default class App extends Component {
     if (this.state.currently == "working") {
       this.setState({
         currently: "paused",
-        timeRemaining: this.state.breakTime
+        timeRemaining: this.state.breakTime,
+        timeIdle: 0
       });
       this.startTimer();
     } else {
@@ -500,6 +508,7 @@ export default class App extends Component {
       timeRemaining: 0,
       timeElapsed: 0,
       startTime: null,
+      timeIdle: 0
     });
     this.startTimer();
   }
