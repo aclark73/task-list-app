@@ -8,6 +8,9 @@ export class TaskWidget extends Component {
   }
   start() {
     this.props.context.actions.start(this.props.task);
+    // If this is done by double-clicking the text may be selected
+    // This is annoying so clear it
+    window.getSelection().removeAllRanges();
   }
   info() {
     console.log("Task: " + Task.getLabel(this.props.task));
