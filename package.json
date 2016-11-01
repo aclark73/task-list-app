@@ -35,7 +35,7 @@
     "react-dom": "^0.14.6",
     "classnames": "2.2.5",
     "configstore": "2.0.0",
-    "humanize": "0.0.9",
+    "humanize-duration": "3.9.1",
     "react-d3-basic": "1.6.11"
   }
 }

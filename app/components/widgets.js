@@ -1,6 +1,24 @@
 import React, { Component } from 'react';
 import Task from './task';
-import humanize from 'humanize';
+import humanizeDuration from 'humanize-duration';
+
+const shortEnglishHumanizer = humanizeDuration.humanizer({
+  language: 'shortEn',
+  largest: 1,
+  spacer: '',
+  languages: {
+    shortEn: {
+      y: function() { return 'y' },
+      mo: function() { return 'mo' },
+      w: function() { return 'w' },
+      d: function() { return 'd' },
+      h: function() { return 'h' },
+      m: function() { return 'm' },
+      s: function() { return 's' },
+      ms: function() { return 'ms' },
+    }
+  }
+});
 
 export class TaskWidget extends Component {
   select() {
@@ -45,7 +63,8 @@ export class TaskWidget extends Component {
     const updated_label = ((updated_on) => {
       if (updated_on) {
         var d = new Date(updated_on);
-        d = humanize.relativeTime(d.getTime() / 1000);
+        var now = new Date();
+        d = shortEnglishHumanizer(now.getTime() - d.getTime());
         return (<div className="label updated-label">{d}</div>);
       } else {
         return "";
@@ -56,8 +75,8 @@ export class TaskWidget extends Component {
         <div className={className}>
           {toggleWidget}
           <div className="task-label" onClick={select} onDoubleClick={start}>
-            {project_label}
             {updated_label}
+            {project_label}
             {Task.getLabel(this.props.task)}&nbsp;
           </div>
         </div>
