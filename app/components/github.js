@@ -1,6 +1,4 @@
 import fs from 'fs';
-import request from 'ajax-request';
-//const models = require('./models');
 import os from 'os';
 
 const USER_PASS = "user:pass@";
@@ -81,37 +79,49 @@ export default class GitHubClient {
     fetch() {
         return new Promise(function(resolve, reject) {
             console.log("Fetching github");
+            function handleData(err, data) {
+                if (err) {
+                    reject(err);
+                } else {
+                    try {
+                        const json = JSON.parse(data);
+                        resolve(json);
+                    }
+                    catch (e) {
+                        console.log("Failed to parse: " + data);
+                        reject(e);
+                    }
+                }
+            }
             if (false) {
-                fs.readFile('github.json', 'utf8', function (err,data) {
+                fs.readFile('github.json', 'utf8', function handleData(err, data) {
                     if (err) {
                         reject(err);
                     } else {
                         try {
-                            resolve(JSON.parse(data));
+                            const json = JSON.parse(data);
+                            resolve(json);
                         }
                         catch (e) {
-                            console.log(data);
+                            console.log("Failed to parse: " + data);
                             reject(e);
                         }
                     }
                 });
             } else {
-                request({
-                    url: ISSUES_URL,
+                fetch(ISSUES_URL, {
                     headers: {
                         'User-Agent': 'Mozilla/5.0 (Mac OS X) task-list-app'
                     }
-                }, function(err, res, body) {
-                    if (err) {
-                        reject(err);
+                }).then(function(resp) {
+                    if (resp.ok) {
+                      resp.json().then(function(data) {
+                          resolve(data);
+                      }).catch(function(e) {
+                          reject(e);
+                      });
                     } else {
-                        try {
-                            resolve(JSON.parse(body));
-                        }
-                        catch (e) {
-                            console.log(body);
-                            reject(e);
-                        }
+                      reject("" + resp.status + ": " + resp.statusText);
                     }
                 });
             }

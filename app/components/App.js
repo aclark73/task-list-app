@@ -25,6 +25,8 @@ export default class App extends Component {
 
       projects: [],
       tasks: [],
+      
+      localTasks: [],
 
       view: 'projects',
       compactView: false,
@@ -91,6 +93,7 @@ export default class App extends Component {
   save() {
     console.log("Saving to conf");
     this.conf.set('log', this.state.log);
+    this.conf.set('localTasks', this.state.localTasks);
   }
   load() {
     let log = this.conf.get('log');
@@ -109,6 +112,12 @@ export default class App extends Component {
       });
       this.setState({
         log: log
+      });
+    }
+    let localTasks = this.conf.get('localTasks');
+    if (localTasks) {
+      this.setState({
+        localTasks: localTasks
       });
     }
     return Promise.resolve();
@@ -132,25 +141,25 @@ export default class App extends Component {
     
     const projects = [];
     const tasks = [];
-    return redmine.load().then( (data) => {
-      Array.prototype.push.apply(projects, data.projects);
-      Array.prototype.push.apply(tasks, data.tasks);
-    }).then( () => {
-      this.sortTasks(projects, tasks);
-      this.setState({projects: projects, tasks: tasks});
+    const requests = [redmine, github].map((client) => {
+      return client.load().then(
+        (data) => {
+          Array.prototype.push.apply(projects, data.projects);
+          Array.prototype.push.apply(tasks, data.tasks);
+        },
+        (err) => {
+          console.log("Error in client: " + err);
+        }
+      );
     });
-    /*
-    return Promise.all([
-      redmine.load(),
-      github.load()
-    ]).then( (data) => {
-      var projects = [].concat(data[0].projects, data[1].projects);
-      var tasks = [].concat(data[0].tasks, data[1].tasks);
-      this.setState({projects: projects, tasks: tasks});
-    }, (err) => {
-      this.addMessage(err);
-    });
-    */
+    return Promise.all(requests).then(
+      () => {
+        this.setState({projects: projects, tasks: tasks});
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
   sortTasks(projects, tasks) {
     const lastWork = Utils.lastWorkPerTask(this.state.log);
