@@ -1,6 +1,4 @@
 import fs from 'fs';
-import request from 'ajax-request';
-//const models = require('./models');
 import os from 'os';
 import Utils from './utils';
 
@@ -95,11 +93,19 @@ export default class RedmineClient {
                     }
                 });
             } else {
-                request(ISSUES_URL, function(err, res, body) {
-                    if (err) {
-                        reject(err);
+                fetch(ISSUES_URL, {
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (Mac OS X) task-list-app'
+                    }
+                }).then(function(resp) {
+                    if (resp.ok) {
+                      resp.json().then(function(data) {
+                          resolve(data);
+                      }).catch(function(e) {
+                          reject(e);
+                      });
                     } else {
-                        resolve(JSON.parse(body));
+                      reject("" + resp.status + ": " + resp.statusText);
                     }
                 });
             }
