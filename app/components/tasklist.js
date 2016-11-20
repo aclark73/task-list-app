@@ -9,7 +9,6 @@ export default class TaskList extends Component {
     // console.log("nextProps.context: " + JSON.stringify(nextProps.context));
     return (nextProps.projects != this.props.projects) ||
         (nextProps.tasks != this.props.tasks) ||
-        (nextProps.pinnedTasks != this.props.pinnedTasks) ||
         (JSON.stringify(nextProps.context) != JSON.stringify(this.props.context));
   }
 
@@ -24,13 +23,8 @@ export default class TaskList extends Component {
       ) : (
         <TaskWidget key={taskId} task={task} context={this.props.context} />
       );
-      if (this.props.pinnedTasks.indexOf(taskId) > -1) {
-        rows.unshift(widget);
-      } else {
-        rows.push(widget);
-      }
+      rows.push(widget);
     });
-    // console.log("done rendering tasklist?");
     return (
       <div>{rows}</div>
     );
