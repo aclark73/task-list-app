@@ -20,15 +20,15 @@ export default class App extends Component {
       workTime: 30*60,
       breakTime: 60,
       alertTime: 60,
-      idleTime: 6,
-      rewindTime: 10,
+      idleTime: 0,
+      rewindTime: 60,
 
       projects: [],
       tasks: [],
       
       localTasks: [],
 
-      view: 'projects',
+      view: 'tasks',
       compactView: false,
       
       taskId: null,
@@ -503,10 +503,15 @@ export default class App extends Component {
   }
   rewind() {
     if (this.state.startTime) {
-      this.setState({
-        startTime: new Date(this.state.startTime - 1000*60*this.state.rewindTime),
-        timeElapsed: this.state.timeElapsed + 60*this.state.rewindTime
-      });
+      const now = new Date();
+      const totalTime = (now - this.state.startTime)/1000;
+      const newState = {
+        timeElapsed: this.state.timeElapsed + this.state.rewindTime
+      };
+      if (newState.timeElapsed > totalTime) {
+        newState.startTime = new Date(now - newState.timeElapsed*1000);
+      }
+      this.setState(newState);
     }
   }
   log() {
