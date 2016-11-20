@@ -75,8 +75,8 @@ export class TaskWidget extends Component {
         <div className={className}>
           {toggleWidget}
           <div className="task-label" onClick={select} onDoubleClick={start}>
-            {updated_label}
             {project_label}
+            {updated_label}
             {Task.getLabel(this.props.task)}&nbsp;
           </div>
         </div>

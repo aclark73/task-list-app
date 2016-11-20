@@ -65,7 +65,7 @@ body {
   padding: 1px 3px;
   border-width: 1px;
   border-style: solid;
-  border-color: rgba(0,0,0,.2);
+  border-color: rgba(0,0,0,.1);
   line-height: 1em;
   cursor: inherit;
 }
@@ -262,16 +262,19 @@ body {
 }
 
 .task-item .task-label {
-    border-radius: 0 4px 4px 4px;
+    border-radius: 4px;
 }
 
 .task-item .label {
     float: right;
+    clear: right;
     font-size: 64%;
-    /* line-height: 1; */
-    /* padding: 0 2px; */
-    /* font-family: monospace; */
+    padding: 0 2px;
     font-weight: normal;
+    margin-right: 1px;
+}
+.task-item .label + .label {
+    margin-top: 1px;
 }
 
 .task-item .btn-toggle {
@@ -289,6 +292,7 @@ body {
 .task-item.project .task-label {
     margin-left: 19px;
     font-weight: bold;
+    border-top-left-radius: 0;
 }
 
 .time-remaining {
