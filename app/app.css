@@ -291,11 +291,13 @@ body {
     font-weight: bold;
 }
 
-.time-remaining, .time-idle {
+.time-remaining {
     font-size: 24px;
 }
 .time-idle {
-    color: #caa;
+    color: #baa;
+    margin-left: 4px;
+    font-size: 12px;
 }
 
 .popup {

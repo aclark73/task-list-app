@@ -225,9 +225,8 @@ export default class App extends Component {
     const startTime = Utils.getTime(this.state.startTime);
     const timeElapsed = Utils.formatTimespan(this.state.timeElapsed);
     const isIdle = (!this.state.timeRemaining && this.state.timeIdle);
-    const timeDisplay = Utils.formatTimespan(
-      isIdle ? this.state.timeIdle : this.state.timeRemaining
-    );
+    const timeRemaining = Utils.formatTimespan(this.state.timeRemaining);
+    const timeIdle = (this.state.timeIdle > 0) ? "Idle: " + Utils.formatTimespan(this.state.timeIdle) : '';
     var idleLevel = '';
     if (this.state.timeIdle > 5) { idleLevel = 'idle-1'; }
     if (this.state.timeIdle > 10) { idleLevel = 'idle-2'; }
@@ -305,7 +304,10 @@ export default class App extends Component {
               <label>Elapsed</label><div className="time">{timeElapsed}</div>
             </div>
           </div>
-          <div className={isIdle ? 'time-idle' : 'time-remaining'}><span>{timeDisplay}</span></div>
+          <div>
+            <span className="time-remaining">{timeRemaining}</span>
+            <span className="time-idle">{timeIdle}</span>
+          </div>
           <div className="current-task">
             {currentTask}
           </div>
