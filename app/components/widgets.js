@@ -17,7 +17,8 @@ const shortEnglishHumanizer = humanizeDuration.humanizer({
       s: function() { return 's' },
       ms: function() { return 'ms' },
     }
-  }
+  },
+  round: true
 });
 
 export class TaskWidget extends Component {
