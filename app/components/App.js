@@ -153,6 +153,7 @@ export default class App extends Component {
     });
     return Promise.all(requests).then(
       () => {
+        this.sortTasks(projects, tasks);
         this.setState({projects: projects, tasks: tasks});
       },
       (err) => {
