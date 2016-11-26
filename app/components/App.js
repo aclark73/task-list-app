@@ -117,6 +117,11 @@ export default class App extends Component {
         localTasks: localTasks
       });
     }
+    const sourcesConf = this.conf.get('sources') || {};
+    this.sources = [
+      new RedmineClient(sourcesConf.redmine),
+      new GitHubClient(sourcesConf.github)      
+    ];
     return Promise.resolve();
   }
   uploadLogs() {
@@ -133,12 +138,9 @@ export default class App extends Component {
     this.addMessage("Loading Redmine");
     console.log("refresh");
 
-    const redmine = new RedmineClient();
-    const github = new GitHubClient();
-    
     const projects = [];
     const tasks = [];
-    const requests = [redmine, github].map((client) => {
+    const requests = this.sources.map((client) => {
       return client.load().then(
         (data) => {
           Array.prototype.push.apply(projects, data.projects);

@@ -1,15 +1,19 @@
 import fs from 'fs';
 import os from 'os';
 
-const USER_PASS = "user:pass@";
-const BASE_URL = 'https://' + USER_PASS + 'api.github.com';
+const DEFAULT_CONFIG = {
+    auth_token: 'example'
+};
+
+const BASE_URL = 'https://api.github.com';
 const ISSUES_URL = BASE_URL + '/issues';
 
 const DEBUG = (os.hostname().indexOf('honu') < 0);
 
 export default class GitHubClient {
 
-    constructor() {
+    constructor(config) {
+        this.config = config || DEFAULT_CONFIG;
         this.source = 'github';
     }
 
@@ -77,6 +81,7 @@ export default class GitHubClient {
     }
 
     fetch() {
+        const auth_token = this.config.auth_token;
         return new Promise(function(resolve, reject) {
             console.log("Fetching github");
             function handleData(err, data) {
@@ -111,7 +116,8 @@ export default class GitHubClient {
             } else {
                 fetch(ISSUES_URL, {
                     headers: {
-                        'User-Agent': 'Mozilla/5.0 (Mac OS X) task-list-app'
+                        'User-Agent': 'Mozilla/5.0 (Mac OS X) task-list-app',
+                        'Authorization': 'Basic ' + auth_token
                     }
                 }).then(function(resp) {
                     if (resp.ok) {

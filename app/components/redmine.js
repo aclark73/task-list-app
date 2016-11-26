@@ -2,16 +2,20 @@ import fs from 'fs';
 import os from 'os';
 import Utils from './utils';
 
-const REDMINE_KEY = 'example';
+const DEFAULT_CONFIG = {
+  redmine_key: 'example'
+};
+
 const BASE_URL = 'http://dmscode.iris.washington.edu';
-const ISSUES_URL = BASE_URL + '/issues.json?key=' + REDMINE_KEY + '&assigned_to_id=me&sort=updated_on:desc&status_id=open&limit=200';
-const TIME_URL = BASE_URL + '/time_entries.json?key=' + REDMINE_KEY;
+const ISSUES_URL = BASE_URL + '/issues.json?&assigned_to_id=me&sort=updated_on:desc&status_id=open&limit=200&key=';
+const TIME_URL = BASE_URL + '/time_entries.json?key=';
 
 const DEBUG = (os.hostname().indexOf('honu') < 0);
 
 export default class RedmineClient {
 
-    constructor() {
+    constructor(config) {
+        this.config = config || DEFAULT_CONFIG;
         this.source = 'redmine';
         if (DEBUG) {
             console.log("RedmineClient in DEBUG");
@@ -93,7 +97,7 @@ export default class RedmineClient {
                     }
                 });
             } else {
-                fetch(ISSUES_URL, {
+                fetch(ISSUES_URL + this.config.redmine_key, {
                     headers: {
                         'User-Agent': 'Mozilla/5.0 (Mac OS X) task-list-app'
                     }
@@ -183,7 +187,7 @@ export default class RedmineClient {
             console.log("Posting");
             request({
               method: 'POST',
-              url: TIME_URL,
+              url: TIME_URL + this.config.redmine_key,
               data: rest_dict
             }, function(err, res, body) {
               console.log(res);
