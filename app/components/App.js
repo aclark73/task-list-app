@@ -21,7 +21,7 @@ export default class App extends Component {
       breakTime: 60,
       alertTime: 60,
       idleTime: 0,
-      rewindTime: 60,
+      rewindTime: 10*60,
 
       projects: [],
       tasks: [],

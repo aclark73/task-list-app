@@ -130,7 +130,7 @@ export default class RedmineClient {
       return "";
     }
   }
-  
+
   getSource(taskId) {
     const parts = taskId.split('.');
     if (parts.length == 3) {
@@ -180,22 +180,25 @@ export default class RedmineClient {
           }
         };
         requests.push(new Promise(function(resolve, reject) {
-          console.log(JSON.stringify(rest_dict));
+          const body = JSON.stringify(rest_dict);
+          console.log(body);
           if (DEBUG) {
             resolve();
           } else {
             console.log("Posting");
-            request({
+            fetch(TIME_URL + this.config.redmine_key, {
               method: 'POST',
-              url: TIME_URL + this.config.redmine_key,
-              data: rest_dict
-            }, function(err, res, body) {
-              console.log(res);
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve();
-                }
+              headers: {
+                'User-Agent': 'Mozilla/5.0 (Mac OS X) task-list-app',
+                'Content-Type': 'application/json'
+              },
+              body: body
+            }).then(function(resp) {
+              if (resp.ok) {
+                resolve();
+              } else {
+                reject("" + resp.status + ": " + resp.statusText);
+              }
             });
           }
         }));
