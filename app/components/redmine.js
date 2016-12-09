@@ -86,6 +86,7 @@ export default class RedmineClient {
     }
 
     fetch() {
+        const issues_url = ISSUES_URL + this.config.redmine_key;
         return new Promise(function(resolve, reject) {
             console.log("Fetching redmine");
             if (DEBUG) {
@@ -97,7 +98,7 @@ export default class RedmineClient {
                     }
                 });
             } else {
-                fetch(ISSUES_URL + this.config.redmine_key, {
+                fetch(issues_url, {
                     headers: {
                         'User-Agent': 'Mozilla/5.0 (Mac OS X) task-list-app'
                     }
@@ -141,6 +142,7 @@ export default class RedmineClient {
   }
 
   upload(logs) {
+    const time_url = TIME_URL + this.config.redmine_key;
     const timePerIssuePerDay = {};
     logs.forEach((log) => {
       const taskId = log.taskId || log.task;
@@ -186,7 +188,7 @@ export default class RedmineClient {
             resolve();
           } else {
             console.log("Posting");
-            fetch(TIME_URL + this.config.redmine_key, {
+            fetch(time_url, {
               method: 'POST',
               headers: {
                 'User-Agent': 'Mozilla/5.0 (Mac OS X) task-list-app',
