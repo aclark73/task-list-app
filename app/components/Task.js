@@ -6,8 +6,8 @@ const Task = {
     return "P." + project.project;
   },
   getTaskUID: function(task) {
-    if (task.issue_id) {
-      return "T." + task.source + "." + task.issue_id;
+    if (task.issue_uid) {
+      return "T." + task.source + "." + task.issue_uid;
     } else {
     	return "T." + task.source + "." + task.project + "." + task.title;
     }  
@@ -24,6 +24,8 @@ const Task = {
     if (!task.source) { return ''; }
     if (Task.isProject(task)) {
       return task.project;
+    } else if (task.issue_number) {
+      return '#' + task.issue_number + ' - ' + task.title;
     } else if (task.issue_id) {
       return '#' + task.issue_id + ' - ' + task.title;
     } else {

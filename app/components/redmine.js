@@ -53,6 +53,7 @@ export default class RedmineClient {
             title: json.subject,
             source: this.source,
             issue_id: json.id,
+            issue_number: json.id,
             updated_on: json.updated_on
         };
     }

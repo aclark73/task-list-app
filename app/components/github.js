@@ -28,26 +28,37 @@ export default class GitHubClient {
 
     createTask(json) {
         /*
-         * {  "id":1130,
-         *    "project":{"id":2,"name":"DMC Website"},
-         *    "tracker":{"id":2,"name":"Feature"},
-         *    "status":{"id":1,"name":"New"},
-         *    "priority":{"id":4,"name":"Normal"},
-         *    "author":{"id":3,"name":"Adam Clark"},
-         *    "assigned_to":{"id":3,"name":"Adam Clark"},
-         *    "subject":"Tools page should allow filters in the URL",
-         *    "start_date":"2014-02-05",
-         *    "done_ratio":0,
-         *    "created_on":"2014-02-05T23:54:56Z",
-         *    "updated_on":"2014-02-05T23:54:56Z"
-         *    ...
-         *    }
-         */
+        {
+          "url": "https://api.github.com/repos/aclark73/task-list-app/issues/13",
+          "id": 191777901,
+          "number": 13,
+          "title": "Pull authentication out of code",
+          "labels": [
+          ],
+          "state": "open",
+          "locked": false,
+          "assignee": {
+            "login": "aclark73",
+            "id": 1240289,
+          },
+          "comments": 0,
+          "created_at": "2016-11-26T00:28:16Z",
+          "updated_at": "2016-11-26T00:28:16Z",
+          "closed_at": null,
+          "repository": {
+            "id": 56657782,
+            "name": "task-list-app",
+            "full_name": "aclark73/task-list-app",
+          },
+          "body": "This should be in the config, and user settable"
+        },
+        */
         return {
             project: json.repository.name,
             title: json.title,
             source: this.source,
-            issue_id: json.id,
+            issue_uid: json.id,
+            issue_id: json.number,
             updated_on: json.updated_at
         };
     }
