@@ -540,3 +540,17 @@ body {
 .log td.task {
     white-space: normal;
 }
+
+.log .chart {
+  width: 10px;
+  position: relative;
+}
+.log .chart > div {
+  width: 10px;
+  background: #ccc;
+  height: 25%;
+  position: absolute;
+}
+.log .chart2 {
+  width: 2px;
+}

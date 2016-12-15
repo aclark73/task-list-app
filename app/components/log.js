@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Utils from './utils';
 import Task from './task';
+import colormap from 'colormap';
 
 export default class Log extends Component {
 
@@ -35,20 +36,73 @@ export default class Log extends Component {
     const rows = [];
     days.forEach((day) => {
       // append the day and its rows
-      const entryRows = [];
+      const dayEntries = entriesByDay[day];
       const dayStats = {
+        numEntries: dayEntries.length,
+        startTime: null,
+        endTime: null,
         duration: 0,
         worked: 0
       };
-      entriesByDay[day].forEach( (logEntry, i) => {
+      dayEntries.forEach( (logEntry) => {
+        if (!dayStats.startTime || dayStats.startTime > logEntry.startTime) {
+          dayStats.startTime = logEntry.startTime;
+        }
+        if (!dayStats.endTime || dayStats.endTime < logEntry.endTime) {
+          dayStats.endTime = logEntry.endTime;
+        }
+        dayStats.worked += logEntry.timeElapsed;
+      });
+      dayStats.duration = this.getDuration(dayStats.startTime, dayStats.endTime);
+      const colors = colormap({
+        colormap: 'summer',   // pick a builtin colormap or add your own 
+        nshades: Math.max(dayStats.numEntries, 2)       // how many divisions 
+      });
+      function chartHeight(duration) {
+        return parseInt((duration*100)/dayStats.duration);
+      }
+      const chartRows = dayEntries.map( (logEntry, i) => {
+        const start = chartHeight(this.getDuration(dayStats.startTime, logEntry.startTime));
+        const height = Math.max(
+          chartHeight(this.getDuration(logEntry.startTime, logEntry.endTime)),
+          2);
+        const style = {
+          bottom: '' + start + '%',
+          height: '' + height + '%',
+          background: colors[i]
+        };
+        return (
+          <div id={day + 'c' + i} key={day + 'c' + i} style={style}></div>
+        );
+      });
+      rows.push((
+        <tr key={day}>
+          <th></th>
+          <th colSpan="3">{day}</th>
+          <th>{Utils.formatTimespan(dayStats.duration)}</th>
+          <th>{Utils.formatTimespan(dayStats.worked)}</th>
+          <th></th>
+        </tr>
+      ));
+      dayEntries.forEach( (logEntry, i) => {
         const label = logEntry.taskName || logEntry.task;
         const duration = this.getDuration(logEntry.startTime, logEntry.endTime);
         const utilization = Math.floor((logEntry.timeElapsed * 100) / duration);
-        dayStats.duration += duration;
-        dayStats.worked += logEntry.timeElapsed;
-        entryRows.push((
-          <tr key={day + 'r' + i}>
-            <td className="time">{Utils.getTime(logEntry.startTime)}</td>
+        
+        const firstCol = (i == 0) ? (
+          <td className="chart" rowSpan={dayStats.numEntries}>
+            {chartRows}
+          </td>
+        ) : undefined;
+        const style = {
+          background: colors[i]
+        };
+        rows.push((
+          <tr key={day + 'r' + i} id={day + 'r' + i}>
+            {firstCol}
+            <td className="chart2" style={style}></td>
+            <td className="start">{Utils.getTime(logEntry.startTime)}</td>
+            <td className="end">{Utils.getTime(logEntry.endTime)}</td>
             <td className="task">{label}</td>
             <td className="duration">{Utils.formatTimespan(duration)}</td>
             <td className="work">{Utils.formatTimespan(logEntry.timeElapsed)}</td>
@@ -56,24 +110,13 @@ export default class Log extends Component {
           </tr>
         ));
       });
-      rows.push((
-        <tr key={day}>
-          <th colSpan="2">{day}</th>
-          <th>{Utils.formatTimespan(dayStats.duration)}</th>
-          <th>{Utils.formatTimespan(dayStats.worked)}</th>
-          <th></th>
-        </tr>
-      ));
-      Array.prototype.push.apply(rows, entryRows);
     });
     
     return (
       <li>
         <table>
-          <thead><tr><th>Time</th><th>Task</th><th>Total</th><th>Work</th><th>Util</th></tr></thead>
-          <tbody>
-            {rows}
-          </tbody>
+          <thead><tr><th colSpan="2"></th><th>Start</th><th>End</th><th>Task</th><th>Time</th><th>Work</th><th>Util</th></tr></thead>
+          <tbody>{rows}</tbody>
         </table>
       </li>
     );    

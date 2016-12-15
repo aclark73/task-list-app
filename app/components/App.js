@@ -162,6 +162,7 @@ export default class App extends Component {
     );
   }
   sortTasks(projects, tasks) {
+    // The task's updated_on should be the last logged work if that's newer
     const lastWork = Utils.lastWorkPerTask(this.state.log);
     tasks.forEach((task) => {
       const uid = Task.getUID(task);
@@ -169,6 +170,7 @@ export default class App extends Component {
         task.updated_on = lastWork[uid];
       }
     });
+    // Sort based on updated_on
     function taskSort(t1, t2) {
       if (t2.updated_on > t1.updated_on) { return 1; }
       else if (t1.updated_on > t2.updated_on) { return -1; }
@@ -521,7 +523,8 @@ export default class App extends Component {
     const task = this.getTask(this.state.taskId);
     const logEntry = {
       taskId: this.state.taskId,
-      taskName: Task.getLabel(task), 
+      taskName: Task.getLabel(task),
+      project: task.project,
       startTime: this.state.startTime.toISOString(),
       endTime: this.state.lastWorkTime.toISOString(),
       timeElapsed: this.state.timeElapsed
