@@ -5,7 +5,7 @@ import colormap from 'colormap';
 
 const NUM_COLORS = 32;
 const COLORS = colormap({
-  colormap: 'rainbow',   // pick a builtin colormap or add your own 
+  colormap: 'rainbow-soft',   // pick a builtin colormap or add your own 
   nshades: NUM_COLORS       // how many divisions 
 });
 function hashCode(str) {
