@@ -546,9 +546,7 @@ body {
   position: relative;
 }
 .log .chart > div {
-  width: 10px;
-  background: #ccc;
-  height: 25%;
+  width: 7px;
   position: absolute;
 }
 .log .chart2 {

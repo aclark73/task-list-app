@@ -3,6 +3,22 @@ import Utils from './utils';
 import Task from './task';
 import colormap from 'colormap';
 
+const NUM_COLORS = 32;
+const COLORS = colormap({
+  colormap: 'rainbow',   // pick a builtin colormap or add your own 
+  nshades: NUM_COLORS       // how many divisions 
+});
+function hashCode(str) {
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+        hash = ~~(((hash << 5) - hash) + str.charCodeAt(i));
+    }
+    return Math.abs(hash);
+}
+function getColor(str) {
+  return COLORS[hashCode(str) % NUM_COLORS];
+}
+
 export default class Log extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -65,11 +81,11 @@ export default class Log extends Component {
         const start = chartHeight(this.getDuration(dayStats.startTime, logEntry.startTime));
         const height = Math.max(
           chartHeight(this.getDuration(logEntry.startTime, logEntry.endTime)),
-          2);
+          Math.min(2, 100-start));
         const style = {
           bottom: '' + start + '%',
           height: '' + height + '%',
-          background: colors[i]
+          background: getColor(logEntry.taskId)
         };
         return (
           <div id={day + 'c' + i} key={day + 'c' + i} style={style}></div>
@@ -78,7 +94,7 @@ export default class Log extends Component {
       rows.push((
         <tr key={day}>
           <th></th>
-          <th colSpan="3">{day}</th>
+          <th colSpan="4">{day}</th>
           <th>{Utils.formatTimespan(dayStats.duration)}</th>
           <th>{Utils.formatTimespan(dayStats.worked)}</th>
           <th></th>
@@ -95,7 +111,7 @@ export default class Log extends Component {
           </td>
         ) : undefined;
         const style = {
-          background: colors[i]
+          background: getColor(logEntry.taskId)
         };
         rows.push((
           <tr key={day + 'r' + i} id={day + 'r' + i}>
