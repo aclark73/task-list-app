@@ -18,6 +18,16 @@ export default class App extends Component {
     super(props);
     window.app = this;
     this.statusHandler = new StatusHandler();
+    this.handlers = [
+      this.statusHandler
+    ];
+
+    this.handlersByName = {};
+    const handlerActions = {};
+    this.handlers.forEach((h) => {
+      this.handlersByName[h.label] = h;
+    });
+
     this.state = {
       workTime: 30*60,
       breakTime: 60,
@@ -27,12 +37,12 @@ export default class App extends Component {
 
       projects: [],
       tasks: [],
-      
+
       localTasks: [],
 
       view: 'tasks',
       compactView: false,
-      
+
       taskId: null,
       taskLabel: '-',
       startTime: null,
@@ -48,12 +58,18 @@ export default class App extends Component {
       showChart: false,
       messages: [],
       showMessages: false,
-      status: this.statusHandler.initialState(),
-      
+
+      status: this.statusHandler.initialState,
+
+      popup: -1,
+
       alertMessage: "",
       showAlert: false,
       afterWaiting: null
     };
+    this.handlers.forEach((h) => {
+      this.state[h.label] = h.initialState;
+    });
     this.actions = {
       click: this.click.bind(this),
       start: this.start.bind(this),
@@ -124,7 +140,7 @@ export default class App extends Component {
     const sourcesConf = this.conf.get('sources') || {};
     this.sources = [
       new RedmineClient(sourcesConf.redmine),
-      new GitHubClient(sourcesConf.github)      
+      new GitHubClient(sourcesConf.github)
     ];
     return Promise.resolve();
   }
@@ -226,8 +242,8 @@ export default class App extends Component {
     const logChart = '';
     //  <LogChart log={this.state.log}/>
 
-    const statusMessages = this.statusHandler.renderHistory(this.state.status);
-    
+    const statusMessages = this.statusHandler.popup(this.state.status);
+
     const messageRows = []
     this.state.messages.forEach( (message, i) => {
       messageRows.push(
@@ -242,15 +258,21 @@ export default class App extends Component {
     var idleLevel = '';
     if (this.state.timeIdle > 5) { idleLevel = 'idle-1'; }
     if (this.state.timeIdle > 10) { idleLevel = 'idle-2'; }
-    
+
+    // Popup
+    const popupClass = (this.state.popup) ?
+      'show-' + this.state.popup :
+      '';
+
     const className = classNames(
       'main',
       this.state.currently,
       idleLevel,
+      popupClass,
       {
        'has-task': this.state.taskId,
        'compact': this.state.compactView,
-       'show-popup': (this.state.showLog || this.state.showChart || this.state.showMessages || this.state.showAlert),
+       'show-popup': (this.state.popup || this.state.showLog || this.state.showChart || this.state.showMessages || this.state.showAlert),
        'show-log': this.state.showLog,
        'show-timeline': this.state.showChart,
        'show-messages': this.state.showMessages,
@@ -261,7 +283,7 @@ export default class App extends Component {
       'fa',
       (this.state.compactView ? 'fa-toggle-up' : 'fa-toggle-down')
       );
-    
+
     function makeButton(action, label, glyphicon, title) {
       return (
           <span className="btn" title={title} onClick={action}>
@@ -269,7 +291,26 @@ export default class App extends Component {
             <span className="btn-label"> {label}</span></span>
       );
     }
-    
+
+    const handlerPopups = [];
+    const handlerButtons = {};
+    this.handlers.forEach((h) => {
+      if (h.popup) {
+        const action = () => {
+          this.setState({ popup: h.label });
+        };
+        handlerButtons[h.label] = (
+          <span className="btn" title={h.toolbar.title} onClick={action}>
+            <i className={h.toolbar.icon}></i>
+            <span className="btn-label"> {h.label}</span></span>
+        );
+        const popupContents = h.popup(this.state[h.label]);
+        handlerPopups.push((
+          <div key={h.label} className={"popup popup-"+h.label}>{popupContents}</div>
+        ));
+      }
+    });
+
     const toolbar = (
       <div className="toolbar">
         <div className="btns btn-lg">
@@ -281,6 +322,7 @@ export default class App extends Component {
         </div>
         <div className="btns btn-sm">
           {makeButton(actions.showMessages, 'Debug', 'fa fa-exclamation-triangle', 'Show debug messages')}
+          {handlerButtons['messages']}
           {makeButton(actions.toggleView, 'Group', 'fa fa-list', 'Toggle group by project')}
           {makeButton(actions.toggleCompactView, 'Compact', 'fa fa-arrows-v', 'Toggle compact view')}
         </div>
@@ -290,6 +332,7 @@ export default class App extends Component {
       <div>
         <div className="popup-backdrop"></div>
         <div className="popup-click" onClick={actions.dismissPopups}></div>
+        {handlerPopups}
         <div className="popup messages">{statusMessages}</div>
         <div className="popup log"><ul><li className="header">Log</li>{logDisplay}</ul></div>
         <div className="popup chart"><ul><li className="header">Log Chart</li>{logChart}</ul></div>
@@ -327,7 +370,7 @@ export default class App extends Component {
             {currentTask}
           </div>
         </div>
-        
+
         <div className="task-list"><ul className={this.state.view}>{taskList}</ul></div>
 
         {popups}
