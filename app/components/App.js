@@ -8,6 +8,7 @@ import Configstore from 'configstore';
 // import { LogChart } from './chart';
 import Log from './log';
 import TaskList from './tasklist';
+import StatusHandler from './status';
 import Utils from './utils';
 // import pkg from '../../package.json';
 const pkg = {name: 'task-list-app'};
@@ -16,6 +17,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     window.app = this;
+    this.statusHandler = new StatusHandler();
     this.state = {
       workTime: 30*60,
       breakTime: 60,
@@ -46,6 +48,7 @@ export default class App extends Component {
       showChart: false,
       messages: [],
       showMessages: false,
+      status: this.statusHandler.initialState(),
       
       alertMessage: "",
       showAlert: false,
@@ -79,6 +82,7 @@ export default class App extends Component {
   }
   addMessage(message) {
     this.setState({
+      status: this.statusHandler.addMessage(this.state.status, message),
       messages: this.state.messages.concat(['' + message])
     });
   }
@@ -125,6 +129,7 @@ export default class App extends Component {
     return Promise.resolve();
   }
   uploadLogs() {
+    this.addMessage("Uploading logs");
     const redmine = new RedmineClient();
     redmine.upload(this.state.log).then( (updatedLog) => {
       console.log("Redmine uploaded");
@@ -135,7 +140,7 @@ export default class App extends Component {
     });
   }
   refresh() {
-    this.addMessage("Loading Redmine");
+    this.addMessage("Refreshing task data");
     console.log("refresh");
 
     const projects = [];
@@ -221,6 +226,8 @@ export default class App extends Component {
     const logChart = '';
     //  <LogChart log={this.state.log}/>
 
+    const statusMessages = this.statusHandler.renderHistory(this.state.status);
+    
     const messageRows = []
     this.state.messages.forEach( (message, i) => {
       messageRows.push(
@@ -283,15 +290,17 @@ export default class App extends Component {
       <div>
         <div className="popup-backdrop"></div>
         <div className="popup-click" onClick={actions.dismissPopups}></div>
-        <div className="popup messages"><ul><li className="header">Messages</li>{messageRows}</ul></div>
+        <div className="popup messages">{statusMessages}</div>
         <div className="popup log"><ul><li className="header">Log</li>{logDisplay}</ul></div>
         <div className="popup chart"><ul><li className="header">Log Chart</li>{logChart}</ul></div>
         <div className="popup alert"><ul><li className="header">Alert</li><li>{this.state.alertMessage}</li></ul></div>
       </div>
     );
+    const statusMessage = this.statusHandler.statusMessage(this.state.status);
     return(
       <div className={className} onClick={actions.click}>
         {toolbar}
+        {statusbar}
         <div className="timer-btns-side">
           <div className="btn timer-btn timer-btn-stop" onClick={actions.stop}>
             Stop
@@ -312,6 +321,7 @@ export default class App extends Component {
           <div>
             <span className="time-remaining">{timeRemaining}</span>
             <span className="time-idle">{timeIdle}</span>
+            <span className="status-message">{statusMessage}</span>
           </div>
           <div className="current-task">
             {currentTask}
@@ -325,6 +335,7 @@ export default class App extends Component {
     );
   }
   setTask(task) {
+    this.addMessage("Changed task");
     const taskId = Task.getUID(task);
     const taskLabel = Task.getLabel(task);
     if (taskId != this.state.taskId) {
@@ -447,6 +458,7 @@ export default class App extends Component {
     if (this.state.timeRemaining > 0) {
       state.timeRemaining = this.state.timeRemaining - 1;
     }
+    state.status = this.statusHandler.updateState(this.state.status);
     this.setState(state);
     if (state.timeRemaining === 0) {
       this.timeUp();
