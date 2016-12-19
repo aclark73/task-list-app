@@ -1,7 +1,20 @@
 /**
  * Status indicator widget
  */
-import React from 'react';
+import React, { Component } from 'react';
+
+class StatusPopup extends Component {
+  render() {
+    const messageRows = this.props.messages.map( (message, i) => {
+      return (
+        <li key={i}>{message}</li>
+      );
+    });
+    return (
+      <ul><li className="header">Messages</li>{messageRows}</ul>
+    );
+  }
+}
 
 export default class StatusHandler {
   constructor() {
@@ -40,13 +53,8 @@ export default class StatusHandler {
     return (state.expires) ? state.messages[state.messages.length - 1] : '';
   }
   popup(state) {
-    const messageRows = state.messages.map( (message, i) => {
-      return (
-        <li key={i}>{message}</li>
-      );
-    });
     return (
-      <ul><li className="header">Messages</li>{messageRows}</ul>
+      <StatusPopup messages={state.messages} />
     );
   }
 }

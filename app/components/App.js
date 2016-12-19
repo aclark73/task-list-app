@@ -10,6 +10,7 @@ import Log from './log';
 import TaskList from './tasklist';
 import StatusHandler from './status';
 import Utils from './utils';
+import ToolbarButton from './toolbar';
 // import pkg from '../../package.json';
 const pkg = {name: 'task-list-app'};
 
@@ -64,9 +65,6 @@ export default class App extends Component {
       showAlert: false,
       afterWaiting: null
     };
-    this.handlers.forEach((h) => {
-      this.state[h.label] = h.initialState;
-    });
     this.actions = {
       click: this.click.bind(this),
       start: this.start.bind(this),
@@ -84,6 +82,15 @@ export default class App extends Component {
       showMessages: this.showMessages.bind(this),
       dismissPopups: this.dismissPopups.bind(this)
     };
+    this.handlerActions = {};
+    this.handlers.forEach((h) => {
+      this.state[h.label] = h.initialState;
+      if (h.toolbar && h.toolbar.popup) {
+        this.handlerActions[h.label] = () => {
+          this.setState({ popup: h.label });
+        };
+      }
+    });
     this.conf = new Configstore(pkg.name);
   }
   componentWillMount() {
@@ -292,15 +299,10 @@ export default class App extends Component {
     const handlerPopups = [];
     const handlerButtons = {};
     this.handlers.forEach((h) => {
-      if (h.popup) {
-        const action = () => {
-          this.setState({ popup: h.label });
-        };
+      if (h.toolbar && h.popup) {
         handlerButtons[h.label] = (
-          <span className="btn" title={h.toolbar.title} onClick={action}>
-            <i className={h.toolbar.icon}></i>
-            <span className="btn-label"> {h.label}</span>
-          </span>
+          <ToolbarButton label={h.label} action={this.handlerActions[h.label]}
+            icon={h.toolbar.icon} title={h.toolbar.title} />
         );
         const popupContents = h.popup(this.state[h.label]);
         handlerPopups.push((
@@ -312,17 +314,21 @@ export default class App extends Component {
     const toolbar = (
       <div className="toolbar">
         <div className="btns btn-lg">
-          {makeButton(actions.refresh, 'Refresh', 'fa fa-refresh', 'Refresh task list')}
+          <ToolbarButton label="Refresh" action={actions.refresh}
+            icon="fa fa-refresh" title="Refresh task list" />
         </div>
         <div className="btns btn-lg">
-          {makeButton(actions.showLog, 'Log', 'fa fa-calendar', 'Show log')}
-          {makeButton(actions.uploadLogs, 'Upload', 'fa fa-database', 'Upload logged time')}
+          <ToolbarButton label="Log" action={actions.showLog}
+            icon="fa fa-calendar" title="Show log" />
+          <ToolbarButton label="Upload" action={actions.uploadLogs}
+            icon="fa fa-database" title="Upload logged time" />
         </div>
         <div className="btns btn-sm">
-          {makeButton(actions.showMessages, 'Debug', 'fa fa-exclamation-triangle', 'Show debug messages')}
           {handlerButtons['status']}
-          {makeButton(actions.toggleView, 'Group', 'fa fa-list', 'Toggle group by project')}
-          {makeButton(actions.toggleCompactView, 'Compact', 'fa fa-arrows-v', 'Toggle compact view')}
+          <ToolbarButton label="Group" action={actions.toggleView}
+            icon="fa fa-list" title="Toggle group by project" />
+          <ToolbarButton label="Compact" action={actions.toggleCompactView}
+            icon="fa fa-arrows-v" title="Toggle compact view" />
         </div>
       </div>
     );
