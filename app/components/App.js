@@ -23,7 +23,6 @@ export default class App extends Component {
     ];
 
     this.handlersByName = {};
-    const handlerActions = {};
     this.handlers.forEach((h) => {
       this.handlersByName[h.label] = h;
     });
@@ -59,9 +58,7 @@ export default class App extends Component {
       messages: [],
       showMessages: false,
 
-      status: this.statusHandler.initialState,
-
-      popup: -1,
+      popup: '',
 
       alertMessage: "",
       showAlert: false,
@@ -302,7 +299,8 @@ export default class App extends Component {
         handlerButtons[h.label] = (
           <span className="btn" title={h.toolbar.title} onClick={action}>
             <i className={h.toolbar.icon}></i>
-            <span className="btn-label"> {h.label}</span></span>
+            <span className="btn-label"> {h.label}</span>
+          </span>
         );
         const popupContents = h.popup(this.state[h.label]);
         handlerPopups.push((
@@ -322,7 +320,7 @@ export default class App extends Component {
         </div>
         <div className="btns btn-sm">
           {makeButton(actions.showMessages, 'Debug', 'fa fa-exclamation-triangle', 'Show debug messages')}
-          {handlerButtons['messages']}
+          {handlerButtons['status']}
           {makeButton(actions.toggleView, 'Group', 'fa fa-list', 'Toggle group by project')}
           {makeButton(actions.toggleCompactView, 'Compact', 'fa fa-arrows-v', 'Toggle compact view')}
         </div>
@@ -343,7 +341,6 @@ export default class App extends Component {
     return(
       <div className={className} onClick={actions.click}>
         {toolbar}
-        {statusbar}
         <div className="timer-btns-side">
           <div className="btn timer-btn timer-btn-stop" onClick={actions.stop}>
             Stop
@@ -419,6 +416,7 @@ export default class App extends Component {
   }
   dismissPopups() {
     this.setState({
+      popup: '',
       showLog: false,
       showChart: false,
       showMessages: false,
@@ -488,7 +486,7 @@ export default class App extends Component {
       // Check for long gap (system sleep?)
       const now = new Date();
       if (state.lastWorkTime) {
-        const gap = now - state.lastWorkTime();
+        const gap = now - state.lastWorkTime;
         console.log("Gap is " + gap);
         if (gap > 60000) {
           console.log("Stopping due to time gap of " + gap);
@@ -501,11 +499,19 @@ export default class App extends Component {
     if (this.state.timeRemaining > 0) {
       state.timeRemaining = this.state.timeRemaining - 1;
     }
-    state.status = this.statusHandler.updateState(this.state.status);
+    this.updateHandlerState(state);
     this.setState(state);
     if (state.timeRemaining === 0) {
       this.timeUp();
     }
+  }
+  updateHandlerState(state) {
+    this.handlers.forEach((h) => {
+      const hState = h.updateState(this.state[h.label]);
+      if (hState) {
+        state[h.label] = hState;
+      }
+    });
   }
   timeUp() {
     switch (this.state.currently) {

@@ -344,6 +344,10 @@ body {
   border-bottom: none;
 }
 
+.show-status .popup-status {
+  display: block;
+}
+
 .show-messages .messages {
   display: block;
 }
@@ -390,24 +394,24 @@ body {
   display: block;
 }
 
-@keyframes bouncer {  
+@keyframes bouncer {
   from { top: 10%; }
   50% { top: 10%; }
   95% { top: 50%; }
   to { top: 10%; }
 }
-@keyframes blinker {  
+@keyframes blinker {
   from { opacity: 1.0; }
   90% { opacity: 1.0; }
   95% { opacity: 0.0; }
   to { opacity: 1.0; }
 }
-@keyframes flasher {  
+@keyframes flasher {
   from { background: #fff; }
   50% { background: #ff0; }
   to { background: #fff; }
 }
-@keyframes flasher2 {  
+@keyframes flasher2 {
   from { background: #fff; }
   1% { background: #fc0; }
   2% { background: #fff; }
@@ -415,7 +419,7 @@ body {
   4% { background: #fff; }
   to { background: #fff; }
 }
-@keyframes flasher3 {  
+@keyframes flasher3 {
   from { background: #fc0; }
   5% { background: #f00; }
   10% { background: #fc0; }
@@ -429,7 +433,7 @@ body {
   animation-iteration-count: infinite;
   animation-timing-function: ease-in;
   animation-duration: 15s;
-}			
+}
 .show-alert .alert li + li {
   animation-name: flasher;
   animation-iteration-count: infinite;

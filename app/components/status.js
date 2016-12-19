@@ -4,17 +4,18 @@
 import React from 'react';
 
 export default class StatusHandler {
-  static label = 'status';
-  static toolbar = {
-    title:'Show status messages',
-    icon: 'fa fa-exclamation-triangle',
-    popup: true
-  };
-  static initialState = {
-    messages: [],
-    expires: 0
-  };
-
+  constructor() {
+    this.label = 'status';
+    this.toolbar = {
+      title:'Show status messages',
+      icon: 'fa fa-exclamation-triangle',
+      popup: true
+    };
+    this.initialState = {
+      messages: [],
+      expires: 0
+    };
+  }
   addMessage(state, message, timeout=3) {
     // Turn the timeout into an actual time
     const expires = (new Date()).getTime() + timeout*1000;
