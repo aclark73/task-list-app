@@ -343,7 +343,7 @@ export default class App extends Component {
         <div className="popup alert"><ul><li className="header">Alert</li><li>{this.state.alertMessage}</li></ul></div>
       </div>
     );
-    const statusMessage = this.statusHandler.statusMessage(this.state.status);
+    const statusMessage = this.statusHandler.renderMessage(this.state.status);
     return(
       <div className={className} onClick={actions.click}>
         {toolbar}
@@ -356,6 +356,7 @@ export default class App extends Component {
           </div>
         </div>
         <div className="btn timer-btn timer-btn-task" onClick={actions.pause}>
+          {statusMessage}
           <div className="times">
             <div className="start-time">
               <label>Started</label><div clasName="time">{startTime}</div>
@@ -367,7 +368,6 @@ export default class App extends Component {
           <div>
             <span className="time-remaining">{timeRemaining}</span>
             <span className="time-idle">{timeIdle}</span>
-            <span className="status-message">{statusMessage}</span>
           </div>
           <div className="current-task">
             {currentTask}

@@ -2,6 +2,7 @@
  * Status indicator widget
  */
 import React, { Component } from 'react';
+import classNames from 'classnames';
 
 class StatusPopup extends Component {
   render() {
@@ -40,17 +41,24 @@ export default class StatusHandler {
   updateState(state) {
     if (state.expires) {
       const now = (new Date()).getTime();
-      if (state.expires > now) {
-        return state;
+      if (state.expires < now) {
+        return {
+          messages: state.messages,
+          expires: 0
+        };
       }
     }
-    return {
-      messages: state.messages,
-      expires: 0
-    }
+    return null;
   }
-  statusMessage(state) {
-    return (state.expires) ? state.messages[state.messages.length - 1] : '';
+  renderMessage(state) {
+    const className = classNames(
+      'status-message',
+      state.expires ? 'show' : 'hide'
+    );
+    const message = state.messages[state.messages.length - 1];
+    return (
+      <div className={className}>{message}</div>
+    );
   }
   popup(state) {
     return (
