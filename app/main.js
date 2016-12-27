@@ -18,9 +18,9 @@ function createWindow() {
 
   mainWindow.loadURL('file://' + __dirname + '/index.html')
 
-  /* Don't do it or it will open in production as well
-    mainWindow.webContents.openDevTools()
-  */
+
+  /* Don't do it or it will open in production as well */
+  mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', () => {
     mainWindow = null
@@ -39,6 +39,10 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
   }
+})
+
+app.on('will-quit', () => {
+  console.log("will-quit")
 })
 
 

@@ -14,19 +14,35 @@ import ToolbarButton from './toolbar';
 // import pkg from '../../package.json';
 const pkg = {name: 'task-list-app'};
 
+class Toolbar extends Component {
+  render() {
+    return (
+      <div className="toolbar">
+        <div className="btns btn-lg">
+          <ToolbarButton label="Refresh" action={this.props.actions.refresh}
+            icon="fa fa-refresh" title="Refresh task list" />
+        </div>
+        <div className="btns btn-lg">
+          <ToolbarButton label="Log" action={this.props.actions.showLog}
+            icon="fa fa-calendar" title="Show log" />
+          <ToolbarButton label="Upload" action={this.props.actions.uploadLogs}
+            icon="fa fa-database" title="Upload logged time" />
+        </div>
+        <div className="btns btn-sm">
+          <ToolbarButton label="Group" action={this.props.actions.toggleView}
+            icon="fa fa-list" title="Toggle group by project" />
+          <ToolbarButton label="Compact" action={this.props.actions.toggleCompactView}
+            icon="fa fa-arrows-v" title="Toggle compact view" />
+        </div>
+      </div>
+    );
+  }
+}
+
 export default class App extends Component {
   constructor(props) {
     super(props);
     window.app = this;
-    this.statusHandler = new StatusHandler();
-    this.handlers = [
-      this.statusHandler
-    ];
-
-    this.handlersByName = {};
-    this.handlers.forEach((h) => {
-      this.handlersByName[h.label] = h;
-    });
 
     this.state = {
       workTime: 30*60,
@@ -54,10 +70,7 @@ export default class App extends Component {
       timer: null,
 
       log: [],
-      showLog: false,
-      showChart: false,
       messages: [],
-      showMessages: false,
 
       popup: '',
 
@@ -80,14 +93,22 @@ export default class App extends Component {
       showLog: this.showLog.bind(this),
       showChart: this.showChart.bind(this),
       showMessages: this.showMessages.bind(this),
-      dismissPopups: this.dismissPopups.bind(this)
+      dismissPopups: this.dismissPopups.bind(this),
+      showPopup: {}
     };
-    this.handlerActions = {};
+    this.statusHandler = new StatusHandler('status', this.actions);
+    this.handlers = [
+      this.statusHandler
+    ];
+    this.handlersByName = {};
     this.handlers.forEach((h) => {
-      this.state[h.label] = h.initialState;
-      if (h.toolbar && h.toolbar.popup) {
-        this.handlerActions[h.label] = () => {
-          this.setState({ popup: h.label });
+      this.handlersByName[h.label] = h;
+    });
+    this.handlers.forEach((h) => {
+      this.state[h.label] = h.initialState();
+      if (h.popup) {
+        this.actions.showPopup[h.label] = () => {
+          this.showPopup(h.label);
         };
       }
     });
@@ -97,6 +118,7 @@ export default class App extends Component {
     this.load().then(this.refresh.bind(this)).then(this.stop.bind(this));
   }
   componentWillUnmount() {
+    console.log("unmount");
     this.stop();
     this.save();
   }
@@ -113,40 +135,54 @@ export default class App extends Component {
   }
   save() {
     console.log("Saving to conf");
-    this.conf.set('log', this.state.log);
-    this.conf.set('localTasks', this.state.localTasks);
+    [
+      'log', 'view', 'compactView'
+    ].forEach( (f) => {
+      this.conf.set(f, this.state[f]);
+    });
+    this.conf.set(
+      'tempLog',
+      (this.state.currently == 'working') ? this.createLogEntry() : null);
   }
   load() {
-    let log = this.conf.get('log');
-    if (log) {
-      log.sort(function(a, b) {
-        const as = a.startTime;
-        const bs = b.startTime;
-        if (as < bs) { return 1; }
-        else if (as > bs) { return -1; }
-        else { return 0; }
-      });
-      log.forEach(function(logEntry) {
-        if (!logEntry.taskId) {
-          logEntry.taskId = logEntry.task;
-        }
-      });
-      this.setState({
-        log: log
-      });
+    console.log("Loading from conf");
+    const state = {};
+    [
+      'log', 'view', 'compactView'
+    ].forEach( (f) => {
+      state[f] = this.conf.get(f) || this.state[f];
+    });
+    this.fixLog(state);
+
+    this.setState(state);
+
+    const tempLog = this.conf.get('tempLog');
+    if (tempLog) {
+      this.log(tempLog);
     }
-    let localTasks = this.conf.get('localTasks');
-    if (localTasks) {
-      this.setState({
-        localTasks: localTasks
-      });
-    }
+
     const sourcesConf = this.conf.get('sources') || {};
     this.sources = [
       new RedmineClient(sourcesConf.redmine),
       new GitHubClient(sourcesConf.github)
     ];
     return Promise.resolve();
+  }
+  fixLog(state) {
+    if (state.log) {
+      state.log.sort(function(a, b) {
+        const as = a.startTime;
+        const bs = b.startTime;
+        if (as < bs) { return 1; }
+        else if (as > bs) { return -1; }
+        else { return 0; }
+      });
+      state.log.forEach(function(logEntry) {
+        if (!logEntry.taskId) {
+          logEntry.taskId = logEntry.task;
+        }
+      });
+    }
   }
   uploadLogs() {
     this.addMessage("Uploading logs");
@@ -248,12 +284,6 @@ export default class App extends Component {
 
     const statusMessages = this.statusHandler.popup(this.state.status);
 
-    const messageRows = []
-    this.state.messages.forEach( (message, i) => {
-      messageRows.push(
-        <li key={i}>{message}</li>
-      );
-    });
     const startTime = Utils.getTime(this.state.startTime);
     const timeElapsed = Utils.formatTimespan(this.state.timeElapsed);
     const isIdle = (!this.state.timeRemaining && this.state.timeIdle);
@@ -276,11 +306,7 @@ export default class App extends Component {
       {
        'has-task': this.state.taskId,
        'compact': this.state.compactView,
-       'show-popup': (this.state.popup || this.state.showLog || this.state.showChart || this.state.showMessages || this.state.showAlert),
-       'show-log': this.state.showLog,
-       'show-timeline': this.state.showChart,
-       'show-messages': this.state.showMessages,
-       'show-alert': this.state.showAlert
+       'show-popup': !!this.state.popup
       });
     const currentTask = this.state.taskLabel;
     const compactButtonClassName = classNames(
@@ -312,38 +338,20 @@ export default class App extends Component {
     });
 
     const toolbar = (
-      <div className="toolbar">
-        <div className="btns btn-lg">
-          <ToolbarButton label="Refresh" action={actions.refresh}
-            icon="fa fa-refresh" title="Refresh task list" />
-        </div>
-        <div className="btns btn-lg">
-          <ToolbarButton label="Log" action={actions.showLog}
-            icon="fa fa-calendar" title="Show log" />
-          <ToolbarButton label="Upload" action={actions.uploadLogs}
-            icon="fa fa-database" title="Upload logged time" />
-        </div>
-        <div className="btns btn-sm">
-          {handlerButtons['status']}
-          <ToolbarButton label="Group" action={actions.toggleView}
-            icon="fa fa-list" title="Toggle group by project" />
-          <ToolbarButton label="Compact" action={actions.toggleCompactView}
-            icon="fa fa-arrows-v" title="Toggle compact view" />
-        </div>
-      </div>
+      <Toolbar actions={actions} />
     );
+    const statusPopup = this.statusHandler.popup(this.state.status);
     const popups = (
       <div>
         <div className="popup-backdrop"></div>
         <div className="popup-click" onClick={actions.dismissPopups}></div>
-        {handlerPopups}
-        <div className="popup messages">{statusMessages}</div>
+        {statusPopup}
         <div className="popup log"><ul><li className="header">Log</li>{logDisplay}</ul></div>
         <div className="popup chart"><ul><li className="header">Log Chart</li>{logChart}</ul></div>
         <div className="popup alert"><ul><li className="header">Alert</li><li>{this.state.alertMessage}</li></ul></div>
       </div>
     );
-    const statusMessage = this.statusHandler.renderMessage(this.state.status);
+    const statusMessage = this.statusHandler.component(this.state.status);
     return(
       <div className={className} onClick={actions.click}>
         {toolbar}
@@ -406,27 +414,22 @@ export default class App extends Component {
     });
   }
   showLog() {
-    this.setState({
-      showLog: true
-    });
+    this.showPopup('log');
   }
   showChart() {
-    this.setState({
-      showChart: true
-    });
+    this.showPopup('chart');
   }
   showMessages() {
+    this.showPopup('messages');
+  }
+  showPopup(popup) {
     this.setState({
-      showMessages: true
+      popup: popup
     });
   }
   dismissPopups() {
     this.setState({
-      popup: '',
-      showLog: false,
-      showChart: false,
-      showMessages: false,
-      showAlert: false
+      popup: ''
     });
     if (this.state.afterWaiting) {
       this.afterWaiting(this.state.afterWaiting);
@@ -448,17 +451,20 @@ export default class App extends Component {
       this.startTimer();
     }
   }
+
+  /**
+   * Pause timer and show the message to the user. When the user
+   * dismisses the dialog, go to the specified next state.
+   */
   waitForUser(message, next) {
-    // Pause timer and show the message to the user. When the user
-    // dismisses the dialog, go to the specified next state.
     this.setState({
-      showAlert: true,
+      popup: 'alert',
       alertMessage: message,
       afterWaiting: next,
       timeIdle: 0
     });
   }
-  /* Timer */
+  /* Start timer */
   start(task) {
     if (task && !task.source) { task = null; }
     const changedTask = (task && Task.getUID(task) != this.state.taskId);
@@ -474,25 +480,30 @@ export default class App extends Component {
       return;
     }
     if (!task || !Task.getUID(task)) { return; }
+    const now = new Date();
     this.setState({
       currently: "working",
-      startTime: this.state.startTime || new Date(),
+      startTime: this.state.startTime || now,
+      lastWorkTime: now,
       timeRemaining: this.state.workTime,
       timeIdle: 0
     });
     this.startTimer();
   }
+  /* Callback for timer ticks */
   tick() {
     const state = {};
     if (this.state.currently == "stopped" || this.state.showAlert) {
       state.timeIdle = this.state.timeIdle + 1;
     }
     else if (this.state.currently == "working") {
-      state.timeElapsed = this.state.timeElapsed + 1;
+      if (this.state.timeElapsed && !(this.state.timeElapsed % 10)) {
+        this.save();
+      }
       // Check for long gap (system sleep?)
       const now = new Date();
-      if (state.lastWorkTime) {
-        const gap = now - state.lastWorkTime;
+      if (this.state.lastWorkTime) {
+        const gap = now - this.state.lastWorkTime;
         console.log("Gap is " + gap);
         if (gap > 60000) {
           console.log("Stopping due to time gap of " + gap);
@@ -501,6 +512,7 @@ export default class App extends Component {
         }
       }
       state.lastWorkTime = now;
+      state.timeElapsed = this.state.timeElapsed + 1;
     }
     if (this.state.timeRemaining > 0) {
       state.timeRemaining = this.state.timeRemaining - 1;
@@ -586,15 +598,20 @@ export default class App extends Component {
       this.setState(newState);
     }
   }
-  log() {
+  createLogEntry() {
     const task = this.getTask(this.state.taskId);
-    const logEntry = {
+    return {
       taskId: this.state.taskId,
       taskName: Task.getLabel(task),
       project: task.project,
       startTime: this.state.startTime.toISOString(),
       endTime: this.state.lastWorkTime.toISOString(),
       timeElapsed: this.state.timeElapsed
+    };
+  }
+  log(logEntry) {
+    if (!logEntry) {
+      logEntry = this.createLogEntry();
     }
     this.setState({
       log: [logEntry].concat(this.state.log)

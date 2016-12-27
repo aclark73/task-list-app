@@ -3,29 +3,35 @@
  */
 import React, { Component } from 'react';
 import classNames from 'classnames';
+import ToolbarButton from './toolbar';
+import { Handler, HandlerPopup, HandlerComponent } from './handler';
 
-class StatusPopup extends Component {
-  render() {
-    const messageRows = this.props.messages.map( (message, i) => {
+class StatusPopup extends HandlerPopup {
+  renderContents() {
+    return this.props.messages.map( (message, i) => {
       return (
         <li key={i}>{message}</li>
       );
     });
+  }
+}
+
+class StatusComponent extends HandlerComponent {
+  render() {
+    const className = classNames(
+      'status-message',
+      this.props.expires ? 'show' : 'hide'
+    );
+    const message = this.props.messages[this.props.messages.length - 1];
     return (
-      <ul><li className="header">Messages</li>{messageRows}</ul>
+      <div className={className}>{message}</div>
     );
   }
 }
 
-export default class StatusHandler {
-  constructor() {
-    this.label = 'status';
-    this.toolbar = {
-      title:'Show status messages',
-      icon: 'fa fa-exclamation-triangle',
-      popup: true
-    };
-    this.initialState = {
+export default class StatusHandler extends Handler {
+  initialState() {
+    return {
       messages: [],
       expires: 0
     };
@@ -50,19 +56,22 @@ export default class StatusHandler {
     }
     return null;
   }
-  renderMessage(state) {
-    const className = classNames(
-      'status-message',
-      state.expires ? 'show' : 'hide'
-    );
-    const message = state.messages[state.messages.length - 1];
+  component(state) {
     return (
-      <div className={className}>{message}</div>
+      <StatusComponent expires={state.expires} messages={state.messages} />
     );
   }
   popup(state) {
     return (
-      <StatusPopup messages={state.messages} />
+      <StatusPopup label={this.label} messages={state.messages} />
+    );
+  }
+  toolbarButton() {
+    return (
+      <ToolbarButton
+        title="Show status messages"
+        icon="fa fa-exclamation-triangle"
+        popup={true} />
     );
   }
 }
