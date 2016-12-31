@@ -29,6 +29,8 @@ class Toolbar extends Component {
             icon="fa fa-database" title="Upload logged time" />
         </div>
         <div className="btns btn-sm">
+          <ToolbarButton label="Status" action={this.props.actions.showPopup.status}
+            icon="fa fa-exclamation-triangle" title="Show status messages" />
           <ToolbarButton label="Group" action={this.props.actions.toggleView}
             icon="fa fa-list" title="Toggle group by project" />
           <ToolbarButton label="Compact" action={this.props.actions.toggleCompactView}
@@ -96,23 +98,24 @@ export default class App extends Component {
       dismissPopups: this.dismissPopups.bind(this),
       showPopup: {}
     };
-    this.statusHandler = new StatusHandler('status', this.actions);
-    this.handlers = [
-      this.statusHandler
-    ];
-    this.handlersByName = {};
-    this.handlers.forEach((h) => {
-      this.handlersByName[h.label] = h;
-    });
-    this.handlers.forEach((h) => {
-      this.state[h.label] = h.initialState();
-      if (h.popup) {
-        this.actions.showPopup[h.label] = () => {
-          this.showPopup(h.label);
-        };
-      }
-    });
+
+    /* Pluggable handlers */
+    this.handlers = {};
+    this.handlerList = [];
+    this.registerHandler(new StatusHandler('status', this));
+
     this.conf = new Configstore(pkg.name);
+  }
+  /* Add a pluggable handler */
+  registerHandler(handler) {
+    this.handlerList.push(handler);
+    this.handlers[handler.label] = handler;
+    this.state[handler.label] = handler.initialState();
+    if (handler.popup) {
+      this.actions.showPopup[handler.label] = () => {
+        this.showPopup(handler.label);
+      }
+    }
   }
   componentWillMount() {
     this.load().then(this.refresh.bind(this)).then(this.stop.bind(this));
@@ -124,7 +127,7 @@ export default class App extends Component {
   }
   addMessage(message) {
     this.setState({
-      status: this.statusHandler.addMessage(this.state.status, message),
+      status: this.handlers.status.addMessage(this.state.status, message),
       messages: this.state.messages.concat(['' + message])
     });
   }
@@ -282,7 +285,7 @@ export default class App extends Component {
     const logChart = '';
     //  <LogChart log={this.state.log}/>
 
-    const statusMessages = this.statusHandler.popup(this.state.status);
+    const statusMessages = this.handlers.status.popup(this.state.status);
 
     const startTime = Utils.getTime(this.state.startTime);
     const timeElapsed = Utils.formatTimespan(this.state.timeElapsed);
@@ -324,23 +327,14 @@ export default class App extends Component {
 
     const handlerPopups = [];
     const handlerButtons = {};
-    this.handlers.forEach((h) => {
-      if (h.toolbar && h.popup) {
-        handlerButtons[h.label] = (
-          <ToolbarButton label={h.label} action={this.handlerActions[h.label]}
-            icon={h.toolbar.icon} title={h.toolbar.title} />
-        );
+    this.handlerList.forEach((h) => {
         const popupContents = h.popup(this.state[h.label]);
         handlerPopups.push((
           <div key={h.label} className={"popup popup-"+h.label}>{popupContents}</div>
         ));
-      }
     });
 
-    const toolbar = (
-      <Toolbar actions={actions} />
-    );
-    const statusPopup = this.statusHandler.popup(this.state.status);
+    const statusPopup = this.handlers.status.popup(this.state.status);
     const popups = (
       <div>
         <div className="popup-backdrop"></div>
@@ -351,10 +345,10 @@ export default class App extends Component {
         <div className="popup alert"><ul><li className="header">Alert</li><li>{this.state.alertMessage}</li></ul></div>
       </div>
     );
-    const statusMessage = this.statusHandler.component(this.state.status);
+    const statusMessage = this.handlers.status.component(this.state.status);
     return(
       <div className={className} onClick={actions.click}>
-        {toolbar}
+        <Toolbar actions={actions} handlers={this.handlers} />
         <div className="timer-btns-side">
           <div className="btn timer-btn timer-btn-stop" onClick={actions.stop}>
             Stop
@@ -524,7 +518,7 @@ export default class App extends Component {
     }
   }
   updateHandlerState(state) {
-    this.handlers.forEach((h) => {
+    this.handlerList.forEach((h) => {
       const hState = h.updateState(this.state[h.label]);
       if (hState) {
         state[h.label] = hState;

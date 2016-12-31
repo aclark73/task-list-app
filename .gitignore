@@ -1,6 +1,7 @@
 ### PROJECT ###
 node_modules
 dist
+scratch*
 
 ### OSX ###
 .DS_Store

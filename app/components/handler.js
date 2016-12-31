@@ -1,22 +1,14 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 
-export class HandlerComponent extends Component {
-  render() {
-    return "";
-  }
-}
-
 export class HandlerPopup extends Component {
-  renderContents() {
-    return "";
-  }
   render() {
+    console.log("Rendering " + this.props.label + " popup");
     return (
       <div key={this.props.label} className={"popup popup-"+this.props.label}>
         <ul>
           <li className="header">{this.props.label}</li>
-          {this.renderContents()}
+          {this.props.contents}
         </ul>
       </div>
     );
@@ -24,9 +16,9 @@ export class HandlerPopup extends Component {
 }
 
 export class Handler {
-  constructor(label, actions) {
+  constructor(label, app) {
     this.label = label;
-    this.actions = actions;
+    this.app = app;
     // this.label = 'default';
     // this.toolbar = {
     //   title:'Show status messages',
@@ -66,9 +58,9 @@ export class Handler {
     this.updateState(fullState[this.label]);
   }
 
-  component() {
-    return (<HandlerComponent />);
-  }
+  // component() {
+  //   return (<HandlerComponent />);
+  // }
 
   // popup() {
   //   return HandlerPopup;

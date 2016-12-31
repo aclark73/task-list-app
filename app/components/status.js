@@ -4,19 +4,22 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import ToolbarButton from './toolbar';
-import { Handler, HandlerPopup, HandlerComponent } from './handler';
+import { Handler, HandlerPopup } from './handler';
 
-class StatusPopup extends HandlerPopup {
-  renderContents() {
-    return this.props.messages.map( (message, i) => {
+class StatusPopup extends React.Component {
+  render() {
+    const messages = this.props.messages.map( (message, i) => {
       return (
         <li key={i}>{message}</li>
       );
     });
+    return (
+      <HandlerPopup label={this.props.label} contents={messages} />
+    );
   }
 }
 
-class StatusComponent extends HandlerComponent {
+class StatusComponent extends Component {
   render() {
     const className = classNames(
       'status-message',
@@ -67,11 +70,13 @@ export default class StatusHandler extends Handler {
     );
   }
   toolbarButton() {
+    action = this.app.actions.showPopup[this.label];
     return (
       <ToolbarButton
+        label={this.label}
         title="Show status messages"
         icon="fa fa-exclamation-triangle"
-        popup={true} />
+        action={action} />
     );
   }
 }
