@@ -6,8 +6,8 @@ const Task = {
     return "P." + project.project;
   },
   getTaskUID: function(task) {
-    if (task.issue_uid) {
-      return "T." + task.source + "." + task.issue_uid;
+    if (task.issue_id) {
+      return "T." + task.source + "." + task.issue_id;
     } else {
     	return "T." + task.source + "." + task.project + "." + task.title;
     }  

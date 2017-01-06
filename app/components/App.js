@@ -188,8 +188,10 @@ export default class App extends Component {
     }
   }
   uploadLogs() {
-    this.addMessage("Uploading logs");
-    const redmine = new RedmineClient();
+    /* TODO: this is a hack to find the Redmine client */
+    const redmine = this.sources.filter((client) => {
+      return client.source == 'redmine';
+    })[0];
     redmine.upload(this.state.log).then( (updatedLog) => {
       console.log("Redmine uploaded");
       this.setState({log: updatedLog});

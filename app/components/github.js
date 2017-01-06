@@ -57,8 +57,8 @@ export default class GitHubClient {
             project: json.repository.name,
             title: json.title,
             source: this.source,
-            issue_uid: json.id,
-            issue_id: json.number,
+            issue_id: json.id,
+            issue_number: json.number,
             updated_on: json.updated_at
         };
     }
