@@ -491,14 +491,14 @@ export default class App extends Component {
       state.timeIdle = this.state.timeIdle + 1;
     }
     else if (this.state.currently == "working") {
-      if (this.state.timeElapsed && !(this.state.timeElapsed % 10)) {
+      if (this.state.timeElapsed && !(this.state.timeElapsed % 60)) {
         this.save();
       }
       // Check for long gap (system sleep?)
       const now = new Date();
       if (this.state.lastWorkTime) {
         const gap = now - this.state.lastWorkTime;
-        console.log("Gap is " + gap);
+        // console.log("Gap is " + gap);
         if (gap > 60000) {
           console.log("Stopping due to time gap of " + gap);
           this.waitForUser("Stopping due to time gap of " + gap, "stopped");
