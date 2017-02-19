@@ -487,7 +487,7 @@ export default class App extends Component {
   /* Callback for timer ticks */
   tick() {
     const state = {};
-    if (this.state.currently == "stopped" || this.state.showAlert) {
+    if (this.state.currently == "stopped" || this.state.popup == "alert") {
       state.timeIdle = this.state.timeIdle + 1;
     }
     else if (this.state.currently == "working") {
