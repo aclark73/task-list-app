@@ -3,7 +3,7 @@ const Utils = {
     return (d >= 10 ? '' : '0') + d;
   },
 
-  formatTimespan: function(t) {
+  formatTimespan: function(t, humanize) {
     var neg = (t < 0);
     t = Math.abs(t);
     var s = t%60;
@@ -11,13 +11,21 @@ const Utils = {
     var h = Math.trunc(t/3600);
 
     var sign = neg ? '-' : '';
-    if (h > 0) {
-      return sign + h + ':' + Utils.pad2(m) + ':' + Utils.pad2(s);
+    if (humanize) {
+      if (h > 0) {
+        return sign + h + 'h' + Utils.pad2(m) + 'm';
+      } else {
+        return sign + m + 'm';
+      }
     } else {
-      return sign + m + ':' + Utils.pad2(s);
+      if (h > 0) {
+        return sign + h + ':' + Utils.pad2(m) + ':' + Utils.pad2(s);
+      } else {
+        return sign + m + ':' + Utils.pad2(s);
+      }
     }
   },
-  
+
   getDay: function(timestamp) {
     if (!timestamp) { return '-'; }
     const d = new Date(timestamp);
@@ -25,14 +33,14 @@ const Utils = {
       Utils.pad2(d.getMonth() + 1) + "-" +
       Utils.pad2(d.getDate());
   },
-  
+
   getTime: function(timestamp) {
     if (!timestamp) { return '-'; }
     const d = new Date(timestamp);
     return "" + Utils.pad2(d.getHours()) + ":" +
       Utils.pad2(d.getMinutes());
   },
-  
+
   timePerTaskPerDay: function(log) {
     const tasks = {};
     const days = {};
@@ -51,7 +59,7 @@ const Utils = {
     console.log(tasks);
     return tasks;
   },
-  
+
   timePerDayPerTask: function(log) {
     const days = {};
     log.forEach((logEntry) => {
@@ -68,7 +76,7 @@ const Utils = {
     console.log(days);
     return days;
   },
-  
+
   lastWorkPerTask: function(log) {
     const lastWork = {};
     log.forEach((logEntry) => {
@@ -79,6 +87,6 @@ const Utils = {
     });
     return lastWork;
   }
-  
+
 };
 export default Utils;

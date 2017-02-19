@@ -3,6 +3,7 @@ import Utils from './utils';
 import Task from './task';
 import colormap from 'colormap';
 import { Handler, HandlerPopup } from './handler';
+import classNames from 'classnames';
 
 const NUM_COLORS = 32;
 const COLORS = colormap({
@@ -22,8 +23,18 @@ function getColor(str) {
 
 export default class Log extends Component {
 
+  constructor(props) {
+      super(props);
+      this.state = {
+          edit: '',
+          editStart: '',
+          editEnd: ''
+      };
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.log.length != this.props.log.length;
+    return (nextProps.log.length != this.props.log.length) ||
+      (nextState.edit != this.state.edit);
   }
 
   getDuration(t1, t2) {
@@ -34,6 +45,17 @@ export default class Log extends Component {
       console.log(e);
       return 0;
     }
+  }
+
+  getLogEntryId(logEntry) {
+    return logEntry.taskId + '.' + logEntry.startTime;
+  }
+
+  edit(logEntryId) {
+
+    this.setState({
+      edit: logEntryId
+    });
   }
 
   render() {
@@ -96,8 +118,8 @@ export default class Log extends Component {
         <tr key={day}>
           <th></th>
           <th colSpan="4">{day}</th>
-          <th>{Utils.formatTimespan(dayStats.duration)}</th>
-          <th>{Utils.formatTimespan(dayStats.worked)}</th>
+          <th>{Utils.formatTimespan(dayStats.duration, true)}</th>
+          <th>{Utils.formatTimespan(dayStats.worked, true)}</th>
           <th></th>
         </tr>
       ));
@@ -114,15 +136,22 @@ export default class Log extends Component {
         const style = {
           background: getColor(logEntry.taskId)
         };
+        const logEntryId = this.getLogEntryId(logEntry);
+        const editing = (logEntryId == this.state.edit);
+        const edit = () => {
+          console.log("Editing " + logEntryId);
+          this.edit(logEntryId);
+        };
+        const className = editing ? 'editing' : '';
         rows.push((
-          <tr key={day + 'r' + i} id={day + 'r' + i}>
+          <tr key={day + 'r' + i} id={day + 'r' + i} className={className}>
             {firstCol}
             <td className="chart2" style={style}></td>
             <td className="start">{Utils.getTime(logEntry.startTime)}</td>
             <td className="end">{Utils.getTime(logEntry.endTime)}</td>
-            <td className="task">{label}</td>
-            <td className="duration">{Utils.formatTimespan(duration)}</td>
-            <td className="work">{Utils.formatTimespan(logEntry.timeElapsed)}</td>
+            <td className="task"><a href="#" onClick={edit}>{label}</a></td>
+            <td className="duration">{Utils.formatTimespan(duration, true)}</td>
+            <td className="work">{Utils.formatTimespan(logEntry.timeElapsed, true)}</td>
             <td className="util">{utilization}%</td>
           </tr>
         ));
