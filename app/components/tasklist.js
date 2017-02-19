@@ -15,7 +15,7 @@ export default class TaskList extends Component {
         // console.log("nextProps.context: " + JSON.stringify(nextProps.context));
         return (nextProps.projects != this.props.projects) ||
         (nextProps.tasks != this.props.tasks) ||
-        (JSON.stringify(nextState) != JSON.stringify(this.state));
+        (JSON.stringify(nextState) != JSON.stringify(this.state)) ||
         (JSON.stringify(nextProps.context) != JSON.stringify(this.props.context));
     }
 
