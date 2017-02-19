@@ -157,12 +157,12 @@ export default class App extends Component {
     });
     this.fixLog(state);
 
-    this.setState(state);
-
     const tempLog = this.conf.get('tempLog');
     if (tempLog) {
-      this.log(tempLog);
+      state.log = [tempLog].concat(state.log);
     }
+
+    this.setState(state);
 
     const sourcesConf = this.conf.get('sources') || {};
     this.sources = [
