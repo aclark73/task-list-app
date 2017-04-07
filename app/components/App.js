@@ -219,6 +219,13 @@ export default class App extends Component {
     });
     return Promise.all(requests).then(
       () => {
+        // Check to see if the current task has disappeared
+        const found = tasks.find((task) => { 
+            return Task.getUID(task) == this.state.taskId; 
+        });
+        if (!found) {
+            this.stop();
+        }
         this.sortTasks(projects, tasks);
         this.setState({projects: projects, tasks: tasks});
       },
@@ -500,7 +507,7 @@ export default class App extends Component {
       const now = new Date();
       if (this.state.lastWorkTime) {
         const gap = now - this.state.lastWorkTime;
-        // console.log("Gap is " + gap);
+        // console.log("Gap is " + gap + " (" + now + ")");
         if (gap > 60000) {
           console.log("Stopping due to time gap of " + gap);
           this.waitForUser("Stopping due to time gap of " + gap, "stopped");
