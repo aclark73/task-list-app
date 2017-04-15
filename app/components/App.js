@@ -108,9 +108,13 @@ export default class App extends Component {
   }
   /* Add a pluggable handler */
   registerHandler(handler) {
+    // Add to list
     this.handlerList.push(handler);
+    // Lookup by name
     this.handlers[handler.label] = handler;
+    // Handler state in a namespace
     this.state[handler.label] = handler.initialState();
+    // Register any popup handler
     if (handler.popup) {
       this.actions.showPopup[handler.label] = () => {
         this.showPopup(handler.label);
@@ -118,7 +122,9 @@ export default class App extends Component {
     }
   }
   componentWillMount() {
-    this.load().then(this.refresh.bind(this)).then(this.stop.bind(this));
+    this.load() // Load data
+    .then(this.refresh.bind(this)) // Refresh UI
+    .then(this.stop.bind(this)); // Stop everything
   }
   componentWillUnmount() {
     console.log("unmount");
@@ -227,6 +233,7 @@ export default class App extends Component {
             this.stop();
         }
         this.sortTasks(projects, tasks);
+        Task.setProjectColors(projects, tasks);
         this.setState({projects: projects, tasks: tasks});
       },
       (err) => {

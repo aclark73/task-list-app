@@ -56,7 +56,13 @@ export class TaskWidget extends Component {
 
     const project_label = ((view, project) => {
       if (view == 'tasks') {
-        return (<div className="label project-label">{project}</div>);
+        const style = {
+          backgroundColor: Task.getProjectColor(project)
+        };
+        return (
+          <div className="label project-label"
+            style={style}>{project}</div>
+        );
       } else {
         return "";
       }

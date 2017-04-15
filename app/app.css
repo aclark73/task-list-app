@@ -127,7 +127,7 @@ div {
   background: hsl(5, 84%, 95%);
   color: hsl(5, 34%, 66%);
   border-color: hsl(5, 34%, 66%);
-  cursor: inherit;
+  cursor: default;
 }
 
 .timer-btn-rewind {
@@ -143,7 +143,7 @@ div {
 .stopped .timer-btn-rewind {
   background: #eee;
   color: #999;
-  cursor: inherit;
+  cursor: default;
 }
 
 .task-list {
@@ -324,8 +324,8 @@ div {
     transition: opacity 2s;
 }
 
-input.search {
-    width: 100%;
+.search input {
+    width: 90%;
     border-radius: 2px;
     border: 1px solid #eee;
     box-sizing: border-box;
@@ -335,9 +335,9 @@ input.search {
     margin-bottom: 2px;
 }
 
-input.search:focus {
-    border-color: #ddd;
-    box-shadow: inset 0 0 4px #ddd;
+.search input:focus {
+    border-color: #ccf;
+    box-shadow: inset 0 0 2px 0px #ccf;
 }
 
 .popup {

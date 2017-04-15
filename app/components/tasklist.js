@@ -25,6 +25,10 @@ export default class TaskList extends Component {
         this.setState({search: event.target.value});
     }
 
+    clearSearch() {
+        this.setState({search: ""});
+    }
+
     render() {
         const rows = [];
         console.log("rendering tasklist");
@@ -46,8 +50,12 @@ export default class TaskList extends Component {
             rows.push(widget);
         });
         const updateSearch = this.updateSearch.bind(this);
+        const clearSearch = this.clearSearch.bind(this);
         const searchWidget = (
-            <input type="text" className="search" value={search} onChange={updateSearch} />
+            <div className="search">
+                <input type="text" value={search} onChange={updateSearch} />
+                <button type="button" onClick={clearSearch}>clear</button>
+            </div>
         )
         return (
             <div>{searchWidget}{rows}</div>
