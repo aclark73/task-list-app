@@ -404,7 +404,7 @@ export default class App extends Component {
           </div>
         </div>
 
-        <div className="task-list"><ul className={this.state.view}>{taskList}</ul></div>
+        <div className="task-list">{taskList}</div>
 
         {popups}
       </div>

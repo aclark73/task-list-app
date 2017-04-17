@@ -58,7 +58,12 @@ export default class TaskList extends Component {
             </div>
         )
         return (
-            <div>{searchWidget}{rows}</div>
+            <div>
+                {searchWidget}
+                <ul className={this.props.context.view}>
+                    {rows}
+                </ul>
+            </div>
         );
     }
 }

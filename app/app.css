@@ -153,13 +153,11 @@ div {
     left: 8px;
     right: 0;
     overflow-y: scroll;
-}
-
-.task-list > ul {
-    margin: 0;
+    overflow-x: hidden;
 }
 
 .task-list ul {
+    margin: 0;
     list-style: none;
     padding: 0;
 }
@@ -325,7 +323,7 @@ div {
 }
 
 .search input {
-    width: 90%;
+    width: 80%;
     border-radius: 2px;
     border: 1px solid #eee;
     box-sizing: border-box;
@@ -338,6 +336,10 @@ div {
 .search input:focus {
     border-color: #ccf;
     box-shadow: inset 0 0 2px 0px #ccf;
+}
+
+.search button {
+    width: 20%;
 }
 
 .popup {
