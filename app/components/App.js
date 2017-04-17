@@ -179,17 +179,13 @@ export default class App extends Component {
   }
   fixLog(state) {
     if (state.log) {
+      // Make sure logs are sorted (user edits can unsort them)
       state.log.sort(function(a, b) {
         const as = a.startTime;
         const bs = b.startTime;
         if (as < bs) { return 1; }
         else if (as > bs) { return -1; }
         else { return 0; }
-      });
-      state.log.forEach(function(logEntry) {
-        if (!logEntry.taskId) {
-          logEntry.taskId = logEntry.task;
-        }
       });
     }
   }
