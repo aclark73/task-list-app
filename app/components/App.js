@@ -124,7 +124,7 @@ export default class App extends Component {
   componentWillMount() {
     this.load() // Load data
     .then(this.refresh.bind(this)) // Refresh UI
-    .then(this.stop.bind(this)); // Stop everything
+    .then(this.startup.bind(this)); // Stop everything
   }
   componentWillUnmount() {
     console.log("unmount");
@@ -163,10 +163,7 @@ export default class App extends Component {
     });
     this.fixLog(state);
 
-    const tempLog = this.conf.get('tempLog');
-    if (tempLog) {
-      state.log = [tempLog].concat(state.log);
-    }
+    this.handleTempLog(state, this.conf.get('tempLog'));
 
     this.setState(state);
 
@@ -177,6 +174,7 @@ export default class App extends Component {
     ];
     return Promise.resolve();
   }
+
   fixLog(state) {
     if (state.log) {
       // Make sure logs are sorted (user edits can unsort them)
@@ -187,6 +185,16 @@ export default class App extends Component {
         else if (as > bs) { return -1; }
         else { return 0; }
       });
+    }
+  }
+  handleTempLog(state, tempLog) {
+    if (tempLog) {
+      state.log = [tempLog].concat(state.log);
+      const outage = (new Date()) - (new Date(tempLog.endTime));
+      console.log("Last activity was " + tempLog.endTime + " (" + outage + ")");
+      if (outage < 2*60*1000) {
+        state.resumeTaskId = tempLog.taskId;
+      }
     }
   }
   uploadLogs() {
@@ -253,6 +261,14 @@ export default class App extends Component {
       else { return 0; }
     }
     tasks.sort(taskSort);
+  }
+  startup() {
+    if (this.state.resumeTaskId) {
+      this.start(this.getTask(this.state.resumeTaskId));
+      this.setState({resumeTaskId: null});
+    } else {
+      this.stop();
+    }
   }
   handleRowClick(row) {
     console.log("Clicked on row: " + row);
@@ -470,6 +486,7 @@ export default class App extends Component {
       timeIdle: 0
     });
   }
+
   /* Start timer */
   start(task) {
     if (task && !task.source) { task = null; }
@@ -510,7 +527,9 @@ export default class App extends Component {
       const now = new Date();
       if (this.state.lastWorkTime) {
         const gap = now - this.state.lastWorkTime;
-        // console.log("Gap is " + gap + " (" + now + ")");
+        if (gap > 2000) {
+          console.log("Gap is " + gap + ' at ' + new Date());
+        }
         if (gap > 60000) {
           console.log("Stopping due to time gap of " + gap);
           this.waitForUser("Stopping due to time gap of " + gap, "stopped");
