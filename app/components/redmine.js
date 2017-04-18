@@ -105,11 +105,7 @@ export default class RedmineClient {
                     }
                 }).then(function(resp) {
                     if (resp.ok) {
-                      resp.json().then(function(data) {
-                          resolve(data);
-                      }).catch(function(e) {
-                          reject(e);
-                      });
+                      resp.json().then(resolve).catch(reject);
                     } else {
                       reject("" + resp.status + ": " + resp.statusText);
                     }
@@ -119,9 +115,7 @@ export default class RedmineClient {
     }
 
     load() {
-        return this.fetch().then(function(json) {
-            return this.parse(json);
-        }.bind(this));
+        return this.fetch().then(this.parse.bind(this));
     }
 
   getIssueId(taskId) {

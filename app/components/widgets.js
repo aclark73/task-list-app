@@ -54,7 +54,10 @@ export class TaskWidget extends Component {
       );
     }
 
-    const project_label = ((view, project) => {
+    // Keep the local definitions more readable
+    const project_label = (() => {
+      var view = this.props.context.view;
+      var project = this.props.task.project;
       if (view == 'tasks') {
         const style = {
           backgroundColor: Task.getProjectColor(project)
@@ -66,7 +69,8 @@ export class TaskWidget extends Component {
       } else {
         return "";
       }
-    })(this.props.context.view, this.props.task.project);
+    })();
+    // The right way
     const updated_label = ((updated_on) => {
       if (updated_on) {
         var d = new Date(updated_on);
@@ -78,7 +82,7 @@ export class TaskWidget extends Component {
       }
     })(this.props.task.updated_on);
     return (
-      <li>
+      <li key={this.props.task}>
         <div className={className}>
           {toggleWidget}
           <div className="task-label" onClick={select} onDoubleClick={start}>
