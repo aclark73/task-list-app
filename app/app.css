@@ -597,12 +597,21 @@ div {
 
 .log .chart {
   width: 10px;
-  position: relative;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
 }
+
 .log .chart > div {
   width: 7px;
   position: absolute;
+  border: 1px solid rgba(0,0,0,.2);
 }
+.log .log-entry:hover .chart > div {
+  border-color: rgba(0,0,0,.5);
+}
+
 .log .chart2 {
   width: 2px;
 }
@@ -623,30 +632,34 @@ div {
     font-size: 11px;
 }
 
-.colorsquare {
-    width: .8em;
+.log .colorsquare {
+    width: 8px;
     display: inline-block;
     height: .8em;
+    border: 1px solid rgba(0,0,0,.2);
 }
 
-.task .task {
+.log .task-name {
     font-size: 14px;
     /* display: inline-block; */
 }
 
-.task > span {
+.log .log-entry > span {
     margin: 0 .2em;
 }
 
-.duration, .util {
-    float: right;
-    font-size: 11px;
-}
-
-.start {
+.log .start {
     color: #060;
 }
 
-.end {
+.log .end {
     color: #600;
+}
+
+.log .work {
+    position: relative;
+}
+
+.log .log-entry {
+    margin-left: 10px;
 }

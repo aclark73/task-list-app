@@ -114,39 +114,6 @@ export default class Log extends Component {
           </span>
         </div>
       ));
-      // The log entries
-      const subrows = [];
-      dayEntries.forEach( (logEntry, i) => {
-        const label = logEntry.taskName || logEntry.task;
-        const duration = this.getDuration(logEntry.startTime, logEntry.endTime);
-        const utilization = Math.floor((logEntry.timeElapsed * 100) / duration);
-
-        const style = {
-          background: getColor(logEntry)
-        };
-        const logEntryId = this.getLogEntryId(logEntry);
-        const editing = (logEntryId == this.state.edit);
-        const edit = () => {
-          console.log("Editing " + logEntryId);
-          this.edit(logEntryId);
-        };
-        const className = classNames(
-          'task',
-          { 'editing': editing }
-        );
-        subrows.push((
-          <div key={day + 'r' + i} id={day + 'r' + i} className={className}>
-            <span className="colorsquare" style={style}></span>
-            <span className="start">{Utils.getTime(logEntry.startTime)}</span>
-            <span className="end">{Utils.getTime(logEntry.endTime)}</span>
-            <span className="task"><a href="#" onClick={edit}>{label}</a></span>
-            <span className="duration">{Utils.formatTimespan(duration, true)}</span>
-            <span className="work">{Utils.formatTimespan(logEntry.timeElapsed, true)}</span>
-            <span className="util">{utilization}%</span>
-          </div>
-        ));
-      });
-
       // Chart of tasks across the day
       const colors = colormap({
         colormap: 'summer',   // pick a builtin colormap or add your own
@@ -169,11 +136,44 @@ export default class Log extends Component {
           <div id={day + 'c' + i} key={day + 'c' + i} style={style}></div>
         );
       });
-      subrows.push((
-        <div key={day + 'chart'} className="chart">
-          {chartRows}
-        </div>
-      ));
+      // The log entries
+      const subrows = [];
+      dayEntries.forEach( (logEntry, i) => {
+        const label = logEntry.taskName || logEntry.task;
+        const duration = this.getDuration(logEntry.startTime, logEntry.endTime);
+        const utilization = Math.floor((logEntry.timeElapsed * 100) / duration);
+
+        const style = {
+          background: getColor(logEntry)
+        };
+        const logEntryId = this.getLogEntryId(logEntry);
+        const editing = (logEntryId == this.state.edit);
+        const edit = () => {
+          console.log("Editing " + logEntryId);
+          this.edit(logEntryId);
+        };
+        const className = classNames(
+          'log-entry',
+          { 'editing': editing }
+        );
+        subrows.push((
+          <div key={day + 'r' + i} id={day + 'r' + i} className={className}>
+            <div className="chart">{chartRows[i]}</div>
+            <span className="colorsquare" style={style}></span>
+            <span className="timespan">
+              <span className="start">{Utils.getTime(logEntry.startTime)}</span> -
+              <span className="end">{Utils.getTime(logEntry.endTime)}</span>
+            </span>
+            <span className="task-name"><a href="#" onClick={edit}>{label}</a></span>
+            <span className="duration">{Utils.formatTimespan(duration, true)}</span>
+            <span className="stats">
+              <span className="work-time">{Utils.formatTimespan(logEntry.timeElapsed, true)}</span>
+              <span className="util">{utilization}%</span>
+            </span>
+          </div>
+        ));
+      });
+
       rows.push((
         <div className="work">
           {subrows}
