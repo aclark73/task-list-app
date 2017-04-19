@@ -133,8 +133,8 @@ export default class App extends Component {
   }
   addMessage(message) {
     this.setState({
-      status: this.handlers.status.addMessage(this.state.status, message),
-      messages: this.state.messages.concat(['' + message])
+      status: this.handlers.status.addMessage(this.state.status, message)
+      // messages: this.state.messages.concat(['' + message])
     });
   }
   click() {
@@ -230,8 +230,8 @@ export default class App extends Component {
     return Promise.all(requests).then(
       () => {
         // Check to see if the current task has disappeared
-        const found = tasks.find((task) => { 
-            return Task.getUID(task) == this.state.taskId; 
+        const found = tasks.find((task) => {
+            return Task.getUID(task) == this.state.taskId;
         });
         if (!found) {
             this.stop();
@@ -302,17 +302,21 @@ export default class App extends Component {
       view: this.state.view
     };
 
+    // Task/project list
     const taskList = (
       <TaskList projects={this.state.projects} tasks={this.state.tasks}
         context={context} />
     );
 
-    const logDisplay = (
+    // Contents of various popups
+    const logPopupContents = (
       <Log log={this.state.log}/>
     );
-    const logChart = '';
+    // Log chart dialog contents
+    const logChartPopupContents = '';
     //  <LogChart log={this.state.log}/>
 
+    // Status dialog contents
     const statusMessages = this.handlers.status.popup(this.state.status);
 
     const startTime = Utils.getTime(this.state.startTime);
@@ -368,8 +372,7 @@ export default class App extends Component {
         <div className="popup-backdrop"></div>
         <div className="popup-click" onClick={actions.dismissPopups}></div>
         {statusPopup}
-        <div className="popup log"><ul><li className="header">Log</li>{logDisplay}</ul></div>
-        <div className="popup chart"><ul><li className="header">Log Chart</li>{logChart}</ul></div>
+        <div className="popup log"><ul><li className="header">Log</li>{logPopupContents}</ul></div>
         <div className="popup alert"><ul><li className="header">Alert</li><li>{this.state.alertMessage}</li></ul></div>
       </div>
     );
@@ -542,18 +545,15 @@ export default class App extends Component {
     if (this.state.timeRemaining > 0) {
       state.timeRemaining = this.state.timeRemaining - 1;
     }
-    this.updateHandlerState(state);
+    this.updateHandlerStates(state);
     this.setState(state);
     if (state.timeRemaining === 0) {
       this.timeUp();
     }
   }
-  updateHandlerState(state) {
+  updateHandlerStates(state) {
     this.handlerList.forEach((h) => {
-      const hState = h.updateState(this.state[h.label]);
-      if (hState) {
-        state[h.label] = hState;
-      }
+      h.updateFullState(state);
     });
   }
   timeUp() {

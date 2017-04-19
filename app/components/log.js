@@ -5,6 +5,7 @@ import colormap from 'colormap';
 import { Handler, HandlerPopup } from './handler';
 import classNames from 'classnames';
 
+/* These are mostly for drawing */
 const NUM_COLORS = 32;
 const COLORS = colormap({
   colormap: 'rainbow-soft',   // pick a builtin colormap or add your own
@@ -17,10 +18,17 @@ function hashCode(str) {
     }
     return Math.abs(hash);
 }
-function getColor(str) {
+function getColor2(str) {
   return COLORS[hashCode(str) % NUM_COLORS];
 }
+function getColor(logEntry) {
+  return Task.getProjectColor(logEntry.project);
+}
 
+/**
+ * Show the work log
+ * <Log log=[log entries] />
+ */
 export default class Log extends Component {
 
   constructor(props) {
@@ -52,13 +60,16 @@ export default class Log extends Component {
   }
 
   edit(logEntryId) {
-
     this.setState({
       edit: logEntryId
     });
   }
 
   render() {
+    // 2017-02-24
+    // 12:30 - 2:30 Documentation #21 35m (34%)
+    // 2:30 - 4:00 Github Style 90m (100%)
+
     // group by day
     const days = [];
     const entriesByDay = {};
@@ -83,6 +94,7 @@ export default class Log extends Component {
         duration: 0,
         worked: 0
       };
+      // Cumulative day stats
       dayEntries.forEach( (logEntry) => {
         if (!dayStats.startTime || dayStats.startTime > logEntry.startTime) {
           dayStats.startTime = logEntry.startTime;
@@ -93,6 +105,49 @@ export default class Log extends Component {
         dayStats.worked += logEntry.timeElapsed;
       });
       dayStats.duration = this.getDuration(dayStats.startTime, dayStats.endTime);
+      rows.push((
+        <div key={day} className="day">
+          <span className="date">{day}</span>
+          <span className="stats">
+            <span className="worked">{Utils.formatTimespan(dayStats.worked, true)}</span>
+            <span className="duration">({Utils.formatTimespan(dayStats.duration, true)})</span>
+          </span>
+        </div>
+      ));
+      // The log entries
+      const subrows = [];
+      dayEntries.forEach( (logEntry, i) => {
+        const label = logEntry.taskName || logEntry.task;
+        const duration = this.getDuration(logEntry.startTime, logEntry.endTime);
+        const utilization = Math.floor((logEntry.timeElapsed * 100) / duration);
+
+        const style = {
+          background: getColor(logEntry)
+        };
+        const logEntryId = this.getLogEntryId(logEntry);
+        const editing = (logEntryId == this.state.edit);
+        const edit = () => {
+          console.log("Editing " + logEntryId);
+          this.edit(logEntryId);
+        };
+        const className = classNames(
+          'task',
+          { 'editing': editing }
+        );
+        subrows.push((
+          <div key={day + 'r' + i} id={day + 'r' + i} className={className}>
+            <span className="colorsquare" style={style}></span>
+            <span className="start">{Utils.getTime(logEntry.startTime)}</span>
+            <span className="end">{Utils.getTime(logEntry.endTime)}</span>
+            <span className="task"><a href="#" onClick={edit}>{label}</a></span>
+            <span className="duration">{Utils.formatTimespan(duration, true)}</span>
+            <span className="work">{Utils.formatTimespan(logEntry.timeElapsed, true)}</span>
+            <span className="util">{utilization}%</span>
+          </div>
+        ));
+      });
+
+      // Chart of tasks across the day
       const colors = colormap({
         colormap: 'summer',   // pick a builtin colormap or add your own
         nshades: Math.max(dayStats.numEntries, 2)       // how many divisions
@@ -108,62 +163,28 @@ export default class Log extends Component {
         const style = {
           bottom: '' + start + '%',
           height: '' + height + '%',
-          background: getColor(logEntry.taskId)
+          background: getColor(logEntry)
         };
         return (
           <div id={day + 'c' + i} key={day + 'c' + i} style={style}></div>
         );
       });
-      rows.push((
-        <tr key={day}>
-          <th></th>
-          <th colSpan="4">{day}</th>
-          <th>{Utils.formatTimespan(dayStats.duration, true)}</th>
-          <th>{Utils.formatTimespan(dayStats.worked, true)}</th>
-          <th></th>
-        </tr>
+      subrows.push((
+        <div key={day + 'chart'} className="chart">
+          {chartRows}
+        </div>
       ));
-      dayEntries.forEach( (logEntry, i) => {
-        const label = logEntry.taskName || logEntry.task;
-        const duration = this.getDuration(logEntry.startTime, logEntry.endTime);
-        const utilization = Math.floor((logEntry.timeElapsed * 100) / duration);
+      rows.push((
+        <div className="work">
+          {subrows}
+        </div>
+      ));
 
-        const firstCol = (i == 0) ? (
-          <td className="chart" rowSpan={dayStats.numEntries}>
-            {chartRows}
-          </td>
-        ) : undefined;
-        const style = {
-          background: getColor(logEntry.taskId)
-        };
-        const logEntryId = this.getLogEntryId(logEntry);
-        const editing = (logEntryId == this.state.edit);
-        const edit = () => {
-          console.log("Editing " + logEntryId);
-          this.edit(logEntryId);
-        };
-        const className = editing ? 'editing' : '';
-        rows.push((
-          <tr key={day + 'r' + i} id={day + 'r' + i} className={className}>
-            {firstCol}
-            <td className="chart2" style={style}></td>
-            <td className="start">{Utils.getTime(logEntry.startTime)}</td>
-            <td className="end">{Utils.getTime(logEntry.endTime)}</td>
-            <td className="task"><a href="#" onClick={edit}>{label}</a></td>
-            <td className="duration">{Utils.formatTimespan(duration, true)}</td>
-            <td className="work">{Utils.formatTimespan(logEntry.timeElapsed, true)}</td>
-            <td className="util">{utilization}%</td>
-          </tr>
-        ));
-      });
     });
 
     return (
       <li>
-        <table>
-          <thead><tr><th colSpan="2"></th><th>Start</th><th>End</th><th>Task</th><th>Time</th><th>Work</th><th>Util</th></tr></thead>
-          <tbody>{rows}</tbody>
-        </table>
+        {rows}
       </li>
     );
   }
