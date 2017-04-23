@@ -83,9 +83,9 @@ const Task = {
     if (Task.isProject(task)) {
       return task.project;
     } else if (task.issue_number) {
-      return '#' + task.issue_number + ' - ' + task.title;
+      return task.title + ' - #' + task.issue_number;
     } else if (task.issue_id) {
-      return '#' + task.issue_id + ' - ' + task.title;
+      return task.title + ' - #' + task.issue_id;
     } else {
       return task.title;
     }

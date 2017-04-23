@@ -320,16 +320,3 @@ class StatusPopup extends HandlerPopup {
 
 
 }
-
-class StatusComponent extends Component {
-  render() {
-    const className = classNames(
-      'status-message',
-      this.props.expires ? 'show' : 'hide'
-    );
-    const message = this.props.messages[this.props.messages.length - 1];
-    return (
-      <div className={className}>{message}</div>
-    );
-  }
-}

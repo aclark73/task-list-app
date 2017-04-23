@@ -379,17 +379,11 @@ export default class App extends Component {
     const statusMessage = this.handlers.status.component(this.state.status);
     return(
       <div className={className} onClick={actions.click}>
+        {statusMessage}
         <Toolbar actions={actions} handlers={this.handlers} />
         <div className="timer-btns-side">
-          <div className="btn timer-btn timer-btn-stop" onClick={actions.stop}>
-            Stop
-          </div>
-          <div className="btn timer-btn timer-btn-rewind" onClick={actions.rewind}>
-            Rewind
-          </div>
         </div>
-        <div className="btn timer-btn timer-btn-task" onClick={actions.pause}>
-          {statusMessage}
+        <div className="timer-display">
           <div className="times">
             <div className="start-time">
               <label>Started</label><div clasName="time">{startTime}</div>
@@ -398,9 +392,17 @@ export default class App extends Component {
               <label>Elapsed</label><div className="time">{timeElapsed}</div>
             </div>
           </div>
-          <div>
-            <span className="time-remaining">{timeRemaining}</span>
-            <span className="time-idle">{timeIdle}</span>
+          <div className="btn-group">
+            <div className="btn timer-btn timer-btn-task" onClick={actions.pause}>
+              <span className="time-remaining">{timeRemaining}</span>
+              <span className="time-idle">{timeIdle}</span>
+            </div>
+            <div className="btn timer-btn timer-btn-stop" onClick={actions.stop}>
+              Stop
+            </div>
+            <div className="btn timer-btn timer-btn-rewind" onClick={actions.rewind}>
+              Rewind
+            </div>
           </div>
           <div className="current-task">
             {currentTask}
@@ -545,7 +547,7 @@ export default class App extends Component {
     if (this.state.timeRemaining > 0) {
       state.timeRemaining = this.state.timeRemaining - 1;
     }
-    this.updateHandlerStates(state);
+    this.updateHandlerStates(this.state, state);
     this.setState(state);
     if (state.timeRemaining === 0) {
       this.timeUp();
@@ -553,7 +555,7 @@ export default class App extends Component {
   }
   updateHandlerStates(state) {
     this.handlerList.forEach((h) => {
-      h.updateFullState(state);
+      h.updateFullState(this.state, state);
     });
   }
   timeUp() {

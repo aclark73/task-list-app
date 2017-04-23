@@ -57,18 +57,20 @@ export class Handler {
     /**
     * Update the private state values based on the existing private state
     */
-    updateState(state) {
+    updateState(state, newState) {
         return null;
     }
 
     /**
     * Update the full state
     */
-    updateFullState(fullState) {
+    updateFullState(fullState, fullNewState) {
         // By default, do the private update on the private state
-        const namedState = this.updateState(fullState[this.label] || {});
+        const namedState = this.updateState(
+            fullState[this.label] || {},
+            fullNewState[this.label] || {});
         if (namedState) {
-            fullState[this.label] = namedState;
+            fullNewState[this.label] = namedState;
         }
     }
 
