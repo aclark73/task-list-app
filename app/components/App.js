@@ -391,11 +391,11 @@ export default class App extends Component {
             <div className="time-elapsed">
               <label>Elapsed</label><div className="time">{timeElapsed}</div>
             </div>
+            <div className="time-idle">{timeIdle}</div>
           </div>
           <div className="btn-group">
             <div className="btn timer-btn timer-btn-task" onClick={actions.pause}>
               <span className="time-remaining">{timeRemaining}</span>
-              <span className="time-idle">{timeIdle}</span>
             </div>
             <div className="btn timer-btn timer-btn-stop" onClick={actions.stop}>
               Stop

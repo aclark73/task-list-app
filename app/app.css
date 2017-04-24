@@ -18,7 +18,7 @@ div {
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 8px;
+    /* padding: 8px; */
     /* height: 120px; */
 }
 
@@ -93,7 +93,20 @@ div {
   height: 104px;
   border-radius: 4px;
   padding: 4px;
+  margin: 8px;
 }
+
+.timer-btn {
+  border-color: #999;
+  color: #777;
+  background-color: #eee;
+  background-image: linear-gradient(#eee,#ccc);
+}
+
+.timer-btn-task {
+  width: 80px;
+}
+
 .has-task .timer-btn-task:hover {
   background: #9f9;
 }
@@ -120,6 +133,7 @@ div {
   margin-top: 10px;
   /* text-overflow: ellipsis; */
 }
+
 
 .timer-btns-side {
   float: right;
@@ -157,14 +171,13 @@ div {
 .timer-btn-rewind {
   border-color: #999;
   color: #777;
-  background: #eee;
+  background-color: #eee;
+  background-image: linear-gradient(#eee,#ccc);
 }
 .timer-btn-rewind:hover {
-  background: #ccc;
+  /* background: #ccc; */
 }
 .stopped .timer-btn-rewind {
-  background: #eee;
-  color: #999;
   cursor: default;
 }
 
@@ -229,6 +242,9 @@ div {
 
 .toolbar {
     margin-bottom: .3em;
+    border-bottom: 1px solid #ccc;
+    padding: 3px;
+    background: #eee;
 }
 
 .toolbar .btn {
@@ -326,7 +342,7 @@ div {
 .time-idle {
     color: #baa;
     margin-left: 4px;
-    font-size: 12px;
+    font-size: 10px;
 }
 
 .status-message {
@@ -534,7 +550,7 @@ div {
 }
 
 .working {
-    background-image: linear-gradient(to top, #fff, #dfd);
+    background-image: linear-gradient(to bottom, #dfd, #fff 200px);
     color: #060;
 }
 .working .task-item.selected .task-label {
@@ -542,7 +558,7 @@ div {
     color: #060;
 }
 
-.working .selected .btn-start {a
+.working .selected .btn-start {
     color: #0a0;
     text-shadow: 0 1px 0 #afa;
 }
@@ -562,6 +578,7 @@ div {
   /* vertical-align: middle; */
   /* padding: 3px 20px; */
 }
+/*
 .working .timer-btn-task:hover {
   background: #6f6;
 }
@@ -572,10 +589,10 @@ div {
 .working .toolbar .btn:hover {
   background: #9f9;
 }
-
+*/
 
 .paused {
-    background-image: linear-gradient(to top, #fff, #ffd);
+    background-image: linear-gradient(to bottom, #ffd, #fff 200px);
     color: #660;
 }
 
@@ -596,12 +613,14 @@ div {
 .paused .timer-btn-task:hover {
     background: #ff9;
 }
+/*
 .paused .toolbar .btn {
   color: #660;
 }
 .paused .toolbar .btn:hover {
     background: #ff9;
 }
+*/
 
 .log tbody th {
     background: #ddd;
