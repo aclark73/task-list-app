@@ -18,17 +18,17 @@ class Toolbar extends Component {
   render() {
     return (
       <div className="toolbar">
-        <div className="btns btn-lg">
+        <div className="btns btn-pri1">
           <ToolbarButton label="Refresh" action={this.props.actions.refresh}
             icon="fa fa-refresh" title="Refresh task list" />
         </div>
-        <div className="btns btn-lg">
+        <div className="btns btn-pri1">
           <ToolbarButton label="Log" action={this.props.actions.showLog}
             icon="fa fa-calendar" title="Show log" />
           <ToolbarButton label="Upload" action={this.props.actions.uploadLogs}
             icon="fa fa-database" title="Upload logged time" />
         </div>
-        <div className="btns btn-sm">
+        <div className="btns btn-pri2">
           <ToolbarButton label="Status" action={this.props.actions.showPopup.status}
             icon="fa fa-exclamation-triangle" title="Show status messages" />
           <ToolbarButton label="Group" action={this.props.actions.toggleView}
@@ -393,8 +393,8 @@ export default class App extends Component {
             </div>
             <div className="time-idle">{timeIdle}</div>
           </div>
-          <div className="btn-group">
-            <div className="btn timer-btn timer-btn-task" onClick={actions.pause}>
+          <div className="btns">
+            <div className="btn btn-primary timer-btn timer-btn-task" onClick={actions.pause}>
               <span className="time-remaining">{timeRemaining}</span>
             </div>
             <div className="btn timer-btn timer-btn-stop" onClick={actions.stop}>
