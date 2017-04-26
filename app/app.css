@@ -666,8 +666,9 @@ div.time-idle {
   position: absolute;
   border: 1px solid rgba(0,0,0,.2);
 }
-.log .log-entry:hover .chart > div {
-  border-color: rgba(0,0,0,.5);
+.log-entry:hover .chart > div, .log-entry:hover .colorsquare {
+    border-color: rgba(0,0,0,.4);
+    box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3);
 }
 
 .log .chart2 {

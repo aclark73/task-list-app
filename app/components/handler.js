@@ -55,7 +55,17 @@ export class Handler {
     }
 
     /**
-    * Update the private state values based on the existing private state
+    * Update the state within this handler's namespace
+    * This is called before the app calls setState() and
+    * takes the namespaced value of the existing state and
+    * the update about to be sent to setState()
+    * ie.
+    * - state = app.state[label]
+    * - newState = appStateUpdate[label]
+    * - returns: new value for appStateUpdate[label]
+    * just before the app calls
+    * this.setState(appStateUpdate);
+    *
     */
     updateState(state, newState) {
         return null;

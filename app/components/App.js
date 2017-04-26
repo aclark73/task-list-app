@@ -636,12 +636,33 @@ export default class App extends Component {
       timeElapsed: this.state.timeElapsed
     };
   }
+  maybeAppendLog(log, entry) {
+    const prev = log[0];
+    if (prev && prev.taskId == entry.taskId) {
+      const outage = (new Date(entry.startTime)) - (new Date(prev.endTime));
+      console.log("Previous log entry was " + prev.endTime + " (" + outage + ")");
+      if (outage < 5*60*1000) {
+        const prevUpdate = prev;
+        prevUpdate.endTime = entry.endTime;
+        prevUpdate.timeElapsed += entry.timeElapsed;
+        return [prevUpdate].concat(log.slice(1));
+      }
+    }
+    // Remember this is ordered by descending time
+    return [entry].concat(log);
+  }
   log(logEntry) {
     if (!logEntry) {
       logEntry = this.createLogEntry();
     }
+    // If this is a trivial extension of the previous entry,
+    // simply combine them.
+    var log = this.state.log;
+    if (log) {
+      log = this.maybeAppendLog(log, logEntry);
+    }
     this.setState({
-      log: [logEntry].concat(this.state.log)
+      log: log
     }, (err) => {
       if (!err) { this.save(); }
     });

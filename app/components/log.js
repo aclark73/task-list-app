@@ -110,15 +110,10 @@ export default class Log extends Component {
           <span className="date">{day}</span>
           <span className="stats">
             <span className="worked">{Utils.formatTimespan(dayStats.worked, true)}</span>
-            <span className="duration">({Utils.formatTimespan(dayStats.duration, true)})</span>
+            <span className="duration"> ({Utils.formatTimespan(dayStats.duration, true)})</span>
           </span>
         </div>
       ));
-      // Chart of tasks across the day
-      const colors = colormap({
-        colormap: 'summer',   // pick a builtin colormap or add your own
-        nshades: Math.max(dayStats.numEntries, 2)       // how many divisions
-      });
       function chartHeight(duration) {
         return parseInt((duration*100)/dayStats.duration);
       }
@@ -165,9 +160,9 @@ export default class Log extends Component {
               <span className="end">{Utils.getTime(logEntry.endTime)}</span>
             </span>
             <span className="task-name"><a href="#" onClick={edit}>{label}</a></span>
-            <span className="duration">{Utils.formatTimespan(duration, true)}</span>
             <span className="stats">
-              <span className="work-time">{Utils.formatTimespan(logEntry.timeElapsed, true)}</span>
+              <span className="worked">{Utils.formatTimespan(logEntry.timeElapsed, true)}</span>
+              <span className="duration">{Utils.formatTimespan(duration, true)}</span>
               <span className="util">{utilization}%</span>
             </span>
           </div>
