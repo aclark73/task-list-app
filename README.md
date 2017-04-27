@@ -1,5 +1,7 @@
 Task List and Pomodoro-ish timer that integrates with GitHub and Redmine.
 
+![](ScreenShot.png)
+
 ## Getting started:
 
 After you clone the repo just:
