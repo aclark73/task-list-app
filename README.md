@@ -1,4 +1,4 @@
-A Minimal Electron + React + ES6 boilerplate with builtin packaging.
+Task List and Pomodoro-ish timer that integrates with GitHub and Redmine.
 
 ## Getting started:
 
