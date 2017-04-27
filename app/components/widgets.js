@@ -59,8 +59,11 @@ export class TaskWidget extends Component {
       var view = this.props.context.view;
       var project = this.props.task.project;
       if (view == 'tasks') {
+        const hue = Task.getProjectColor(project);
         const style = {
-          backgroundColor: Task.getProjectColor(project)
+          backgroundColor: 'hsl(' + hue + ',100%,96%)',
+          borderColor: 'hsl(' + hue + ',50%,70%)',
+          color: 'hsl(' + hue + ',100%,20%)'
         };
         return (
           <div className="label project-label"

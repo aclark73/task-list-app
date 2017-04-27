@@ -22,7 +22,11 @@ function getColor2(str) {
   return COLORS[hashCode(str) % NUM_COLORS];
 }
 function getColor(logEntry) {
-  return Task.getProjectColor(logEntry.project);
+  const hue = Task.getProjectColor(logEntry.project);
+  return 'hsl(' + hue + ',100%,85%)';
+}
+function getStyle(logEntry) {
+  const hue = Task.getProjectColor(logEntry.project);
 }
 
 /**

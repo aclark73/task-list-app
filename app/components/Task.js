@@ -20,7 +20,8 @@ var _nextHue = 0;
 function nextHue() {
     const hue = getHue(_nextHue++);
     const degrees = Math.round(hue * 360);
-    return 'hsl(' + degrees + ', 100%, 92%)';
+    // return 'hsl(' + degrees + ', 100%, 96%)';
+    return degrees;
 }
 
 const _projectColors = {};
@@ -32,7 +33,7 @@ const Task = {
   getProjectUID: function(project) {
     return "P." + project.project;
   },
-  /* */
+  /* Really complicated way of assigning colors to projects! */
   setProjectColors: function(projects, tasks) {
     const score = {};
     const projectNames = [];
@@ -45,20 +46,17 @@ const Task = {
       }
       score[projectName] += taskScore;
     });
-    projects.sort(function(a, b) {
-      function cmp(a, b) {
-        if (a < b) { return -1; }
-        else if (a > b) { return 1; }
-        else { return 0; }
-      }
-      return cmp(score[b] || 0, score[a] || 0);
+    projectNames.sort(function(a, b) {
+      return score[a] - score[b];
     });
     projectNames.forEach(function(projectName) {
-      _projectColors[projectName] = nextHue();
+      if (_projectColors[projectName] === undefined) {
+          _projectColors[projectName] = nextHue();
+      }
     });
   },
   getProjectColor: function(project) {
-      if (!_projectColors[project]) {
+      if (_projectColors[project] === undefined) {
           _projectColors[project] = nextHue();
       }
       return _projectColors[project];

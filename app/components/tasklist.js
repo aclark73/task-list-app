@@ -53,8 +53,8 @@ export default class TaskList extends Component {
         const clearSearch = this.clearSearch.bind(this);
         const searchWidget = (
             <div className="search">
-                <input type="text" value={search} onChange={updateSearch} />
-                <button type="button" onClick={clearSearch}>clear</button>
+                <input type="text" value={search} placeholder="Search" onChange={updateSearch} />
+                <button type="button" onClick={clearSearch} className="clear-btn">clear</button>
             </div>
         )
         return (

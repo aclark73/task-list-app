@@ -83,14 +83,14 @@ div {
   cursor: inherit;
 }
 .timer-display label {
-  margin-right: -3px;
-  display: block;
+  /* margin-right: -3px; */
+  /* display: block; */
 }
 .timer-display {
   display: block;
   border: 1px solid #B5B5B5;
   /* background: #ddd; */
-  color: #666;
+  /* color: #666; */
   height: 104px;
   border-radius: 4px;
   padding: 4px;
@@ -117,12 +117,38 @@ div {
   margin-left: 8px;
   text-align: right;
   padding-right: 3px;
+  font-size: 12px;
 }
 
 .times > div {
-    display: inline-block;
-    margin-left: 6px;
+    /* display: inline-block; */
+    position: relative;
+    /* border: 1px solid; */
 }
+
+.times > div > div {
+    padding: 2px 7px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #000;
+}
+.times > div > div:first-child {
+    background-color: #f3f3f3;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+.times > div > div + div {
+    background-color: #fff;
+    border-left-width: 0;
+}
+.times > div > div:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    width: 30px;
+    /* text-align: center; */
+}
+
 
 .current-task {
   white-space: normal !important;
@@ -314,7 +340,7 @@ div {
 .task-item .label {
     float: right;
     clear: right;
-    font-size: 64%;
+    font-size: 73%;
     padding: 0 2px;
     font-weight: normal;
     margin-right: 1px;
@@ -557,11 +583,12 @@ div.time-idle {
 }
 
 .working {
-    background-image: linear-gradient(to bottom, #dfd, #fff 200px);
+    /* background-color: #9f9; */
+    /* background-image: linear-gradient(to bottom, #dfd, #fff 200px); */
     color: #060;
 }
 .working .task-item.selected .task-label {
-    background: #9f9;
+    background-color: #9f9;
     color: #060;
 }
 
@@ -785,7 +812,7 @@ div.time-idle {
 
 .btn {
     color: #24292e;
-    background-color: #eff3f6;
+    background-color: #EFF3F6;
     background-image: -webkit-linear-gradient(270deg, #fafbfc 0%, #eff3f6 90%);
     background-image: linear-gradient(-180deg, #fafbfc 0%, #eff3f6 90%);
 }

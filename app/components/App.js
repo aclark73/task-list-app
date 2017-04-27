@@ -386,10 +386,10 @@ export default class App extends Component {
         <div className="timer-display">
           <div className="times">
             <div className="start-time">
-              <label>Started</label><div clasName="time">{startTime}</div>
+              <div>Started</div><div clasName="time">{startTime}</div>
             </div>
             <div className="time-elapsed">
-              <label>Elapsed</label><div className="time">{timeElapsed}</div>
+              <div>Elapsed</div><div className="time">{timeElapsed}</div>
             </div>
             <div className="time-idle">{timeIdle}</div>
           </div>
@@ -642,6 +642,7 @@ export default class App extends Component {
       const outage = (new Date(entry.startTime)) - (new Date(prev.endTime));
       console.log("Previous log entry was " + prev.endTime + " (" + outage + ")");
       if (outage < 5*60*1000) {
+        console.log("Revising previous log entry which ended " + prev.endTime + " (" + outage + " ms before)");
         const prevUpdate = prev;
         prevUpdate.endTime = entry.endTime;
         prevUpdate.timeElapsed += entry.timeElapsed;
