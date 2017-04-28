@@ -10,36 +10,9 @@ import Log from './log';
 import TaskList from './tasklist';
 import StatusHandler from './status';
 import Utils from './utils';
-import ToolbarButton from './toolbar';
+import Toolbar from './toolbar';
 // import pkg from '../../package.json';
 const pkg = {name: 'task-list-app'};
-
-class Toolbar extends Component {
-  render() {
-    return (
-      <div className="toolbar">
-        <div className="btns btn-pri1">
-          <ToolbarButton label="Refresh" action={this.props.actions.refresh}
-            icon="fa fa-refresh" title="Refresh task list" />
-        </div>
-        <div className="btns btn-pri1">
-          <ToolbarButton label="Log" action={this.props.actions.showLog}
-            icon="fa fa-calendar" title="Show log" />
-          <ToolbarButton label="Upload" action={this.props.actions.uploadLogs}
-            icon="fa fa-database" title="Upload logged time" />
-        </div>
-        <div className="btns btn-pri2">
-          <ToolbarButton label="Status" action={this.props.actions.showPopup.status}
-            icon="fa fa-exclamation-triangle" title="Show status messages" />
-          <ToolbarButton label="Group" action={this.props.actions.toggleView}
-            icon="fa fa-list" title="Toggle group by project" />
-          <ToolbarButton label="Compact" action={this.props.actions.toggleCompactView}
-            icon="fa fa-arrows-v" title="Toggle compact view" />
-        </div>
-      </div>
-    );
-  }
-}
 
 export default class App extends Component {
   constructor(props) {
@@ -381,18 +354,7 @@ export default class App extends Component {
       <div className={className} onClick={actions.click}>
         {statusMessage}
         <Toolbar actions={actions} handlers={this.handlers} />
-        <div className="timer-btns-side">
-        </div>
         <div className="timer-display">
-          <div className="times">
-            <div className="start-time">
-              <div>Started</div><div clasName="time">{startTime}</div>
-            </div>
-            <div className="time-elapsed">
-              <div>Elapsed</div><div className="time">{timeElapsed}</div>
-            </div>
-            <div className="time-idle">{timeIdle}</div>
-          </div>
           <div className="btns">
             <div className="btn btn-primary timer-btn timer-btn-task" onClick={actions.pause}>
               <span className="time-remaining">{timeRemaining}</span>
@@ -403,6 +365,15 @@ export default class App extends Component {
             <div className="btn timer-btn timer-btn-rewind" onClick={actions.rewind}>
               Rewind
             </div>
+          </div>
+          <div className="times">
+            <div className="start-time">
+              <div>Started</div><div clasName="time">{startTime}</div>
+            </div>
+            <div className="time-elapsed">
+              <div>Elapsed</div><div className="time">{timeElapsed}</div>
+            </div>
+            <div className="time-idle">{timeIdle}</div>
           </div>
           <div className="current-task">
             {currentTask}
