@@ -87,14 +87,19 @@ div {
   /* display: block; */
 }
 .timer-display {
-  display: block;
+  /* display: block; */
   border: 1px solid #B5B5B5;
   /* background: #ddd; */
   /* color: #666; */
-  height: 104px;
+  /* height: 72px; */
   border-radius: 4px;
-  padding: 4px;
-  margin: 8px;
+  padding: 8px;
+  margin: 4px;
+  /* display: flex; */
+  /* flex-direction: row; */
+  /* vertical-align: text-bottom; */
+  /* white-space: normal; */
+  position: relative;
 }
 
 .timer-btn {
@@ -113,11 +118,13 @@ div {
 }
 
 .times {
-  float: right;
-  margin-left: 8px;
+  position: absolute;
+  top: 4px;
+  right: 4px;
   text-align: right;
-  padding-right: 3px;
+  /* padding-right: 3px; */
   font-size: 12px;
+  /* display: inline-block; */
 }
 
 .times > div {
@@ -151,16 +158,16 @@ div {
 
 
 .current-task {
-  white-space: normal !important;
-  height: 2.2em;
+  /* white-space: normal !important; */
+  /* height: 2.2em; */
   font-size: 25px;
   line-height: 1.1;
   /* clear: both; */
   /* display: inline-block; */
   margin-top: 10px;
-  /* text-overflow: ellipsis; */
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
-
 
 .timer-btns-side {
   float: right;
@@ -215,7 +222,7 @@ div {
 
 .task-list {
     position: absolute;
-    top: 149px;
+    top: 127px;
     bottom: 0;
     left: 8px;
     right: 0;
@@ -304,6 +311,8 @@ div {
 
 .btns {
     display: inline-block;
+    /* flex: initial; */
+    vertical-align: top;
 }
 
 .btns + .btns {
@@ -371,7 +380,7 @@ div {
     font-size: 24px;
     /* line-height: 1; */
 }
-div.time-idle {
+.time-idle {
     color: #baa;
     /* margin-left: 4px; */
     font-size: 10px;
@@ -604,6 +613,9 @@ div.time-idle {
     background-image: none;
     border-color: rgba(27, 31, 35, 0.5);
     box-shadow: inset 0 0.15em 0.3em rgba(27, 31, 35, 0.15);
+}
+.working .timer-display {
+    background-color: #9F9;
 }
 /*  background-color: #9f9;
   color: #D8FFD8;
@@ -1167,4 +1179,42 @@ div.time-idle {
 .BtnGroup-form:active + .BtnGroup-item, .BtnGroup-form:active + .BtnGroup-form .BtnGroup-item,
 .BtnGroup-form:hover + .BtnGroup-item, .BtnGroup-form:hover + .BtnGroup-form .BtnGroup-item {
     border-left-width: 0
+}
+
+
+@media all and (max-width: 400px) {
+
+  .times {
+    position: initial;
+    margin-left: 0;
+    text-align: initial;
+    margin-top: 4px;
+  }
+
+  .times > div {
+    /* margin-right: 8px; */
+    display: inline-block;
+  }
+
+  .times > div + div {
+    margin-left: 8px;
+  }
+
+  .timer-display {
+    height: 124px;
+  }
+
+  .timer-btn-task {
+    /* width: 100%; */
+  }
+
+  .current-task {
+    white-space: normal;
+    height: 2.2em;
+    overflow: hidden;
+  }
+
+  .task-list {
+    top: 177px;
+  }
 }
