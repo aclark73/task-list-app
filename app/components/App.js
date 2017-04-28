@@ -10,36 +10,9 @@ import Log from './log';
 import TaskList from './tasklist';
 import StatusHandler from './status';
 import Utils from './utils';
-import ToolbarButton from './toolbar';
+import Toolbar from './toolbar';
 // import pkg from '../../package.json';
 const pkg = {name: 'task-list-app'};
-
-class Toolbar extends Component {
-  render() {
-    return (
-      <div className="toolbar">
-        <div className="btns btn-lg">
-          <ToolbarButton label="Refresh" action={this.props.actions.refresh}
-            icon="fa fa-refresh" title="Refresh task list" />
-        </div>
-        <div className="btns btn-lg">
-          <ToolbarButton label="Log" action={this.props.actions.showLog}
-            icon="fa fa-calendar" title="Show log" />
-          <ToolbarButton label="Upload" action={this.props.actions.uploadLogs}
-            icon="fa fa-database" title="Upload logged time" />
-        </div>
-        <div className="btns btn-sm">
-          <ToolbarButton label="Status" action={this.props.actions.showPopup.status}
-            icon="fa fa-exclamation-triangle" title="Show status messages" />
-          <ToolbarButton label="Group" action={this.props.actions.toggleView}
-            icon="fa fa-list" title="Toggle group by project" />
-          <ToolbarButton label="Compact" action={this.props.actions.toggleCompactView}
-            icon="fa fa-arrows-v" title="Toggle compact view" />
-        </div>
-      </div>
-    );
-  }
-}
 
 export default class App extends Component {
   constructor(props) {
@@ -133,8 +106,8 @@ export default class App extends Component {
   }
   addMessage(message) {
     this.setState({
-      status: this.handlers.status.addMessage(this.state.status, message),
-      messages: this.state.messages.concat(['' + message])
+      status: this.handlers.status.addMessage(this.state.status, message)
+      // messages: this.state.messages.concat(['' + message])
     });
   }
   click() {
@@ -230,8 +203,8 @@ export default class App extends Component {
     return Promise.all(requests).then(
       () => {
         // Check to see if the current task has disappeared
-        const found = tasks.find((task) => { 
-            return Task.getUID(task) == this.state.taskId; 
+        const found = tasks.find((task) => {
+            return Task.getUID(task) == this.state.taskId;
         });
         if (!found) {
             this.stop();
@@ -302,17 +275,21 @@ export default class App extends Component {
       view: this.state.view
     };
 
+    // Task/project list
     const taskList = (
       <TaskList projects={this.state.projects} tasks={this.state.tasks}
         context={context} />
     );
 
-    const logDisplay = (
+    // Contents of various popups
+    const logPopupContents = (
       <Log log={this.state.log}/>
     );
-    const logChart = '';
+    // Log chart dialog contents
+    const logChartPopupContents = '';
     //  <LogChart log={this.state.log}/>
 
+    // Status dialog contents
     const statusMessages = this.handlers.status.popup(this.state.status);
 
     const startTime = Utils.getTime(this.state.startTime);
@@ -368,36 +345,35 @@ export default class App extends Component {
         <div className="popup-backdrop"></div>
         <div className="popup-click" onClick={actions.dismissPopups}></div>
         {statusPopup}
-        <div className="popup log"><ul><li className="header">Log</li>{logDisplay}</ul></div>
-        <div className="popup chart"><ul><li className="header">Log Chart</li>{logChart}</ul></div>
+        <div className="popup log"><ul><li className="header">Log</li>{logPopupContents}</ul></div>
         <div className="popup alert"><ul><li className="header">Alert</li><li>{this.state.alertMessage}</li></ul></div>
       </div>
     );
     const statusMessage = this.handlers.status.component(this.state.status);
     return(
       <div className={className} onClick={actions.click}>
+        {statusMessage}
         <Toolbar actions={actions} handlers={this.handlers} />
-        <div className="timer-btns-side">
-          <div className="btn timer-btn timer-btn-stop" onClick={actions.stop}>
-            Stop
+        <div className="timer-display">
+          <div className="btns">
+            <div className="btn btn-primary timer-btn timer-btn-task" onClick={actions.pause}>
+              <span className="time-remaining">{timeRemaining}</span>
+            </div>
+            <div className="btn timer-btn timer-btn-stop" onClick={actions.stop}>
+              Stop
+            </div>
+            <div className="btn timer-btn timer-btn-rewind" onClick={actions.rewind}>
+              Rewind
+            </div>
           </div>
-          <div className="btn timer-btn timer-btn-rewind" onClick={actions.rewind}>
-            Rewind
-          </div>
-        </div>
-        <div className="btn timer-btn timer-btn-task" onClick={actions.pause}>
-          {statusMessage}
           <div className="times">
             <div className="start-time">
-              <label>Started</label><div clasName="time">{startTime}</div>
+              <div>Started</div><div clasName="time">{startTime}</div>
             </div>
             <div className="time-elapsed">
-              <label>Elapsed</label><div className="time">{timeElapsed}</div>
+              <div>Elapsed</div><div className="time">{timeElapsed}</div>
             </div>
-          </div>
-          <div>
-            <span className="time-remaining">{timeRemaining}</span>
-            <span className="time-idle">{timeIdle}</span>
+            <div className="time-idle">{timeIdle}</div>
           </div>
           <div className="current-task">
             {currentTask}
@@ -542,18 +518,15 @@ export default class App extends Component {
     if (this.state.timeRemaining > 0) {
       state.timeRemaining = this.state.timeRemaining - 1;
     }
-    this.updateHandlerState(state);
+    this.updateHandlerStates(this.state, state);
     this.setState(state);
     if (state.timeRemaining === 0) {
       this.timeUp();
     }
   }
-  updateHandlerState(state) {
+  updateHandlerStates(state) {
     this.handlerList.forEach((h) => {
-      const hState = h.updateState(this.state[h.label]);
-      if (hState) {
-        state[h.label] = hState;
-      }
+      h.updateFullState(this.state, state);
     });
   }
   timeUp() {
@@ -634,12 +607,34 @@ export default class App extends Component {
       timeElapsed: this.state.timeElapsed
     };
   }
+  maybeAppendLog(log, entry) {
+    const prev = log[0];
+    if (prev && prev.taskId == entry.taskId) {
+      const outage = (new Date(entry.startTime)) - (new Date(prev.endTime));
+      console.log("Previous log entry was " + prev.endTime + " (" + outage + ")");
+      if (outage < 5*60*1000) {
+        console.log("Revising previous log entry which ended " + prev.endTime + " (" + outage + " ms before)");
+        const prevUpdate = prev;
+        prevUpdate.endTime = entry.endTime;
+        prevUpdate.timeElapsed += entry.timeElapsed;
+        return [prevUpdate].concat(log.slice(1));
+      }
+    }
+    // Remember this is ordered by descending time
+    return [entry].concat(log);
+  }
   log(logEntry) {
     if (!logEntry) {
       logEntry = this.createLogEntry();
     }
+    // If this is a trivial extension of the previous entry,
+    // simply combine them.
+    var log = this.state.log;
+    if (log) {
+      log = this.maybeAppendLog(log, logEntry);
+    }
     this.setState({
-      log: [logEntry].concat(this.state.log)
+      log: log
     }, (err) => {
       if (!err) { this.save(); }
     });

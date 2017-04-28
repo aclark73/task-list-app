@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 
+/* A popup window associated with a Handler
+ * For example, a "Log" handler could use this to show the log in a
+ * standardized popup window:
+ * <
+ */
 export class HandlerPopup extends Component {
     shouldComponentUpdate(nextProps, nextState) {
       return (nextProps.contents != this.props.contents) ||
@@ -50,17 +55,33 @@ export class Handler {
     }
 
     /**
-    * Update the private state values
+    * Update the state within this handler's namespace
+    * This is called before the app calls setState() and
+    * takes the namespaced value of the existing state and
+    * the update about to be sent to setState()
+    * ie.
+    * - state = app.state[label]
+    * - newState = appStateUpdate[label]
+    * - returns: new value for appStateUpdate[label]
+    * just before the app calls
+    * this.setState(appStateUpdate);
+    *
     */
-    updateState(state) {
+    updateState(state, newState) {
+        return null;
     }
 
     /**
     * Update the full state
     */
-    updateFullState(fullState) {
-        // By default, do the private update
-        this.updateState(fullState[this.label]);
+    updateFullState(fullState, fullNewState) {
+        // By default, do the private update on the private state
+        const namedState = this.updateState(
+            fullState[this.label] || {},
+            fullNewState[this.label] || {});
+        if (namedState) {
+            fullNewState[this.label] = namedState;
+        }
     }
 
     // component() {

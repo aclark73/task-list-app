@@ -6,12 +6,17 @@ import classNames from 'classnames';
 import ToolbarButton from './toolbar';
 import { Handler, HandlerPopup } from './handler';
 
+/**
+ * Popup showing status history [.messages]
+ */
 class StatusPopup extends Component {
     shouldComponentUpdate(nextProps, nextState) {
+        // Update if the length of the history list has changed
         // console.log("nextProps.context: " + JSON.stringify(nextProps.context));
         return (nextProps.messages.length != this.props.messages.length);
     }
     render() {
+        // Simple list of each message in the data
         const messages = this.props.messages.map( (message, i) => {
             return (
                 <li key={i}>{message}</li>
@@ -23,6 +28,9 @@ class StatusPopup extends Component {
     }
 }
 
+/**
+ * Transient banner showing each status message
+ */
 class StatusComponent extends Component {
     render() {
         const className = classNames(
@@ -36,6 +44,10 @@ class StatusComponent extends Component {
     }
 }
 
+/**
+ * Handler manages the state
+ *
+ */
 export default class StatusHandler extends Handler {
     initialState() {
         return {
