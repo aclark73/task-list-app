@@ -152,7 +152,7 @@ div {
 .times > div > div:last-child {
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
-    width: 30px;
+    /* width: 40px; */
     /* text-align: center; */
 }
 
@@ -385,6 +385,7 @@ div {
     /* margin-left: 4px; */
     font-size: 10px;
     display: block;
+    /* white-space: normal; */
 }
 
 .status-message {
@@ -497,6 +498,7 @@ div {
   text-align: center;
   background: #fff;
   color: #963;
+  white-space: normal;
 }
 
 .popup-backdrop, .popup-click {
@@ -547,10 +549,11 @@ div {
   to { background: #fff; }
 }
 @keyframes flasher3 {
-  from { background: #fc0; }
-  5% { background: #f00; }
-  10% { background: #fc0; }
-  15% { background: #fff; }
+  from { background: #fff; }
+  5% { background: #fc0; }
+  10% { background: #f00; }
+  15% { background: #fc0; }
+  20% { background: #fff; }
   to { background: #fff; }
 }
 
@@ -571,7 +574,7 @@ div {
 .show-alert .alert li + li {
   animation-name: flasher3;
   animation-iteration-count: infinite;
-  animation-timing-function: step-end;
+  animation-timing-function: linear;
   animation-duration: 10s;
 }
 
