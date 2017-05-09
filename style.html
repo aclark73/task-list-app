@@ -1,0 +1,821 @@
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   Task List
+  </title>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet"/>
+  <link href="style.css" rel="stylesheet"/>
+ </head>
+ <body>
+  <div id="app">
+   <div class="main has-task">
+    <div class="status-message hide">
+     Changed task
+    </div>
+    <div class="toolbar">
+     <div class="btns btn-pri1">
+      <span class="btn" title="Refresh task list">
+       <i class="fa fa-refresh">
+       </i>
+       <span class="btn-label">
+        <span>
+        </span>
+        <span>
+         Refresh
+        </span>
+       </span>
+      </span>
+     </div>
+     <div class="btns btn-pri1">
+      <span class="btn" title="Show log">
+       <i class="fa fa-calendar">
+       </i>
+       <span class="btn-label">
+        <span>
+        </span>
+        <span>
+         Log
+        </span>
+       </span>
+      </span>
+      <span class="btn" title="Upload logged time">
+       <i class="fa fa-database">
+       </i>
+       <span class="btn-label">
+        <span>
+        </span>
+        <span>
+         Upload
+        </span>
+       </span>
+      </span>
+     </div>
+     <div class="btns btn-pri2">
+      <span class="btn" title="Show status messages">
+       <i class="fa fa-exclamation-triangle">
+       </i>
+       <span class="btn-label">
+        <span>
+        </span>
+        <span>
+         Status
+        </span>
+       </span>
+      </span>
+      <span class="btn" title="Toggle group by project">
+       <i class="fa fa-list">
+       </i>
+       <span class="btn-label">
+        <span>
+        </span>
+        <span>
+         Group
+        </span>
+       </span>
+      </span>
+      <span class="btn" title="Toggle compact view">
+       <i class="fa fa-arrows-v">
+       </i>
+       <span class="btn-label">
+        <span>
+        </span>
+        <span>
+         Compact
+        </span>
+       </span>
+      </span>
+     </div>
+    </div>
+    <div class="timer-display">
+     <div class="btns">
+      <div class="btn btn-primary timer-btn timer-btn-task">
+       <span class="time-remaining">
+        16:24
+       </span>
+       <span class="fa fa-play"></span>
+      </div>
+      <div class="btn timer-btn timer-btn-stop">
+        <span class="fa fa-stop"></span>
+       Stop
+      </div>
+      <div class="btn timer-btn timer-btn-rewind">
+       Rewind
+      </div>
+     </div>
+     <div class="times">
+      <div class="start-time">
+       <div>
+        Started
+       </div>
+       <div>
+        23:34
+       </div>
+      </div>
+      <div class="time-elapsed">
+       <div>
+        Elapsed
+       </div>
+       <div class="time">
+        13:36
+       </div>
+      </div>
+      <div class="time-idle">
+      </div>
+     </div>
+     <div class="current-task">
+      Update Style - #20
+     </div>
+    </div>
+    <div class="task-list">
+     <div>
+      <div class="search">
+       <input placeholder="Search" type="text" value=""/>
+       <button class="clear-btn" type="button">
+        clear
+       </button>
+      </div>
+      <ul class="tasks">
+       <li>
+        <div class="task task-item">
+         <span>
+         </span>
+         <div class="task-label">
+          <div class="label project-label" style="background-color:hsl(216,100%,96%);border-color:hsl(216,50%,70%);color:hsl(216,100%,20%);">
+           task-list-app
+          </div>
+          <div class="label updated-label">
+           4d
+          </div>
+          <span>
+           Edit history - #19
+          </span>
+          <span>
+          </span>
+         </div>
+        </div>
+        <span>
+        </span>
+       </li>
+       <li>
+        <div class="task task-item selected">
+         <span>
+         </span>
+         <div class="task-label">
+          <div class="label project-label" style="background-color:hsl(216,100%,96%);border-color:hsl(216,50%,70%);color:hsl(216,100%,20%);">
+           task-list-app
+          </div>
+          <div class="label updated-label">
+           4d
+          </div>
+          <span>
+           Update Style - #20
+          </span>
+          <span>
+          </span>
+         </div>
+        </div>
+        <span>
+        </span>
+       </li>
+       <li>
+        <div class="task task-item">
+         <span>
+         </span>
+         <div class="task-label">
+          <div class="label project-label" style="background-color:hsl(216,100%,96%);border-color:hsl(216,50%,70%);color:hsl(216,100%,20%);">
+           task-list-app
+          </div>
+          <div class="label updated-label">
+           6d
+          </div>
+          <span>
+           Documentation - #21
+          </span>
+          <span>
+          </span>
+         </div>
+        </div>
+        <span>
+        </span>
+       </li>
+       <li>
+        <div class="task task-item">
+         <span>
+         </span>
+         <div class="task-label">
+          <div class="label project-label" style="background-color:hsl(216,100%,96%);border-color:hsl(216,50%,70%);color:hsl(216,100%,20%);">
+           task-list-app
+          </div>
+          <div class="label updated-label">
+           6d
+          </div>
+          <span>
+           Store project in task history - #4
+          </span>
+          <span>
+          </span>
+         </div>
+        </div>
+        <span>
+        </span>
+       </li>
+       <li>
+        <div class="task task-item">
+         <span>
+         </span>
+         <div class="task-label">
+          <div class="label project-label" style="background-color:hsl(216,100%,96%);border-color:hsl(216,50%,70%);color:hsl(216,100%,20%);">
+           task-list-app
+          </div>
+          <div class="label updated-label">
+           2w
+          </div>
+          <span>
+           Idle detection - #7
+          </span>
+          <span>
+          </span>
+         </div>
+        </div>
+        <span>
+        </span>
+       </li>
+      </ul>
+     </div>
+    </div>
+    <div>
+     <div class="popup-backdrop">
+     </div>
+     <div class="popup-click">
+     </div>
+     <div class="popup popup-status">
+      <ul>
+       <li class="header">
+        status
+       </li>
+       <li>
+        Refreshing task data
+       </li>
+       <li>
+        Changed task
+       </li>
+       <li>
+        Changed task
+       </li>
+       <li>
+        Changed task
+       </li>
+       <li>
+        Changed task
+       </li>
+       <li>
+        Changed task
+       </li>
+      </ul>
+     </div>
+     <div class="popup log">
+     </div>
+    </div>
+   </div>
+   <div class="main working has-task">
+    <div class="status-message hide">
+     Changed task
+    </div>
+    <div class="toolbar">
+     <div class="btns btn-pri1">
+      <span class="btn" title="Refresh task list">
+       <i class="fa fa-refresh">
+       </i>
+       <span class="btn-label">
+        <span>
+        </span>
+        <span>
+         Refresh
+        </span>
+       </span>
+      </span>
+     </div>
+     <div class="btns btn-pri1">
+      <span class="btn" title="Show log">
+       <i class="fa fa-calendar">
+       </i>
+       <span class="btn-label">
+        <span>
+        </span>
+        <span>
+         Log
+        </span>
+       </span>
+      </span>
+      <span class="btn" title="Upload logged time">
+       <i class="fa fa-database">
+       </i>
+       <span class="btn-label">
+        <span>
+        </span>
+        <span>
+         Upload
+        </span>
+       </span>
+      </span>
+     </div>
+     <div class="btns btn-pri2">
+      <span class="btn" title="Show status messages">
+       <i class="fa fa-exclamation-triangle">
+       </i>
+       <span class="btn-label">
+        <span>
+        </span>
+        <span>
+         Status
+        </span>
+       </span>
+      </span>
+      <span class="btn" title="Toggle group by project">
+       <i class="fa fa-list">
+       </i>
+       <span class="btn-label">
+        <span>
+        </span>
+        <span>
+         Group
+        </span>
+       </span>
+      </span>
+      <span class="btn" title="Toggle compact view">
+       <i class="fa fa-arrows-v">
+       </i>
+       <span class="btn-label">
+        <span>
+        </span>
+        <span>
+         Compact
+        </span>
+       </span>
+      </span>
+     </div>
+    </div>
+    <div class="timer-display">
+     <div class="btns">
+      <div class="btn btn-primary timer-btn timer-btn-task">
+       <span class="time-remaining">
+        16:24
+       </span>
+       <span class="fa fa-pause"></span>
+      </div>
+      <div class="btn timer-btn timer-btn-stop">
+        <span class="fa fa-stop"></span>
+       Stop
+      </div>
+      <div class="btn timer-btn timer-btn-rewind">
+       Rewind
+      </div>
+     </div>
+     <div class="times">
+      <div class="start-time">
+       <div>
+        Started
+       </div>
+       <div>
+        23:34
+       </div>
+      </div>
+      <div class="time-elapsed">
+       <div>
+        Elapsed
+       </div>
+       <div class="time">
+        13:36
+       </div>
+      </div>
+      <div class="time-idle">
+      </div>
+     </div>
+     <div class="current-task">
+      Update Style - #20
+     </div>
+    </div>
+    <div class="task-list">
+     <div>
+      <div class="search">
+       <input placeholder="Search" type="text" value=""/>
+       <button class="clear-btn" type="button">
+        clear
+       </button>
+      </div>
+      <ul class="tasks">
+       <li>
+        <div class="task task-item">
+         <span>
+         </span>
+         <div class="task-label">
+          <div class="label project-label" style="background-color:hsl(216,100%,96%);border-color:hsl(216,50%,70%);color:hsl(216,100%,20%);">
+           task-list-app
+          </div>
+          <div class="label updated-label">
+           4d
+          </div>
+          <span>
+           Edit history - #19
+          </span>
+          <span>
+          </span>
+         </div>
+        </div>
+        <span>
+        </span>
+       </li>
+       <li>
+        <div class="task task-item selected">
+         <span>
+         </span>
+         <div class="task-label">
+          <div class="label project-label" style="background-color:hsl(216,100%,96%);border-color:hsl(216,50%,70%);color:hsl(216,100%,20%);">
+           task-list-app
+          </div>
+          <div class="label updated-label">
+           4d
+          </div>
+          <span>
+           Update Style - #20
+          </span>
+          <span>
+          </span>
+         </div>
+        </div>
+        <span>
+        </span>
+       </li>
+       <li>
+        <div class="task task-item">
+         <span>
+         </span>
+         <div class="task-label">
+          <div class="label project-label" style="background-color:hsl(216,100%,96%);border-color:hsl(216,50%,70%);color:hsl(216,100%,20%);">
+           task-list-app
+          </div>
+          <div class="label updated-label">
+           6d
+          </div>
+          <span>
+           Documentation - #21
+          </span>
+          <span>
+          </span>
+         </div>
+        </div>
+        <span>
+        </span>
+       </li>
+       <li>
+        <div class="task task-item">
+         <span>
+         </span>
+         <div class="task-label">
+          <div class="label project-label" style="background-color:hsl(216,100%,96%);border-color:hsl(216,50%,70%);color:hsl(216,100%,20%);">
+           task-list-app
+          </div>
+          <div class="label updated-label">
+           6d
+          </div>
+          <span>
+           Store project in task history - #4
+          </span>
+          <span>
+          </span>
+         </div>
+        </div>
+        <span>
+        </span>
+       </li>
+       <li>
+        <div class="task task-item">
+         <span>
+         </span>
+         <div class="task-label">
+          <div class="label project-label" style="background-color:hsl(216,100%,96%);border-color:hsl(216,50%,70%);color:hsl(216,100%,20%);">
+           task-list-app
+          </div>
+          <div class="label updated-label">
+           2w
+          </div>
+          <span>
+           Idle detection - #7
+          </span>
+          <span>
+          </span>
+         </div>
+        </div>
+        <span>
+        </span>
+       </li>
+      </ul>
+     </div>
+    </div>
+    <div>
+     <div class="popup-backdrop">
+     </div>
+     <div class="popup-click">
+     </div>
+     <div class="popup popup-status">
+      <ul>
+       <li class="header">
+        status
+       </li>
+       <li>
+        Refreshing task data
+       </li>
+       <li>
+        Changed task
+       </li>
+       <li>
+        Changed task
+       </li>
+       <li>
+        Changed task
+       </li>
+       <li>
+        Changed task
+       </li>
+       <li>
+        Changed task
+       </li>
+      </ul>
+     </div>
+     <div class="popup log">
+     </div>
+    </div>
+   </div>
+   <div class="main paused has-task">
+    <div class="status-message hide">
+     Changed task
+    </div>
+    <div class="toolbar">
+     <div class="btns btn-pri1">
+      <span class="btn" title="Refresh task list">
+       <i class="fa fa-refresh">
+       </i>
+       <span class="btn-label">
+        <span>
+        </span>
+        <span>
+         Refresh
+        </span>
+       </span>
+      </span>
+     </div>
+     <div class="btns btn-pri1">
+      <span class="btn" title="Show log">
+       <i class="fa fa-calendar">
+       </i>
+       <span class="btn-label">
+        <span>
+        </span>
+        <span>
+         Log
+        </span>
+       </span>
+      </span>
+      <span class="btn" title="Upload logged time">
+       <i class="fa fa-database">
+       </i>
+       <span class="btn-label">
+        <span>
+        </span>
+        <span>
+         Upload
+        </span>
+       </span>
+      </span>
+     </div>
+     <div class="btns btn-pri2">
+      <span class="btn" title="Show status messages">
+       <i class="fa fa-exclamation-triangle">
+       </i>
+       <span class="btn-label">
+        <span>
+        </span>
+        <span>
+         Status
+        </span>
+       </span>
+      </span>
+      <span class="btn" title="Toggle group by project">
+       <i class="fa fa-list">
+       </i>
+       <span class="btn-label">
+        <span>
+        </span>
+        <span>
+         Group
+        </span>
+       </span>
+      </span>
+      <span class="btn" title="Toggle compact view">
+       <i class="fa fa-arrows-v">
+       </i>
+       <span class="btn-label">
+        <span>
+        </span>
+        <span>
+         Compact
+        </span>
+       </span>
+      </span>
+     </div>
+    </div>
+    <div class="timer-display">
+     <div class="btns">
+      <div class="btn btn-primary timer-btn timer-btn-task">
+       <span class="time-remaining">
+        16:24
+       </span>
+       <span class="fa fa-play"></span>
+      </div>
+      <div class="btn timer-btn timer-btn-stop">
+        <span class="fa fa-stop"></span>
+       Stop
+      </div>
+      <div class="btn timer-btn timer-btn-rewind">
+       Rewind
+      </div>
+     </div>
+     <div class="times">
+      <div class="start-time">
+       <div>
+        Started
+       </div>
+       <div>
+        23:34
+       </div>
+      </div>
+      <div class="time-elapsed">
+       <div>
+        Elapsed
+       </div>
+       <div class="time">
+        13:36
+       </div>
+      </div>
+      <div class="time-idle">
+      </div>
+     </div>
+     <div class="current-task">
+      Update Style - #20
+     </div>
+    </div>
+    <div class="task-list">
+     <div>
+      <div class="search">
+       <input placeholder="Search" type="text" value=""/>
+       <button class="clear-btn" type="button">
+        clear
+       </button>
+      </div>
+      <ul class="tasks">
+       <li>
+        <div class="task task-item">
+         <span>
+         </span>
+         <div class="task-label">
+          <div class="label project-label" style="background-color:hsl(216,100%,96%);border-color:hsl(216,50%,70%);color:hsl(216,100%,20%);">
+           task-list-app
+          </div>
+          <div class="label updated-label">
+           4d
+          </div>
+          <span>
+           Edit history - #19
+          </span>
+          <span>
+          </span>
+         </div>
+        </div>
+        <span>
+        </span>
+       </li>
+       <li>
+        <div class="task task-item selected">
+         <span>
+         </span>
+         <div class="task-label">
+          <div class="label project-label" style="background-color:hsl(216,100%,96%);border-color:hsl(216,50%,70%);color:hsl(216,100%,20%);">
+           task-list-app
+          </div>
+          <div class="label updated-label">
+           4d
+          </div>
+          <span>
+           Update Style - #20
+          </span>
+          <span>
+          </span>
+         </div>
+        </div>
+        <span>
+        </span>
+       </li>
+       <li>
+        <div class="task task-item">
+         <span>
+         </span>
+         <div class="task-label">
+          <div class="label project-label" style="background-color:hsl(216,100%,96%);border-color:hsl(216,50%,70%);color:hsl(216,100%,20%);">
+           task-list-app
+          </div>
+          <div class="label updated-label">
+           6d
+          </div>
+          <span>
+           Documentation - #21
+          </span>
+          <span>
+          </span>
+         </div>
+        </div>
+        <span>
+        </span>
+       </li>
+       <li>
+        <div class="task task-item">
+         <span>
+         </span>
+         <div class="task-label">
+          <div class="label project-label" style="background-color:hsl(216,100%,96%);border-color:hsl(216,50%,70%);color:hsl(216,100%,20%);">
+           task-list-app
+          </div>
+          <div class="label updated-label">
+           6d
+          </div>
+          <span>
+           Store project in task history - #4
+          </span>
+          <span>
+          </span>
+         </div>
+        </div>
+        <span>
+        </span>
+       </li>
+       <li>
+        <div class="task task-item">
+         <span>
+         </span>
+         <div class="task-label">
+          <div class="label project-label" style="background-color:hsl(216,100%,96%);border-color:hsl(216,50%,70%);color:hsl(216,100%,20%);">
+           task-list-app
+          </div>
+          <div class="label updated-label">
+           2w
+          </div>
+          <span>
+           Idle detection - #7
+          </span>
+          <span>
+          </span>
+         </div>
+        </div>
+        <span>
+        </span>
+       </li>
+      </ul>
+     </div>
+    </div>
+    <div>
+     <div class="popup-backdrop">
+     </div>
+     <div class="popup-click">
+     </div>
+     <div class="popup popup-status">
+      <ul>
+       <li class="header">
+        status
+       </li>
+       <li>
+        Refreshing task data
+       </li>
+       <li>
+        Changed task
+       </li>
+       <li>
+        Changed task
+       </li>
+       <li>
+        Changed task
+       </li>
+       <li>
+        Changed task
+       </li>
+       <li>
+        Changed task
+       </li>
+      </ul>
+     </div>
+     <div class="popup log">
+     </div>
+    </div>
+   </div>
+  </div>
+ </body>
+</html>

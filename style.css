@@ -13,14 +13,16 @@ div {
 }
 
 .main {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    position: relative;
+    /* top: 0; */
+    /* bottom: 0; */
+    /* left: 0; */
+    /* right: 0; */
     /* padding: 8px; */
     /* height: 120px; */
     /* min-width: 242px; */
+    float: left;
+    width: 400px;
 }
 
 .btn {
@@ -34,11 +36,11 @@ div {
 }
 
 .timer-btn {
-    height: 32px;
-    line-height: 30px;
+    /* height: 0; */
+    /* line-height: 0; */
     display: inline-block;
-    vertical-align: top;
-    padding: 3px 10px 0;
+    /* vertical-align: -webkit-baseline-middle; */
+    padding: 12px 16px;
 }
 .timer-btn > div {
   white-space: nowrap;
@@ -111,7 +113,7 @@ div {
 }
 
 .timer-btn-task {
-  width: 80px;
+  width: 90px;
 }
 
 .has-task .timer-btn-task:hover {
@@ -224,7 +226,7 @@ div {
 .task-list {
     position: absolute;
     top: 127px;
-    bottom: 0;
+    /* bottom: 0; */
     left: 8px;
     right: 0;
     overflow-y: scroll;
@@ -379,7 +381,11 @@ div {
 
 .time-remaining {
     font-size: 24px;
-    /* line-height: 1; */
+    line-height: 0;
+    /* margin-bottom: 0px; */
+    /* vertical-align: baseline; */
+    float: left;
+    margin-top: 9px;
 }
 .time-idle {
     color: #baa;
@@ -791,8 +797,20 @@ div {
 
 .btn i {
     font-style: normal;
-    font-weight: 500;
-    opacity: 0.6
+    /* font-weight: bold; */
+    opacity: 0.6;
+    /* width: 0; */
+    /* display: none; */
+    /* font-size: 20px; */
+    display: inline-block;
+    /* line-height: 14px; */
+}
+
+.timer-btn-rewind span {
+  font-weight: bold;
+  /* opacity: 1; */
+  font-size: 20px;
+  line-height: 16px;
 }
 
 .btn .octicon {
@@ -861,7 +879,10 @@ div {
     color: #fff;
     background-color: #28a745;
     background-image: -webkit-linear-gradient(270deg, #34d058 0%, #28a745 90%);
-    background-image: linear-gradient(-180deg, #34d058 0%, #28a745 90%)
+    background-image: linear-gradient(-180deg, #34d058 0%, #28a745 90%);
+    /* line-height: 24px; */
+    font-size: 16px;
+    /* vertical-align: middle; */
 }
 
 .btn-primary:focus, .btn-primary.focus {
