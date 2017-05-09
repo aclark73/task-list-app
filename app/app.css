@@ -1186,7 +1186,7 @@ div {
 }
 
 
-@media all and (max-width: 400px) {
+@media all and (max-width: 350px) {
 
   .times {
     position: initial;
@@ -1221,4 +1221,14 @@ div {
   .task-list {
     top: 177px;
   }
+
+  .task-label > span {
+    display: block;
+  }
+  .task-item .label {
+     float: none;
+     clear: none;
+     display: inline-block;
+   }
+
 }
