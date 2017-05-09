@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BarStackChart, ScatterPlot } from 'react-d3-basic';
-import Utils from './utils';
+import Utils from '../utils';
 import TimelineChart from './TimelineChart';
 import Log from './log';
 
@@ -11,7 +11,7 @@ export class LogChart extends Component {
   }
 
   renderTimeline() {
-    
+
     function getTime(d) {
       var r = d.split('T')[1].split('.')[0].split(':');
       console.log(r);
@@ -30,12 +30,12 @@ export class LogChart extends Component {
     function pad(d) {
       return ("0" + d).slice(-2);
     }
-    
+
     function renderTime(t) {
       var h = Math.floor(t/3600);
       var m = Math.floor((t/60)%60);
       var s = t%60;
-      
+
       return pad(h) + ":" + pad(m) + ":" + pad(s);
     }
 
@@ -81,9 +81,9 @@ export class LogChart extends Component {
       />
     );
   }
-  
+
   renderScatter() {
-    
+
     function getTime(d) {
       var r = d.split('T')[1].split('.')[0].split(':');
       console.log(r);
@@ -114,7 +114,7 @@ export class LogChart extends Component {
       }
       data.push(point);
     });
-    
+
     const chartProps = {
       width: 500,
       height: 300,
@@ -137,14 +137,14 @@ export class LogChart extends Component {
       />
     );
   }
-  
+
   renderStacked() {
 
     // load your general data
-    
+
     const timePerDayPerTask = Utils.timePerDayPerTask(this.props.log);
     const days = Object.keys(timePerDayPerTask).sort();
-    
+
     const tasks = {};
     const chartSeries = [];
     const data = [];
@@ -166,7 +166,7 @@ export class LogChart extends Component {
       data.push(dayData);
     });
     console.log(chartSeries);
-    
+
     const chartProps = {
       width: 500,
       height: 300,
@@ -184,7 +184,7 @@ export class LogChart extends Component {
       />
     );
   }
-  
+
   render() {
     return this.renderStacked();
   }

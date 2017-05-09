@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Utils from './utils';
-import Task from './task';
+import Utils from '../utils';
+import Task from '../task';
 import colormap from 'colormap';
 import { Handler, HandlerPopup } from './handler';
 import classNames from 'classnames';

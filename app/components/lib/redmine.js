@@ -1,6 +1,6 @@
 import fs from 'fs';
 import os from 'os';
-import Utils from './utils';
+import Utils from '../utils';
 
 const DEFAULT_CONFIG = {
   redmine_key: 'example'
