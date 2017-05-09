@@ -3,7 +3,7 @@
 */
 import React, { Component } from 'react';
 import classNames from 'classnames';
-import ToolbarButton from './toolbar';
+import ToolbarButton from '../toolbar';
 import { Handler, HandlerPopup } from './handler';
 
 /**

@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
-import RedmineClient from './redmine';
-import GitHubClient from './github';
 import Task from './task';
-import { TaskWidget, ProjectWidget } from './widgets';
-import classNames from 'classnames';
-import Configstore from 'configstore';
-// import { LogChart } from './chart';
-import Log from './log';
 import TaskList from './tasklist';
-import StatusHandler from './status';
+import { TaskWidget, ProjectWidget } from './widgets';
 import Utils from './utils';
 import Toolbar from './toolbar';
+
+import classNames from 'classnames';
+import Configstore from 'configstore';
+
+import RedmineClient from './lib/redmine';
+import GitHubClient from './lib/github';
+// import { LogChart } from './lib/chart';
+import Log from './lib/log';
+import StatusHandler from './lib/status';
+
 // import pkg from '../../package.json';
 const pkg = {name: 'task-list-app'};
 
