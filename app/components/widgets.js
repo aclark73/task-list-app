@@ -84,23 +84,27 @@ export class TaskWidget extends Component {
         return "";
       }
     })(this.props.task.updated_on);
-    const issue_label = ((issue_num) => {
-        if (issue_num) {
-            return (<div className="label issue-label">{issue_num}</div>);
+    const issue_label = ((issue_number) => {
+        if (issue_number) {
+            return (<div className="label issue-label">#{issue_number}</div>);
         } else {
             return "";
         }
-    })(this.props.task.issue_num);
+    })(this.props.task.issue_number);
 
     return (
       <li key={this.props.task}>
         <div className={className}>
           {toggleWidget}
           <div className="task-label" onClick={select} onDoubleClick={start}>
-            {issue_label}
-            {project_label}
-            {updated_label}
-            {Task.getLabel(this.props.task)}
+            <div className="task-labels">
+                {issue_label}
+                {project_label}
+                {updated_label}
+            </div>
+            <div className="task-title">
+                {Task.getLabel(this.props.task)}
+            </div>
           </div>
         </div>
         {rows}

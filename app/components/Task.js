@@ -80,10 +80,6 @@ const Task = {
     if (!task.source) { return ''; }
     if (Task.isProject(task)) {
       return task.project;
-    } else if (task.issue_number) {
-      return task.title + ' - #' + task.issue_number;
-    } else if (task.issue_id) {
-      return task.title + ' - #' + task.issue_id;
     } else {
       return task.title;
     }
