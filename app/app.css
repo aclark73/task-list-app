@@ -153,7 +153,7 @@ div {
 .times > div > div:last-child {
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
-    width: 30px;
+    /* width: 40px; */
     /* text-align: center; */
 }
 
@@ -348,10 +348,14 @@ div {
     border-radius: 4px;
 }
 
-.task-item .labels {
+.task-labels {
+  display: inline;
+}
+.task-labels .label {
     float: right;
     clear: right;
     font-size: 73%;
+    margin-top: 1px;
     padding: 0 2px;
     font-weight: normal;
     margin-right: 1px;
@@ -359,8 +363,12 @@ div {
 }
 .task-item .label {
 }
-.task-item .label + .label {
-    margin-top: 1px;
+.task-labels .issue-label {
+  float: none;
+  background: #eee;
+}
+.task-title {
+  display: inline;
 }
 
 .task-item .btn-toggle {
@@ -390,6 +398,7 @@ div {
     /* margin-left: 4px; */
     font-size: 10px;
     display: block;
+    /* white-space: normal; */
 }
 
 .status-message {
@@ -502,6 +511,7 @@ div {
   text-align: center;
   background: #fff;
   color: #963;
+  white-space: normal;
 }
 
 .popup-backdrop, .popup-click {
@@ -552,10 +562,11 @@ div {
   to { background: #fff; }
 }
 @keyframes flasher3 {
-  from { background: #fc0; }
-  5% { background: #f00; }
-  10% { background: #fc0; }
-  15% { background: #fff; }
+  from { background: #fff; }
+  5% { background: #fc0; }
+  10% { background: #f00; }
+  15% { background: #fc0; }
+  20% { background: #fff; }
   to { background: #fff; }
 }
 
@@ -576,7 +587,7 @@ div {
 .show-alert .alert li + li {
   animation-name: flasher3;
   animation-iteration-count: infinite;
-  animation-timing-function: step-end;
+  animation-timing-function: linear;
   animation-duration: 10s;
 }
 
@@ -1224,13 +1235,25 @@ div {
     top: 177px;
   }
 
-  .task-label > span {
+  .task-title {
     display: block;
   }
-  .task-item .label {
+  .task-labels {
+    display: block;
+    text-align: center;
+    /* margin-top: 0; */
+    /* padding-top: 0; */
+  }
+  .task-labels .label {
      float: none;
      clear: none;
-     display: inline-block;
+     vertical-align: top;
+   }
+   .task-labels .issue-label {
+     float: left;
+   }
+   .task-labels .updated-label {
+     float: right;
    }
 
 }
