@@ -8,8 +8,8 @@ body {
   white-space: nowrap;
 }
 div {
-  transition-property: opacity, background-color, color;
-  transition-duration: .2s;
+  transition-property: opacity, background-color, color, height, top;
+  transition-duration: .5s;
 }
 
 .main {
@@ -67,9 +67,9 @@ div {
 }
 
 .timer-display label, .label {
-  font-size: 75%;
+  /* font-size: 75%; */
   /* color: #333; */
-  margin-right: 4px;
+  margin-left: 4px;
   /* width: 4em; */
   display: inline-block;
   background: rgba(0,0,0,.05);
@@ -92,7 +92,7 @@ div {
   border: 1px solid #dfe2e5;
   /* background: #ddd; */
   color: #6a737d;
-  /* height: 72px; */
+  height: 72px;
   border-radius: 4px;
   padding: 8px;
   margin: 4px;
@@ -160,7 +160,7 @@ div {
 
 .current-task {
   /* white-space: normal !important; */
-  /* height: 2.2em; */
+  height: 1.2em;
   font-size: 25px;
   line-height: 1.1;
   /* clear: both; */
@@ -229,6 +229,7 @@ div {
     right: 0;
     overflow-y: scroll;
     overflow-x: hidden;
+    /* transition: top; */
 }
 
 .task-list ul {
@@ -347,13 +348,16 @@ div {
     border-radius: 4px;
 }
 
-.task-item .label {
+.task-item .labels {
     float: right;
     clear: right;
     font-size: 73%;
     padding: 0 2px;
     font-weight: normal;
     margin-right: 1px;
+    text-align: right
+}
+.task-item .label {
 }
 .task-item .label + .label {
     margin-top: 1px;
@@ -1203,6 +1207,7 @@ div {
 
   .timer-display {
     height: 124px;
+    overflow-y: hidden;
   }
 
   .timer-btn-task {
