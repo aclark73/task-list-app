@@ -358,7 +358,7 @@ div {
     margin-top: 1px;
     padding: 0 2px;
     font-weight: normal;
-    margin-right: 1px;
+    margin-right: 4px;
     text-align: right
 }
 .task-item .label {
@@ -366,6 +366,8 @@ div {
 .task-labels .issue-label {
   float: none;
   background: #eee;
+  font-size: 13px;
+  margin-left: 0;
 }
 .task-title {
   display: inline;
