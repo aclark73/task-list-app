@@ -1237,14 +1237,13 @@ div {
     top: 177px;
   }
 
+  /*
   .task-title {
     display: block;
   }
   .task-labels {
     display: block;
     text-align: center;
-    /* margin-top: 0; */
-    /* padding-top: 0; */
   }
   .task-labels .label {
      float: none;
@@ -1257,5 +1256,6 @@ div {
    .task-labels .updated-label {
      float: right;
    }
+   */
 
 }
