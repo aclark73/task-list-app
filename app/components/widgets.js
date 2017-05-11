@@ -1,6 +1,37 @@
 import React, { Component } from 'react';
 import Task from './task';
 import humanizeDuration from 'humanize-duration';
+import colormap from 'colormap';
+import { lighten, saturate } from 'colorutilities';
+
+const plasma_map = colormap({
+  colormap: 'summer',   // pick a builtin colormap or add your own
+  nshades: 72,       // how many divisions
+  format: 'hex',     // "hex" or "rgb" or "rgbaString"
+  alpha: 1           // set an alpha value or a linear alpha mapping [start, end]
+});
+const bg_map = plasma_map.map(function(c, i) {
+  const irev = 71-i;
+  return lighten(
+    c,
+    20 + irev);
+});
+
+const ageColor = function(delta) {
+  // delta (ms)
+  const min_delta = 0; // 1000*60*60*24; // 1 day
+  const max_delta = 1000*60*60*24*365*2; // 2 years
+  if (delta < min_delta) {
+    return bg_map[71];
+  }
+  else if (delta > max_delta) {
+    return bg_map[0];
+  }
+  else {
+    const idx = 71 - parseInt((71 * delta) / max_delta);
+    return bg_map[idx];
+  }
+};
 
 const shortEnglishHumanizer = humanizeDuration.humanizer({
   language: 'shortEn',
@@ -76,10 +107,17 @@ export class TaskWidget extends Component {
     // The right way
     const updated_label = ((updated_on) => {
       if (updated_on) {
-        var d = new Date(updated_on);
-        var now = new Date();
-        d = shortEnglishHumanizer(now.getTime() - d.getTime());
-        return (<div className="label updated-label">{d}</div>);
+        const d = new Date(updated_on);
+        const delta = (
+          ((new Date()).getTime() - d.getTime()));
+        const style = {
+          backgroundColor: ageColor(delta)
+        };
+        return (
+          <div className="label updated-label" style={style}>
+            {shortEnglishHumanizer(delta)}
+          </div>
+        );
       } else {
         return "";
       }

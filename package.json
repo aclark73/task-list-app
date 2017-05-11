@@ -35,6 +35,7 @@
     "configstore": "2.0.0",
     "humanize-duration": "3.9.1",
     "react-d3-basic": "1.6.11",
-    "colormap": "2.2.0"
+    "colormap": "2.2.0",
+    "colorutilities": "0.0.2"
   }
 }
