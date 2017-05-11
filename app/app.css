@@ -101,6 +101,7 @@ div {
   /* vertical-align: text-bottom; */
   /* white-space: normal; */
   position: relative;
+  min-width: 220px;
 }
 
 .timer-btn {
@@ -230,6 +231,7 @@ div {
     overflow-y: scroll;
     overflow-x: hidden;
     /* transition: top; */
+    min-width: 238px;
 }
 
 .task-list ul {
@@ -1220,7 +1222,7 @@ div {
 
   .timer-display {
     height: 124px;
-    overflow-y: hidden;
+    overflow: hidden;
   }
 
   .timer-btn-task {
