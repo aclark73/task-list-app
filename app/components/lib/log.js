@@ -91,6 +91,7 @@ export default class Log extends Component {
     days.forEach((day) => {
       // append the day and its rows
       const dayEntries = entriesByDay[day];
+      dayEntries.reverse();
       const dayStats = {
         numEntries: dayEntries.length,
         startTime: null,
@@ -121,7 +122,9 @@ export default class Log extends Component {
       function chartHeight(duration) {
         return parseInt((duration*100)/dayStats.duration);
       }
-      const chartRows = dayEntries.map( (logEntry, i) => {
+      const chartRows = [];
+      let lastOne = null;
+      dayEntries.forEach( (logEntry, i) => {
         const start = chartHeight(this.getDuration(dayStats.startTime, logEntry.startTime));
         const height = Math.max(
           chartHeight(this.getDuration(logEntry.startTime, logEntry.endTime)),
@@ -189,7 +192,7 @@ export default class Log extends Component {
   }
 }
 
-
+/* Where is this used? */
 class StatusPopup extends HandlerPopup {
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -224,6 +227,7 @@ class StatusPopup extends HandlerPopup {
       days.forEach((day) => {
         // append the day and its rows
         const dayEntries = entriesByDay[day];
+        dayEntries.reverse();
         const dayStats = {
           numEntries: dayEntries.length,
           startTime: null,
