@@ -5,7 +5,14 @@ import colormap from 'colormap';
 import { lighten, hexToHslTuple } from 'colorutilities';
 
 const plasma_map = colormap({
-  colormap: 'cool',   // pick a builtin colormap or add your own
+  // colormap: 'cool',   // pick a builtin colormap or add your own
+  colormap: [
+    {"index":0,"rgb":[255, 255, 51]},
+    {"index":0.1,"rgb":[255, 255, 51]},
+    {"index":0.4,"rgb":[102, 255, 102]},
+    {"index":0.7,"rgb":[204, 204, 255]},
+    {"index":1,"rgb":[204, 170, 255]}
+  ],
   nshades: 72,       // how many divisions
   format: 'hex',     // "hex" or "rgb" or "rgbaString"
   alpha: 1           // set an alpha value or a linear alpha mapping [start, end]
@@ -20,20 +27,27 @@ const bg_map = plasma_map.map(function(c, i) {
   return 'hsl(' + hsl[0] + ',' + hsl[1] + ',90%)';
 });
 
+const bg_colors = [];
+for (var hue=50; hue<=360; hue+=4) {
+  const s = 100 - Math.max(0, (hue-200)/2);
+  bg_colors.push('hsl(' + hue + ',' + s + '%,75%)');
+}
+const num_colors = bg_colors.length;
+
 const ageColor = function(delta) {
   // delta (ms)
   const adj_delta = Math.sqrt(delta);
   const min_delta = 0; // 1000*60*60*24; // 1 day
   const max_delta = Math.sqrt(1000*60*60*24*365*1); // 1 year
   if (adj_delta < min_delta) {
-    return bg_map[71];
+    return bg_colors[0];
   }
   else if (adj_delta > max_delta) {
-    return bg_map[0];
+    return bg_colors[num_colors-1];
   }
   else {
-    const idx = 71 - parseInt((71 * adj_delta) / max_delta);
-    return bg_map[idx];
+    const idx = parseInt((num_colors * adj_delta) / max_delta);
+    return bg_colors[idx];
   }
 };
 
