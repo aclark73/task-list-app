@@ -91,7 +91,7 @@ export default class Log extends Component {
     days.forEach((day) => {
       // append the day and its rows
       const dayEntries = entriesByDay[day];
-      dayEntries.reverse();
+      // dayEntries.reverse();
       const dayStats = {
         numEntries: dayEntries.length,
         startTime: null,
@@ -122,9 +122,7 @@ export default class Log extends Component {
       function chartHeight(duration) {
         return parseInt((duration*100)/dayStats.duration);
       }
-      const chartRows = [];
-      let lastOne = null;
-      dayEntries.forEach( (logEntry, i) => {
+      const chartRows = dayEntries.map( (logEntry, i) => {
         const start = chartHeight(this.getDuration(dayStats.startTime, logEntry.startTime));
         const height = Math.max(
           chartHeight(this.getDuration(logEntry.startTime, logEntry.endTime)),
@@ -135,7 +133,10 @@ export default class Log extends Component {
           background: getColor(logEntry)
         };
         return (
-          <div id={day + 'c' + i} key={day + 'c' + i} style={style}></div>
+          <div id={day + 'c' + i} key={day + 'c' + i} style={style}>
+            <span className="start">{Utils.getTime(logEntry.startTime)}</span>
+            <span className="end">{Utils.getTime(logEntry.endTime)}</span>
+          </div>
         );
       });
       // The log entries
@@ -162,10 +163,6 @@ export default class Log extends Component {
           <div key={day + 'r' + i} id={day + 'r' + i} className={className}>
             <div className="chart">{chartRows[i]}</div>
             <span className="colorsquare" style={style}></span>
-            <span className="timespan">
-              <span className="start">{Utils.getTime(logEntry.startTime)}</span> -
-              <span className="end">{Utils.getTime(logEntry.endTime)}</span>
-            </span>
             <span className="task-name"><a href="#" onClick={edit}>{label}</a></span>
             <span className="stats">
               <span className="worked">{Utils.formatTimespan(logEntry.timeElapsed, true)}</span>

@@ -712,22 +712,65 @@ div {
     white-space: normal;
 }
 
+.log .start {
+    color: #060;
+    border-color: #060;
+}
+
+.log .end {
+    color: #600;
+    border-color: #600;
+}
+
+.log .work {
+    position: relative;
+}
+
+.log .log-entry {
+    margin-left: 65px;
+}
+
 .log .chart {
-  width: 10px;
   position: absolute;
-  top: 0;
-  bottom: 0;
+  top: 3px;
+  bottom: 3px;
   left: 0;
+  width: 60px;
 }
 
 .log .chart > div {
-  width: 7px;
+  width: 100%;
   position: absolute;
   border: 1px solid rgba(0,0,0,.2);
+  min-height: 10px;
 }
 .log-entry:hover .chart > div, .log-entry:hover .colorsquare {
     border-color: rgba(0,0,0,.4);
     box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.log .chart span {
+  font-size: 9px;
+  position: absolute;
+  border-style: solid;
+  border-width: 0;
+  /* background: #fff; */
+  line-height: .9;
+  width: 100%;
+}
+
+.log .chart .start {
+  border-bottom-width: 1px;
+  /* left: 0; */
+  bottom: 0;
+}
+
+.log .chart .end {
+  border-top-width: 1px;
+  /* right: 0; */
+  top: 0;
+  text-align: right;
 }
 
 .log .chart2 {
@@ -764,22 +807,6 @@ div {
 
 .log .log-entry > span {
     margin: 0 .2em;
-}
-
-.log .start {
-    color: #060;
-}
-
-.log .end {
-    color: #600;
-}
-
-.log .work {
-    position: relative;
-}
-
-.log .log-entry {
-    margin-left: 10px;
 }
 
 // Copied from GitHub
