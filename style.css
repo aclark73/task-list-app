@@ -755,14 +755,33 @@ div {
 
 .log .start {
     color: #060;
+    border: solid #060 0px;
 }
 
 .log .end {
     color: #600;
+    border: solid #600 0px;
+}
+
+.log .chart .start, .log .chart .end {
+  position: absolute;
+  font-size: 10px;
+  line-height: 1;
+}
+
+.log .chart .start {
+  right: 10px;
+  border-bottom-width: 1px;
+}
+
+.log .chart .end {
+  left: 10px;
+  border-top-width: 1px;
 }
 
 .log .work {
     position: relative;
+    margin-left: 12px;
 }
 
 .log .log-entry {

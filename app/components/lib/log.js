@@ -28,6 +28,97 @@ function getColor(logEntry) {
 function getStyle(logEntry) {
   const hue = Task.getProjectColor(logEntry.project);
 }
+function hoursToMS(h) {
+    return h * 60 * 60 * 1000;
+}
+function getDurationMS(t1, t2) {
+  try {
+    const duration = Math.floor((new Date(t2) - new Date(t1)));
+    if (isNaN(duration)) {
+      throw "NaN!";
+    }
+    // console.log("" + t2 + " - " + t1 + " = " + duration);
+    return duration;
+  }
+  catch (e) {
+    console.log("" + t1 + " - " + t2 + " = " + e);
+    return 0;
+  }
+}
+
+function DailyChart(day) {
+    const chartDayStart = 8;
+    const chartDayEnd = 18;
+    const chartDayDuration = (chartDayEnd - chartDayStart);
+    const chartDayDurationMS = hoursToMS(chartDayDuration);
+    
+    function chartHeight(duration) {
+      const height = parseInt((duration*100)/chartDayDurationMS);
+      if (isNaN(height)) {
+        console.log("NaN for " + duration + " / " + chartDayDurationMS);
+      }
+      return height;
+    }
+    function toDateString(hour) {
+        return day + ' ' + Utils.pad2(hour) + ':00:00';
+    }
+    function getLogOffsetMS(logTime) {
+        const dayStart = toDateString(chartDayStart);
+        return getDurationMS(dayStart, logTime);
+    }
+    function toShortTime(h) {
+        const am_pm = (h < 12) ? 'a' : 'p';
+        const hour = (h % 12) || 12;
+        return '' + hour + am_pm;
+    }
+    function formatMarkerLabel(h) {
+        if (h == 12) { return 'n'; }
+        if (h == chartDayStart) { return toShortTime(h); }
+        if (h == chartDayEnd) { return toShortTime(h); }
+        return '';
+    }
+    function createMarker(h) {
+        const isTop = (h == chartDayEnd);
+        const className = classNames(
+          'chart-time-label',
+          { 'chart-time-label-top': isTop }
+        );
+        const style = isTop ? 
+            {top:"0%"} : 
+            {bottom:""+chartHeight(hoursToMS(h-chartDayStart))+'%'};
+        const label = formatMarkerLabel(h);
+        return (
+            <div id={day + 't' + h} style={style} className={className}><span>{label}</span></div>
+        );
+    }
+    function createMarkers() {
+        const chartMarkers = [];
+        for (var h=chartDayStart; h<=chartDayEnd; h++) {
+            chartMarkers.push(createMarker(h));
+        }
+        return chartMarkers;
+    }
+    function createChartRow(logEntry, i) {
+        const offset = chartHeight(getLogOffsetMS(logEntry.startTime));
+        const height = Math.max(
+            chartHeight(getDurationMS(logEntry.startTime, logEntry.endTime)),
+            Math.min(2, 100-offset));
+        const style = {
+            bottom: '' + offset + '%',
+            height: '' + height + '%',
+            background: getColor(logEntry)
+        };
+        return (
+            <div id={day + 'c' + i} key={day + 'c' + i} style={style}></div>
+        );
+    }
+    function createChartRows(logEntries) {
+        return logEntries.map(createChartRow);
+    }
+    this.chartHeight = chartHeight;
+    this.createMarkers = createMarkers;
+    this.createChartRows = createChartRows;
+}
 
 /**
  * Show the work log
@@ -118,28 +209,64 @@ export default class Log extends Component {
           </span>
         </div>
       ));
-      function chartHeight(duration) {
-        return parseInt((duration*100)/dayStats.duration);
-      }
-      const chartRows = dayEntries.map( (logEntry, i) => {
-        const start = chartHeight(this.getDuration(dayStats.startTime, logEntry.startTime));
-        const height = Math.max(
-          chartHeight(this.getDuration(logEntry.startTime, logEntry.endTime)),
-          Math.min(2, 100-start));
-        const style = {
-          bottom: '' + start + '%',
-          height: '' + height + '%',
-          background: getColor(logEntry)
-        };
-        return (
-          <div id={day + 'c' + i} key={day + 'c' + i} style={style}></div>
-        );
-      });
+
+      const dailyChart = new DailyChart(day);
+
+    //   
+      // 
+    //   function formatTime(i) {
+    //       const am_pm = (i < 12) ? 'a' : 'p';
+    //       const hour = (i % 12) || 12;
+    //       return '' + hour + am_pm;
+    //   }
+    //   function formatMarkerLabel(i) {
+    //       if (i == 12) { return 'n'; }
+    //       if (i == chartDayStart) { return formatTime(i); }
+    //       if (i == chartDayEnd) { return formatTime(i); }
+    //       return '';
+    //   }
+    //   function createMarker(i, style, label) {
+    //       const className = classNames(
+    //         'chart-time-label',
+    //         { 'chart-time-label-top': (i == chartDayEnd) }
+    //       );
+    //       return (
+    //           <div id={day + 't' + i} style={style} className={className}><span>{label}</span></div>
+    //       );
+    //   }
+    //   const chartMarkers = [];
+    //   for (var i=chartDayStart; i<=chartDayEnd; i++) {
+    //       const style = {};
+    //       if (i == chartDayEnd) {
+    //           
+    //       }
+    //       
+    //       const className = classNames(
+    //         'chart-time-label',
+    //         { 'chart-time-label-top': (i == chartDayEnd) }
+    //       );
+    //       return (
+    //           <div id={day + 't' + i} style={style} className={className}><span>{label}</span></div>
+    //       );
+    //       const ypos = parseInt(100*(i-chartDayStart)/(chartDayEnd-chartDayStart));
+    //       const style = {
+    //         bottom: '' + ypos + '%',
+    //       };
+    //       chartMarkers.push(createMarker(i, style, label);
+    //   }
+    //   chartMarkers.push(createMarker(chartDayEnd, {top:"0%"}, label);
+    //   chartMarkers.push((
+    //       <div id={day + 't' + chartDayEnd} style={{top:"0%"}} 
+    //         className="chart-time-label chart-time-label-top"><span>{formatMarkerLabel(chartDayEnd)}</span></div>
+    //   ));
+      const chartMarkers = dailyChart.createMarkers()
+      const chartRows = dailyChart.createChartRows(dayEntries);
+      
       // The log entries
       const subrows = [];
       dayEntries.forEach( (logEntry, i) => {
         const label = logEntry.taskName || logEntry.task;
-        const duration = this.getDuration(logEntry.startTime, logEntry.endTime);
+        const duration = getDurationMS(logEntry.startTime, logEntry.endTime);
         const utilization = Math.floor((logEntry.timeElapsed * 100) / duration);
 
         const style = {
@@ -155,9 +282,10 @@ export default class Log extends Component {
           'log-entry',
           { 'editing': editing }
         );
+        const markers = (i == 0) ? chartMarkers : '';
         subrows.push((
           <div key={day + 'r' + i} id={day + 'r' + i} className={className}>
-            <div className="chart">{chartRows[i]}</div>
+            <div className="chart">{markers}{chartRows[i]}</div>
             <span className="colorsquare" style={style}></span>
             <span className="timespan">
               <span className="start">{Utils.getTime(logEntry.startTime)}</span> -
@@ -245,11 +373,36 @@ class StatusPopup extends HandlerPopup {
           colormap: 'summer',   // pick a builtin colormap or add your own
           nshades: Math.max(dayStats.numEntries, 2)       // how many divisions
         });
+        
+        const chartDayStart = 8;
+        const chartDayEnd = 18;
+        const chartDayStats = {
+            startTime: day + 'T' + Utils.pad2(chartDayStart) + ':00:00',
+            endTime: day + 'T1' + Utils.pad2(chartDayEnd) + ':00:00',
+        };
+        chartDayStats.duration = this.getDuration(chartDayStats.startTime, chartDayStats.endTime);
+        // or
+        // const chartDayStats = dayStats;
+        
+        const chartMarkers = [];
+        for (var i=chartDayStart; i<chartDayEnd; i++) {
+            const ypos = (i-chartDayStart)/(chartDayEnd-chartDayStart);
+            const style = {
+              bottom: '' + ypos + '%',
+            };
+            chartMarkers.push((
+                <div id={day + 't' + i} style={style} className="chart-time-label">{i}:00</div>
+            ));
+        }
+        chartMarkers.push((
+            <div id={day + 't' + chartDayEnd} style="top:0" className="chart-time-label chart-time-label-top">{chartDayEnd}:00</div>
+        ));
+
         function chartHeight(duration) {
-          return parseInt((duration*100)/dayStats.duration);
+          return parseInt((duration*100)/chartDayStats.duration);
         }
         const chartRows = dayEntries.map( (logEntry, i) => {
-          const start = chartHeight(this.getDuration(dayStats.startTime, logEntry.startTime));
+          const start = chartHeight(this.getDuration(chartDayStats.startTime, logEntry.startTime));
           const height = Math.max(
             chartHeight(this.getDuration(logEntry.startTime, logEntry.endTime)),
             Math.min(2, 100-start));
@@ -278,6 +431,7 @@ class StatusPopup extends HandlerPopup {
 
           const firstCol = (i == 0) ? (
             <td className="chart" rowSpan={dayStats.numEntries}>
+              {chartMarkers}
               {chartRows}
             </td>
           ) : undefined;
