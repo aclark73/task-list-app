@@ -47,11 +47,11 @@ function getDurationMS(t1, t2) {
 }
 
 function DailyChart(day) {
-    const chartDayStart = 8;
-    const chartDayEnd = 18;
+    const chartDayStart = 0;
+    const chartDayEnd = 24;
     const chartDayDuration = (chartDayEnd - chartDayStart);
     const chartDayDurationMS = hoursToMS(chartDayDuration);
-    
+
     function chartHeight(duration) {
       const height = parseInt((duration*100)/chartDayDurationMS);
       if (isNaN(height)) {
@@ -83,8 +83,8 @@ function DailyChart(day) {
           'chart-time-label',
           { 'chart-time-label-top': isTop }
         );
-        const style = isTop ? 
-            {top:"0%"} : 
+        const style = isTop ?
+            {top:"0%"} :
             {bottom:""+chartHeight(hoursToMS(h-chartDayStart))+'%'};
         const label = formatMarkerLabel(h);
         return (
@@ -109,7 +109,7 @@ function DailyChart(day) {
             background: getColor(logEntry)
         };
         return (
-            <div id={day + 'c' + i} key={day + 'c' + i} style={style}></div>
+            <div id={day + 'c' + i} key={day + 'c' + i} className="chart-label" style={style}></div>
         );
     }
     function createChartRows(logEntries) {
@@ -182,6 +182,7 @@ export default class Log extends Component {
     days.forEach((day) => {
       // append the day and its rows
       const dayEntries = entriesByDay[day];
+      // dayEntries.reverse();
       const dayStats = {
         numEntries: dayEntries.length,
         startTime: null,
@@ -211,57 +212,9 @@ export default class Log extends Component {
       ));
 
       const dailyChart = new DailyChart(day);
-
-    //   
-      // 
-    //   function formatTime(i) {
-    //       const am_pm = (i < 12) ? 'a' : 'p';
-    //       const hour = (i % 12) || 12;
-    //       return '' + hour + am_pm;
-    //   }
-    //   function formatMarkerLabel(i) {
-    //       if (i == 12) { return 'n'; }
-    //       if (i == chartDayStart) { return formatTime(i); }
-    //       if (i == chartDayEnd) { return formatTime(i); }
-    //       return '';
-    //   }
-    //   function createMarker(i, style, label) {
-    //       const className = classNames(
-    //         'chart-time-label',
-    //         { 'chart-time-label-top': (i == chartDayEnd) }
-    //       );
-    //       return (
-    //           <div id={day + 't' + i} style={style} className={className}><span>{label}</span></div>
-    //       );
-    //   }
-    //   const chartMarkers = [];
-    //   for (var i=chartDayStart; i<=chartDayEnd; i++) {
-    //       const style = {};
-    //       if (i == chartDayEnd) {
-    //           
-    //       }
-    //       
-    //       const className = classNames(
-    //         'chart-time-label',
-    //         { 'chart-time-label-top': (i == chartDayEnd) }
-    //       );
-    //       return (
-    //           <div id={day + 't' + i} style={style} className={className}><span>{label}</span></div>
-    //       );
-    //       const ypos = parseInt(100*(i-chartDayStart)/(chartDayEnd-chartDayStart));
-    //       const style = {
-    //         bottom: '' + ypos + '%',
-    //       };
-    //       chartMarkers.push(createMarker(i, style, label);
-    //   }
-    //   chartMarkers.push(createMarker(chartDayEnd, {top:"0%"}, label);
-    //   chartMarkers.push((
-    //       <div id={day + 't' + chartDayEnd} style={{top:"0%"}} 
-    //         className="chart-time-label chart-time-label-top"><span>{formatMarkerLabel(chartDayEnd)}</span></div>
-    //   ));
       const chartMarkers = dailyChart.createMarkers()
       const chartRows = dailyChart.createChartRows(dayEntries);
-      
+
       // The log entries
       const subrows = [];
       dayEntries.forEach( (logEntry, i) => {
@@ -287,10 +240,6 @@ export default class Log extends Component {
           <div key={day + 'r' + i} id={day + 'r' + i} className={className}>
             <div className="chart">{markers}{chartRows[i]}</div>
             <span className="colorsquare" style={style}></span>
-            <span className="timespan">
-              <span className="start">{Utils.getTime(logEntry.startTime)}</span> -
-              <span className="end">{Utils.getTime(logEntry.endTime)}</span>
-            </span>
             <span className="task-name"><a href="#" onClick={edit}>{label}</a></span>
             <span className="stats">
               <span className="worked">{Utils.formatTimespan(logEntry.timeElapsed, true)}</span>
@@ -317,7 +266,7 @@ export default class Log extends Component {
   }
 }
 
-
+/* Where is this used? */
 class StatusPopup extends HandlerPopup {
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -352,6 +301,7 @@ class StatusPopup extends HandlerPopup {
       days.forEach((day) => {
         // append the day and its rows
         const dayEntries = entriesByDay[day];
+        dayEntries.reverse();
         const dayStats = {
           numEntries: dayEntries.length,
           startTime: null,
@@ -373,7 +323,7 @@ class StatusPopup extends HandlerPopup {
           colormap: 'summer',   // pick a builtin colormap or add your own
           nshades: Math.max(dayStats.numEntries, 2)       // how many divisions
         });
-        
+
         const chartDayStart = 8;
         const chartDayEnd = 18;
         const chartDayStats = {
@@ -383,7 +333,7 @@ class StatusPopup extends HandlerPopup {
         chartDayStats.duration = this.getDuration(chartDayStats.startTime, chartDayStats.endTime);
         // or
         // const chartDayStats = dayStats;
-        
+
         const chartMarkers = [];
         for (var i=chartDayStart; i<chartDayEnd; i++) {
             const ypos = (i-chartDayStart)/(chartDayEnd-chartDayStart);

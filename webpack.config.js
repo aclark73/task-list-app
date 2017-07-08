@@ -50,6 +50,7 @@ module.exports = {
     new CopyWebpackPlugin([
       { from: './../prod.html', to: './../app/index.html' },
       { from: './main.js', to: './../app/main.js' },
+      { from: './app.css', to: './../app/app.css' },
       { from: './../package.json', to: './../package.json'}
     ])
   ],

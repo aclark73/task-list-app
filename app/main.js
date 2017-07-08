@@ -45,7 +45,7 @@ app.on('will-quit', () => {
   console.log("will-quit")
 })
 
-
+/*
 const Tray = electron.Tray
 const Menu = electron.Menu
 
@@ -74,3 +74,4 @@ const dockMenu = Menu.buildFromTemplate([
   { label: 'New Command...'}
 ]);
 app.dock.setMenu(dockMenu);
+*/
