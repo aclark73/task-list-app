@@ -3,6 +3,7 @@
 const electron = require('electron')
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
+const DEBUG = true
 let mainWindow
 
 
@@ -18,9 +19,8 @@ function createWindow() {
 
   mainWindow.loadURL('file://' + __dirname + '/index.html')
 
-
   /* Don't do it or it will open in production as well */
-  mainWindow.webContents.openDevTools()
+  DEBUG && mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', () => {
     mainWindow = null
@@ -28,13 +28,11 @@ function createWindow() {
 }
 
 app.on('ready', createWindow)
-
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
 })
-
 app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()

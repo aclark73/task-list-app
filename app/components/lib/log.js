@@ -46,9 +46,7 @@ function getDurationMS(t1, t2) {
   }
 }
 
-function DailyChart(day) {
-    const chartDayStart = 0;
-    const chartDayEnd = 24;
+function DailyChart(day, chartDayStart, chartDayEnd) {
     const chartDayDuration = (chartDayEnd - chartDayStart);
     const chartDayDurationMS = hoursToMS(chartDayDuration);
 
@@ -136,8 +134,10 @@ export default class Log extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return (nextProps.log.length != this.props.log.length) ||
-      (nextState.edit != this.state.edit);
+    try {
+      if (nextProps.log[0].endTime != this.props.log[0].endTime) { return true; }
+    } catch (e) {}
+    return (nextState.edit != this.state.edit);
   }
 
   getDuration(t1, t2) {
@@ -211,7 +211,7 @@ export default class Log extends Component {
         </div>
       ));
 
-      const dailyChart = new DailyChart(day);
+      const dailyChart = new DailyChart(day, 0, 24);
       const chartMarkers = dailyChart.createMarkers()
       const chartRows = dailyChart.createChartRows(dayEntries);
 
@@ -235,10 +235,12 @@ export default class Log extends Component {
           'log-entry',
           { 'editing': editing }
         );
-        const markers = (i == 0) ? chartMarkers : '';
+        const chart = (i > 0) ? '' : (
+          <div className="chart">{chartMarkers}{chartRows[i]}</div>
+        );
         subrows.push((
           <div key={day + 'r' + i} id={day + 'r' + i} className={className}>
-            <div className="chart">{markers}{chartRows[i]}</div>
+            {chart}
             <span className="colorsquare" style={style}></span>
             <span className="task-name"><a href="#" onClick={edit}>{label}</a></span>
             <span className="stats">
