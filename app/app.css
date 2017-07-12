@@ -8,7 +8,7 @@ body {
   white-space: nowrap;
 }
 div {
-  transition-property: opacity, background-color, color, height, top;
+  transition-property: opacity, background-color, background-image, color, height, top;
   transition-duration: .5s;
 }
 
@@ -89,7 +89,7 @@ div {
 }
 .timer-display {
   /* display: block; */
-  border: 1px solid #dfe2e5;
+  /* border: 1px solid #dfe2e5; */
   /* background: #ddd; */
   color: #6a737d;
   height: 72px;
@@ -102,6 +102,7 @@ div {
   /* white-space: normal; */
   position: relative;
   min-width: 220px;
+  box-shadow: inset 0 0 20px #fff;
 }
 
 .timer-btn {
@@ -242,28 +243,37 @@ div {
 
 .task-list li {
     position: relative;
+    border-top: 1px solid #ddd;
+    margin-bottom: 1px;
+    /* padding: 2px 0; */
 }
 
 .task-item {
     /* line-height: 1em; */
     white-space: normal;
-    margin-bottom: 2px;
+    /* margin-bottom: 2px; */
+    /* padding: 4px 0; */
 }
 
 .task-item .btn, .task-item .task-label {
-    border: 1px solid #dfe2e5;
+    /* border: 1px solid #dfe2e5; */
     cursor: pointer;
     overflow: hidden;
     padding: 1px 0;
     line-height: 1.2;
+    /* background-image: radial-gradient(circle at center, #ddd, #fff); */
+    background-color: #fff;
+    box-shadow: inset 0 0 16px 2px #fff;
 }
 
 .task-item .task-label {
-    padding-left: 4px;
+    padding: 5px;
 }
 
 .task-item:hover .task-label {
-    background: rgba(0,0,0,.1);
+    /* background-color: rgba(0,0,0,.1); */
+    /* background-image: radial-gradient(circle at center, rgb(221, 221, 221), rgb(221, 221, 221)); */
+    background-color: #f4f4f4;
 }
 
 .task-item.selected .task-label {
@@ -367,9 +377,11 @@ div {
 }
 .task-labels .issue-label {
   float: none;
-  background: #eee;
   font-size: 13px;
   margin-left: 0;
+  background: transparent;
+  color: #999;
+  border: none;
 }
 .task-title {
   display: inline;
@@ -617,8 +629,9 @@ div {
     color: #060;
 }
 .working .task-item.selected .task-label {
-    background-color: #9f9;
+    background: #9f9;
     color: #060;
+    /* box-shadow: inset 0 0 16px 4px #fff; */
 }
 
 .working .selected .btn-start {
