@@ -1314,3 +1314,39 @@ div {
    */
 
 }
+
+
+.hover-help {
+  position: relative;
+  overflow-y: hidden;
+}
+.hover-help .help {
+    position: absolute;
+    top: -1.8em;
+    right: 0;
+
+  transition-timing-function: ease-in;
+  transition-property: top;
+  transition-duration: .2s;
+}
+.hover-help:hover .help {
+  top: 0;
+  transition-timing-function: ease-out;
+}
+
+
+@keyframes help-on-hover {
+  from { top: -1.8em; }
+  10% { top: 0; }
+  90% { top: 0; }
+  to { top: -1.8em; }
+}
+div:hover > .hover-help {
+  top: 0;
+}
+.junk {
+  animation-name: help-on-hover;
+  animation-iteration-count: 1;
+  animation-timing-function: ease;
+  animation-duration: 2s;
+}

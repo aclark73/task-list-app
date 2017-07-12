@@ -53,3 +53,6 @@ $RECYCLE.BIN/
 npm-debug.log
 Electron-darwin-x64
 TaskListApp-darwin-x64
+
+# OmniGraffle docs
+*.graffle
