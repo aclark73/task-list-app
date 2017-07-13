@@ -86,12 +86,13 @@ function DailyChart(day, chartDayStart, chartDayEnd) {
             {bottom:""+chartHeight(hoursToMS(h-chartDayStart))+'%'};
         const label = formatMarkerLabel(h);
         return (
-            <div id={day + 't' + h} style={style} className={className}><span>{label}</span></div>
+            <div key={day + 't' + h} style={style} className={className}><span>{label}</span></div>
         );
     }
-    function createMarkers() {
+    function createMarkers(numRows) {
         const chartMarkers = [];
-        for (var h=chartDayStart; h<=chartDayEnd; h++) {
+        const hoursPerMarker = parseInt(8/numRows);
+        for (var h=chartDayStart; h<=chartDayEnd; h+=hoursPerMarker) {
             chartMarkers.push(createMarker(h));
         }
         return chartMarkers;
@@ -107,7 +108,7 @@ function DailyChart(day, chartDayStart, chartDayEnd) {
             background: getColor(logEntry)
         };
         return (
-            <div id={day + 'c' + i} key={day + 'c' + i} className="chart-label" style={style}></div>
+            <div key={day + 'c' + i} className="chart-label" style={style}></div>
         );
     }
     function createChartRows(logEntries) {
@@ -141,13 +142,7 @@ export default class Log extends Component {
   }
 
   getDuration(t1, t2) {
-    try {
-      return Math.floor((new Date(t2) - new Date(t1))/1000);
-    }
-    catch (e) {
-      console.log(e);
-      return 0;
-    }
+    return getDurationMS(t1, t2)/1000;
   }
 
   getLogEntryId(logEntry) {
@@ -169,14 +164,29 @@ export default class Log extends Component {
     const days = [];
     const entriesByDay = {};
     let lastDay = -1;
+    let lastEntry = null;
+
+    const mergeGapSize = 10*60;
+
     this.props.log.forEach( (logEntry, i) => {
       const day = Utils.getDay(logEntry.startTime);
-      // create new day if necessary
-      if (!entriesByDay[day]) {
-        days.push(day);
-        entriesByDay[day] = [];
+      if (lastEntry && day == lastDay
+          && lastEntry.taskId == logEntry.taskId
+          && this.getDuration(lastEntry.endTime, logEntry.startTime) < mergeGapSize) {
+        // Merge with previous entry
+        console.log("Merging log");
+        lastEntry.endTime = logEntry.endTime;
+        lastEntry.timeElapsed += logEntry.timeElapsed;
+        lastEntry.taskName += "*";
+      } else {
+        // create new day if necessary
+        if (!entriesByDay[day]) {
+          days.push(day);
+          entriesByDay[day] = [];
+        }
+        // Add a copy since we might merge things into it
+        entriesByDay[day].push(Object.assign({}, logEntry));
       }
-      entriesByDay[day].push(logEntry);
     });
     const rows = [];
     days.forEach((day) => {
@@ -212,8 +222,11 @@ export default class Log extends Component {
       ));
 
       const dailyChart = new DailyChart(day, 0, 24);
-      const chartMarkers = dailyChart.createMarkers()
+      const chartMarkers = dailyChart.createMarkers(dayEntries.length);
       const chartRows = dailyChart.createChartRows(dayEntries);
+
+      rows.push(({chartMarkers}));
+      rows.push(({chartRows}));
 
       // The log entries
       const subrows = [];
@@ -235,12 +248,8 @@ export default class Log extends Component {
           'log-entry',
           { 'editing': editing }
         );
-        const chart = (i > 0) ? '' : (
-          <div className="chart">{chartMarkers}{chartRows[i]}</div>
-        );
         subrows.push((
           <div key={day + 'r' + i} id={day + 'r' + i} className={className}>
-            {chart}
             <span className="colorsquare" style={style}></span>
             <span className="task-name"><a href="#" onClick={edit}>{label}</a></span>
             <span className="stats">
