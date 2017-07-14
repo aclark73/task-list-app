@@ -762,7 +762,7 @@ div {
   /* min-height: 4px; */
   padding: 2px 0;
   margin-bottom: -2px;
-  box-shadow: 0 0 2px 2px rgba(0,0,0,.1);
+  /* box-shadow: 0 0 2px 0px rgba(0,0,0,.05); */
 }
 .log-entry:hover .chart .chart-label, .log-entry:hover .colorsquare {
     border-color: rgba(0,0,0,.4);

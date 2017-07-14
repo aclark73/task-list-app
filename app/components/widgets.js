@@ -20,7 +20,7 @@ const plasma_map = colormap({
 const bg_map = plasma_map.map(function(c, i) {
   const adj = (71-i);
   const hsl = hexToHslTuple(c);
-  console.log(hsl);
+  // console.log(hsl);
 
   // return c;
   // console.log(c + ' x ' + adj + '% = ' + cl);
