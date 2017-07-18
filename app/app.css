@@ -114,7 +114,7 @@ div {
 }
 
 .timer-btn-task {
-  width: 80px;
+  /* width: 80px; */
 }
 
 .has-task .timer-btn-task:hover {
@@ -325,7 +325,7 @@ div {
 }
 
 .btns {
-    display: inline-block;
+    /* display: inline-block; */
     /* flex: initial; */
     vertical-align: top;
 }
@@ -342,6 +342,10 @@ div {
 .btns .btn:not(:last-child) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+}
+
+.toolbar .btns {
+  display: inline-block;
 }
 
 .task-item .btn {
@@ -523,7 +527,7 @@ div {
 }
 
 .alert li + li {
-  padding: 50% 20%;
+  padding: 20% 20%;
   font-size: 24px;
   text-align: center;
   background: #fff;

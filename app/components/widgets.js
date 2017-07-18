@@ -103,7 +103,9 @@ export class TaskWidget extends Component {
       );
     }
 
-    // Keep the local definitions more readable
+    // 2 examples of doing the same thing:
+    // 1. The function looks directly at this
+    // This seems more readable to me
     const project_label = (() => {
       var view = this.props.context.view;
       var project = this.props.task.project;
@@ -122,7 +124,7 @@ export class TaskWidget extends Component {
         return "";
       }
     })();
-    // The right way
+    // 2. The right way
     const updated_label = ((updated_on) => {
       if (updated_on) {
         const d = new Date(updated_on);

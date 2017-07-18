@@ -358,10 +358,10 @@ export default class App extends Component {
         {statusMessage}
         <Toolbar actions={actions} handlers={this.handlers} />
         <div className="timer-display">
+          <div className="btn btn-primary timer-btn timer-btn-task" onClick={actions.pause}>
+            <span className="time-remaining">{timeRemaining}</span>
+          </div>
           <div className="btns">
-            <div className="btn btn-primary timer-btn timer-btn-task" onClick={actions.pause}>
-              <span className="time-remaining">{timeRemaining}</span>
-            </div>
             <div className="btn timer-btn timer-btn-stop" onClick={actions.stop}>
               Stop
             </div>
