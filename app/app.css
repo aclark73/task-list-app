@@ -954,3 +954,29 @@ div:hover > .hover-help {
   animation-timing-function: ease;
   animation-duration: 2s;
 }
+
+
+.start-stop {
+  padding: 4px 10px;
+}
+
+.time-remaining {
+  float: left;
+  width: 70px;
+}
+
+.current-task {
+}
+
+.times {
+
+}
+
+.working .start-stop {
+  background-color: #0c0;
+}
+
+.working .time-remaining {
+  color: #fff;
+
+}

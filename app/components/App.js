@@ -353,38 +353,39 @@ export default class App extends Component {
       </div>
     );
     const statusMessage = this.handlers.status.component(this.state.status);
+    const startStop = (
+      <div className="start-stop" onClick={actions.startStop}>
+        <div className="time-remaining">{timeRemaining}</div>
+        <div className="current-task">
+          {currentTask}
+        </div>
+        <div className="times">
+          <div className="start-time">
+            <div>Started</div><div className="time">{startTime}</div>
+          </div>
+          <div className="time-elapsed">
+            <div>Elapsed</div><div className="time">{timeElapsed}</div>
+            <div className="btn-rewind" onClick={actions.rewind}>
+              +10
+            </div>
+          </div>
+          <div className="time-idle">{timeIdle}</div>
+        </div>
+      </div>
+    );
     return(
       <div className={className} onClick={actions.click}>
         {statusMessage}
         <Toolbar actions={actions} handlers={this.handlers} />
+        {startStop}
         <div className="timer-display">
-          <div className="btn btn-primary timer-btn timer-btn-task" onClick={actions.pause}>
-            <span className="time-remaining">{timeRemaining}</span>
-          </div>
           <div className="btns">
             <div className="btn timer-btn timer-btn-stop" onClick={actions.stop}>
               Stop
             </div>
-            <div className="btn timer-btn timer-btn-rewind" onClick={actions.rewind}>
-              Rewind
-            </div>
-          </div>
-          <div className="times">
-            <div className="start-time">
-              <div>Started</div><div clasName="time">{startTime}</div>
-            </div>
-            <div className="time-elapsed">
-              <div>Elapsed</div><div className="time">{timeElapsed}</div>
-            </div>
-            <div className="time-idle">{timeIdle}</div>
-          </div>
-          <div className="current-task">
-            {currentTask}
           </div>
         </div>
-
         <div className="task-list">{taskList}</div>
-
         {popups}
       </div>
     );
