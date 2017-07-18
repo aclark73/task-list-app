@@ -2,7 +2,7 @@ body {
   font-family: Helvetica;
   font-size: 14px;
   line-height: 1.2;
-  font-weight: 200;
+  /* font-weight: 200; */
   margin: 0;
   /* padding: 8px; */
   /* position: relative; */
@@ -227,7 +227,7 @@ div {
 
 .task-list {
     position: absolute;
-    top: 70px;
+    top: 72px;
     bottom: 0;
     left: 8px;
     right: 0;
@@ -296,7 +296,7 @@ div {
 }
 
 .toolbar {
-    margin-bottom: .3em;
+    /* margin-bottom: .3em; */
     border-bottom: 1px solid #ccc;
     padding: 3px;
     background: #eee;
@@ -388,6 +388,7 @@ div {
   background: transparent;
   color: #999;
   border: none;
+  padding: 0;
 }
 .task-title {
   display: inline;
@@ -965,25 +966,29 @@ div:hover > .hover-help {
 .time-remaining {
   float: left;
   width: 70px;
-  font-size: 26px;
-  margin-right: 8px;
+  font-size: 28px;
+  margin: 3px 10px 0 0;
   font-weight: lighter;
 }
 
 .current-task {
-  font-size: 22px;
-  margin: 3px 0 2px;
+  font-size: 20px;
+  margin: 2px 80px 0px 0px;
   text-overflow: ellipsis;
   overflow: hidden;
-  margin-right: 60px;
+  /* margin-right: 60px; */
+  line-height: 1;
+}
+
+.issue-number {
+  font-size: 13px;
 }
 
 .times {
   position: absolute;
-  top: 4px;
-  right: 4px;
+  top: 7px;
+  right: 8px;
   text-align: right;
-  padding-right: 3px;
   font-size: 14px;
   line-height: 1.1;
 }

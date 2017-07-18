@@ -39,6 +39,7 @@ export default class App extends Component {
 
       taskId: null,
       taskLabel: '-',
+      taskIssueNumber: null,
       startTime: null,
       lastWorkTime: null,
       timeElapsed: 0,
@@ -353,11 +354,13 @@ export default class App extends Component {
         <div className="popup alert"><ul><li className="header">Alert</li><li>{this.state.alertMessage}</li></ul></div>
       </div>
     );
+    const issueNumber = this.state.taskIssueNumber ? '#' + this.state.taskIssueNumber : '';
     const statusMessage = this.handlers.status.component(this.state.status);
     const timer = (
       <div className="timer" onClick={actions.startStop}>
         <div className="time-remaining">{timeRemaining}</div>
         <div className="current-task">
+          <div className="issue-number">{issueNumber}</div>
           {currentTask}
         </div>
         <div className="times">
@@ -384,13 +387,13 @@ export default class App extends Component {
   setTask(task) {
     this.addMessage("Changed task");
     const taskId = Task.getUID(task);
-    const taskLabel = Task.getLabel(task);
     if (taskId != this.state.taskId) {
       console.log("setTask: " + taskId);
       this.stop();
       this.setState({
         taskId: taskId,
-        taskLabel: taskLabel,
+        taskLabel: Task.getLabel(task),
+        taskIssueNumber: task.issue_number,
         timeElapsed: 0,
         timeRemaining: 0
       });
@@ -587,7 +590,8 @@ export default class App extends Component {
     });
     this.startTimer();
   }
-  rewind() {
+  rewind(e) {
+    e.stopPropagation();
     if (this.state.startTime) {
       const now = new Date();
       const totalTime = (now - this.state.startTime)/1000;
