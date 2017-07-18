@@ -60,6 +60,7 @@ export default class App extends Component {
       click: this.click.bind(this),
       start: this.start.bind(this),
       stop: this.stop.bind(this),
+      startStop: this.startStop.bind(this),
       pause: this.pause.bind(this),
       rewind: this.rewind.bind(this),
       setTask: this.setTask.bind(this),
@@ -353,8 +354,8 @@ export default class App extends Component {
       </div>
     );
     const statusMessage = this.handlers.status.component(this.state.status);
-    const startStop = (
-      <div className="start-stop" onClick={actions.startStop}>
+    const timer = (
+      <div className="timer" onClick={actions.startStop}>
         <div className="time-remaining">{timeRemaining}</div>
         <div className="current-task">
           {currentTask}
@@ -363,11 +364,8 @@ export default class App extends Component {
           <div className="start-time">
             <div>Started</div><div className="time">{startTime}</div>
           </div>
-          <div className="time-elapsed">
+          <div className="time-elapsed" onClick={actions.rewind}>
             <div>Elapsed</div><div className="time">{timeElapsed}</div>
-            <div className="btn-rewind" onClick={actions.rewind}>
-              +10
-            </div>
           </div>
           <div className="time-idle">{timeIdle}</div>
         </div>
@@ -377,14 +375,7 @@ export default class App extends Component {
       <div className={className} onClick={actions.click}>
         {statusMessage}
         <Toolbar actions={actions} handlers={this.handlers} />
-        {startStop}
-        <div className="timer-display">
-          <div className="btns">
-            <div className="btn timer-btn timer-btn-stop" onClick={actions.stop}>
-              Stop
-            </div>
-          </div>
-        </div>
+        {timer}
         <div className="task-list">{taskList}</div>
         {popups}
       </div>
@@ -561,9 +552,18 @@ export default class App extends Component {
       });
     }
   }
+  startStop() {
+    if (! this.state.taskId) { return; }
+    if (this.state.currently == "working") {
+      this.stop();
+    } else {
+      this.start(this.getTask(this.state.taskId));
+    }
+  }
   pause() {
     if (! this.state.taskId) { return; }
     if (this.state.currently == "working") {
+
       this.setState({
         currently: "paused",
         timeRemaining: this.state.breakTime,
