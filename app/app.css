@@ -9,8 +9,8 @@ body {
   white-space: nowrap;
 }
 div {
-  transition-property: opacity, background-color, background-image, color, height, top;
-  transition-duration: .5s;
+  transition-property: opacity, background-color, background-image, height, top;
+  transition-duration: .2s;
 }
 
 .main {
@@ -922,11 +922,11 @@ div {
 }
 
 
-.hover-help {
+.old .hover-help {
   position: relative;
   overflow-y: hidden;
 }
-.hover-help .help {
+.old .hover-help .help {
     position: absolute;
     top: -1.8em;
     right: 0;
@@ -935,23 +935,38 @@ div {
   transition-property: top;
   transition-duration: .2s;
 }
-.hover-help:hover .help {
+.old .hover-help:hover .help {
   top: 0;
   transition-timing-function: ease-out;
 }
 
+.hover-help {
+  position: absolute;
+  border: 1px solid #000;
+  border-radius: 4px;
+  padding: 0 2px;
+  background: #ddd;
+  opacity: 1;
+}
 
-@keyframes help-on-hover {
+
+@keyframes help-drop-down {
   from { top: -1.8em; }
   10% { top: 0; }
   90% { top: 0; }
   to { top: -1.8em; }
 }
-div:hover > .hover-help {
-  top: 0;
+@keyframes help-fade {
+  from { opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  to { opacity: 0; }
 }
-.junk {
-  animation-name: help-on-hover;
+div:hover > .hover-help {
+/*  opacity: 1; */
+}
+div:hover > .hover-help {
+  animation-name: help-fade;
   animation-iteration-count: 1;
   animation-timing-function: ease;
   animation-duration: 2s;
@@ -959,8 +974,10 @@ div:hover > .hover-help {
 
 
 .timer {
+  background-color: #eee;
   padding: 4px 10px;
   position: relative;
+  cursor: pointer;
 }
 
 .time-remaining {

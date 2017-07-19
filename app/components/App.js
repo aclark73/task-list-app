@@ -357,7 +357,7 @@ export default class App extends Component {
     const issueNumber = this.state.taskIssueNumber ? '#' + this.state.taskIssueNumber : '';
     const statusMessage = this.handlers.status.component(this.state.status);
     const timer = (
-      <div className="timer" onClick={actions.startStop}>
+      <div className="timer" onClick={actions.startStop} title="Click to start/stop">
         <div className="time-remaining">{timeRemaining}</div>
         <div className="current-task">
           <div className="issue-number">{issueNumber}</div>
@@ -367,7 +367,7 @@ export default class App extends Component {
           <div className="start-time">
             <div>Started</div><div className="time">{startTime}</div>
           </div>
-          <div className="time-elapsed" onClick={actions.rewind}>
+          <div className="time-elapsed" onClick={actions.rewind} title="Click to rewind">
             <div>Elapsed</div><div className="time">{timeElapsed}</div>
           </div>
           <div className="time-idle">{timeIdle}</div>
