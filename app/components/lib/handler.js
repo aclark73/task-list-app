@@ -73,4 +73,27 @@ export class Handler {
             fullNewState[this.label] = namedState;
         }
     }
+
+    /**
+     * Define any actions to add to the app
+     */
+    addActions(actions) {
+        // Add popup if defined
+        if (this.popup) {
+          actions.showPopup[this.label] = () => {
+            this.app.showPopup(this.label);
+          }
+        }
+    }
+
+    // // Example: define a component
+    // component() {
+    //   return (<HandlerComponent />);
+    // }
+
+    // // Example: define a popup (addActions will hook it up automatically)
+    // popup() {
+    //   return HandlerPopup;
+    // }
+
 }

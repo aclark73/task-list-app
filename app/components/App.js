@@ -92,12 +92,14 @@ export default class App extends Component {
     this.handlers[handler.label] = handler;
     // Handler state in a namespace
     this.state[handler.label] = handler.initialState();
-    // Register any popup handler
-    if (handler.popup) {
-      this.actions.showPopup[handler.label] = () => {
-        this.showPopup(handler.label);
-      }
-    }
+    // Add actions
+    handler.addActions(this.actions);
+    // // Register any popup handler
+    // if (handler.popup) {
+    //   this.actions.showPopup[handler.label] = () => {
+    //     this.showPopup(handler.label);
+    //   }
+    // }
   }
   componentWillMount() {
     this.load() // Load data
