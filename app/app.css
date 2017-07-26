@@ -7,10 +7,12 @@ body {
   /* padding: 8px; */
   /* position: relative; */
   white-space: nowrap;
+  /* box-sizing: border-box; */
 }
 div {
   transition-property: opacity, background-color, background-image, height, top;
   transition-duration: .2s;
+  box-sizing: border-box;
 }
 
 .main {
@@ -229,7 +231,7 @@ div {
     position: absolute;
     top: 72px;
     bottom: 0;
-    left: 8px;
+    left: 0;
     right: 0;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -410,6 +412,8 @@ div {
     margin-left: 19px;
     font-weight: bold;
     border-top-left-radius: 0;
+    font-size: 13px;
+    padding: 1px 5px;
 }
 
 .time-remaining {
@@ -445,13 +449,17 @@ div {
     margin-top: -20px;
 }
 
+.search {
+    color: #999;
+    position: relative;
+}
+
 .search input {
-    width: 80%;
+    width: 100%;
     border-radius: 2px;
     border: 1px solid #dfe2e5;
     box-sizing: border-box;
     outline: none;
-    color: #999;
     padding: 1px 4px;
     margin-bottom: 2px;
     background: transparent;
@@ -463,8 +471,11 @@ div {
     background: #fff;
 }
 
-.search button {
-    width: 20%;
+.search .clear-btn {
+    position: absolute;
+    top: 1px;
+    right: 2px;
+    cursor: pointer;
 }
 
 .popup {
@@ -761,11 +772,11 @@ div {
   top: 3px;
   bottom: 3px;
   left: 0;
-  width: 20px;
+  width: 0;
 }
 
 .log .chart > div {
-  width: 100%;
+  width: 20px;
   position: absolute;
 }
 
@@ -863,14 +874,14 @@ div {
 
 @media all and (max-width: 350px) {
 
-  .times {
+  .old .times {
     position: initial;
     margin-left: 0;
     text-align: initial;
     margin-top: 4px;
   }
 
-  .times > div {
+  .old .times > div {
     /* margin-right: 8px; */
     display: inline-block;
   }
@@ -894,7 +905,7 @@ div {
     overflow: hidden;
   }
 
-  .task-list {
+  .old .task-list {
     top: 177px;
   }
 
@@ -975,9 +986,10 @@ div:hover > .hover-help {
 
 .timer {
   background-color: #eee;
-  padding: 4px 10px;
+  padding: 4px 10px 0;
   position: relative;
   cursor: pointer;
+  height: 43px;
 }
 
 .time-remaining {
@@ -990,11 +1002,12 @@ div:hover > .hover-help {
 
 .current-task {
   font-size: 20px;
-  margin: 2px 80px 0px 0px;
+  margin: 2px 50px 0px 0px;
   text-overflow: ellipsis;
   overflow: hidden;
   /* margin-right: 60px; */
   line-height: 1;
+  white-space: nowrap;
 }
 
 .issue-number {
@@ -1022,7 +1035,8 @@ div:hover > .hover-help {
 
 .times > div > div {
   display: inline-block;
-  min-width: 40px;
+  /* min-width: 40px; */
+  margin-left: 2px;
 }
 
 .times > div > div:first-child {

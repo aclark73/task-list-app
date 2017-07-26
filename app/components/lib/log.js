@@ -110,12 +110,9 @@ function DailyChart(day, chartDayStart, chartDayEnd) {
             <div key={day + 'c' + i} className="chart-label" style={style}></div>
         );
     }
-    function createChartRows(logEntries) {
-        return logEntries.map(createChartRow);
-    }
     this.chartHeight = chartHeight;
     this.createMarkers = createMarkers;
-    this.createChartRows = createChartRows;
+    this.createChartRow = createChartRow;
 }
 
 /**
@@ -171,10 +168,10 @@ export default class Log extends Component {
       const day = Utils.getDay(logEntry.startTime);
       if (lastEntry && day == lastDay
           && lastEntry.taskId == logEntry.taskId
-          && this.getDuration(lastEntry.endTime, logEntry.startTime) < mergeGapSize) {
+          && this.getDuration(logEntry.endTime, lastEntry.startTime) < mergeGapSize) {
         // Merge with previous entry
         console.log("Merging log");
-        lastEntry.endTime = logEntry.endTime;
+        lastEntry.startTime = logEntry.startTime;
         lastEntry.timeElapsed += logEntry.timeElapsed;
         lastEntry.taskName += "*";
       } else {
@@ -223,16 +220,15 @@ export default class Log extends Component {
 
       const dailyChart = new DailyChart(day, 0, 24);
       const chartMarkers = dailyChart.createMarkers(dayEntries.length);
-      const chartRows = dailyChart.createChartRows(dayEntries);
 
       // The log entries
       const subrows = [];
       dayEntries.forEach( (logEntry, i) => {
         const label = logEntry.taskName || logEntry.task;
-        const duration = getDurationMS(logEntry.startTime, logEntry.endTime);
+        const duration = this.getDuration(logEntry.startTime, logEntry.endTime);
         const utilization = Math.floor((logEntry.timeElapsed * 100) / duration);
-        const timespan = "" + logEntry.startTime + " - " + logEntry.endTime;
-
+        const timespan = "" + Utils.getTime(logEntry.startTime) + " - " + Utils.getTime(logEntry.endTime);
+        const chartRow = dailyChart.createChartRow(logEntry, i);
         const style = {
           background: getColor(logEntry)
         };
@@ -248,6 +244,9 @@ export default class Log extends Component {
         );
         subrows.push((
           <div key={day + 'r' + i} id={day + 'r' + i} className={className}>
+            <span className="chart">
+              {chartRow}
+            </span>
             <span className="colorsquare" style={style}></span>
             <span className="task-name"><a href="#" onClick={edit}>{label}</a></span>
             <span className="timespan">{timespan}</span>
@@ -261,11 +260,10 @@ export default class Log extends Component {
       });
 
       rows.push((
-        <div className="work">
-          <div className="chart">
+        <div key={day + 'w'} className="work">
+          <span className="chart">
             {chartMarkers}
-            {chartRows}
-          </div>
+          </span>
           {subrows}
         </div>
       ));

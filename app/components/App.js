@@ -365,10 +365,10 @@ export default class App extends Component {
         </div>
         <div className="times">
           <div className="start-time">
-            <div>Started</div><div className="time">{startTime}</div>
+            <div><span className="fa fa-clock-o"></span></div><div className="time">{startTime}</div>
           </div>
           <div className="time-elapsed" onClick={actions.rewind} title="Click to rewind">
-            <div>Elapsed</div><div className="time">{timeElapsed}</div>
+            <div><span className="fa fa-hourglass-o"></span></div><div className="time">{timeElapsed}</div>
           </div>
           <div className="time-idle">{timeIdle}</div>
         </div>
@@ -506,6 +506,7 @@ export default class App extends Component {
         }
         if (gap > 60000) {
           console.log("Stopping due to time gap of " + gap);
+          this.stop();
           this.waitForUser("Stopping due to time gap of " + gap, "stopped");
           return;
         }
