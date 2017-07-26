@@ -63,6 +63,12 @@ export default class GitHubClient {
         };
     }
 
+    load() {
+        return this.fetch().then(function(json) {
+            return this.parse(json);
+        }.bind(this));
+    }
+
     parse(json) {
         /*
          * {"issues":[ ... ]}
@@ -143,12 +149,6 @@ export default class GitHubClient {
                 });
             }
         });
-    }
-
-    load() {
-        return this.fetch().then(function(json) {
-            return this.parse(json);
-        }.bind(this));
     }
 
   getIssueId(taskId) {
