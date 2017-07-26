@@ -900,9 +900,9 @@ div {
   }
 
   .current-task {
-    white-space: normal;
-    height: 2.2em;
-    overflow: hidden;
+    /* white-space: normal; */
+    /* height: 2.2em; */
+    /* overflow: hidden; */
   }
 
   .old .task-list {
@@ -1002,7 +1002,7 @@ div:hover > .hover-help {
 
 .current-task {
   font-size: 20px;
-  margin: 2px 50px 0px 0px;
+  margin: 2px 0 0;
   text-overflow: ellipsis;
   overflow: hidden;
   /* margin-right: 60px; */
@@ -1010,17 +1010,17 @@ div:hover > .hover-help {
   white-space: nowrap;
 }
 
-.issue-number {
+.status {
   font-size: 13px;
+  white-space: nowrap;
 }
 
-.times {
-  position: absolute;
-  top: 7px;
-  right: 8px;
-  text-align: right;
-  font-size: 14px;
-  line-height: 1.1;
+.status > div {
+  display: inline-block;
+}
+
+.status > div + div {
+  margin-left: 8px;
 }
 
 .working .timer {

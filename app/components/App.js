@@ -361,15 +361,15 @@ export default class App extends Component {
       <div className="timer" onClick={actions.startStop} title="Click to start/stop">
         <div className="time-remaining">{timeRemaining}</div>
         <div className="current-task">
-          <div className="issue-number">{issueNumber}</div>
           {currentTask}
         </div>
-        <div className="times">
+        <div className="status">
+          <div className="issue-number">{issueNumber}</div>
           <div className="start-time">
-            <div><span className="fa fa-clock-o"></span></div><div className="time">{startTime}</div>
+            <span className="fa fa-clock-o"></span><span className="time">{startTime}</span>
           </div>
           <div className="time-elapsed" onClick={actions.rewind} title="Click to rewind">
-            <div><span className="fa fa-hourglass-o"></span></div><div className="time">{timeElapsed}</div>
+            <span className="fa fa-hourglass-o"></span><span className="time">{timeElapsed}</span>
           </div>
           <div className="time-idle">{timeIdle}</div>
         </div>

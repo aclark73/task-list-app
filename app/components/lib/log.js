@@ -156,6 +156,8 @@ export default class Log extends Component {
     // 12:30 - 2:30 Documentation #21 35m (34%)
     // 2:30 - 4:00 Github Style 90m (100%)
 
+    console.log("Rendering log");
+
     // group by day
     const days = [];
     const entriesByDay = {};
