@@ -152,7 +152,7 @@ export default class App extends Component {
     ];
     return Promise.resolve();
   }
-
+  /** DELETE - THESE SHOULD BE IN LOG **/
   fixLog(state) {
     if (state.log) {
       // Make sure logs are sorted (user edits can unsort them)
@@ -188,6 +188,7 @@ export default class App extends Component {
       console.log("Error! " + err);
     });
   }
+  /* END DELETE */
   refresh() {
     this.addMessage("Refreshing task data");
     console.log("refresh");
