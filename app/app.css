@@ -26,6 +26,14 @@ div {
     /* min-width: 242px; */
 }
 
+a {
+  color: inherit;
+  cursor: pointer;
+}
+a:hover {
+  color: #9f9;
+}
+
 .btn {
     border: 1px solid #ddd;
     cursor: pointer;
@@ -932,6 +940,21 @@ div {
 
 }
 
+@media all and (max-height: 350px) {
+  .task-item {
+    white-space: nowrap;
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .task-labels .label {
+    clear: none;
+    margin: 0 1px;
+  }
+  .task-item .task-label {
+    padding: 1px;
+  }
+}
 
 .old .hover-help {
   position: relative;
@@ -988,7 +1011,7 @@ div:hover > .hover-help {
   background-color: #eee;
   padding: 4px 10px 0;
   position: relative;
-  cursor: pointer;
+  cursor: default;
   height: 43px;
 }
 
