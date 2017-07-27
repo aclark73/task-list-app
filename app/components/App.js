@@ -37,6 +37,7 @@ export default class App extends Component {
       view: 'tasks',
       compactView: false,
 
+      task: null,
       taskId: null,
       taskLabel: '-',
       taskIssueNumber: null,
@@ -328,6 +329,9 @@ export default class App extends Component {
       (this.state.compactView ? 'fa-toggle-up' : 'fa-toggle-down')
       );
 
+    /* Simple button definition
+     * This should be moved elsewhere
+     **/
     function makeButton(action, label, glyphicon, title) {
       return (
           <span className="btn" title={title} onClick={action}>
@@ -364,7 +368,7 @@ export default class App extends Component {
           {currentTask}
         </div>
         <div className="status">
-          <div className="issue-number">{issueNumber}</div>
+          <div className="issue-number"><a>{issueNumber}</a></div>
           <div className="start-time">
             <span className="fa fa-clock-o"></span><span className="time">{startTime}</span>
           </div>
@@ -393,6 +397,7 @@ export default class App extends Component {
       this.stop();
       this.setState({
         taskId: taskId,
+        task: task,
         taskLabel: Task.getLabel(task),
         taskIssueNumber: task.issue_number,
         timeElapsed: 0,
