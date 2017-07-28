@@ -377,29 +377,34 @@ a:hover {
 }
 
 .task-labels {
-  display: inline;
+  /* display: inline; */
+  /* float: right; */
+  /* position: absolute; */
+  /* right: 0; */
 }
 .task-labels .label {
-    float: right;
-    clear: right;
-    font-size: 73%;
-    margin-top: 1px;
-    padding: 0 2px;
+    /* float: right; */
+    /* clear: right; */
+    /* margin-top: 1px; */
     /* font-weight: normal; */
-    margin-right: 4px;
     /* text-align: right; */
 }
-.task-item .label {
-}
-.task-labels .issue-label {
-  float: none;
+.issue-label {
   font-size: 13px;
+  margin-right: 4px;
   margin-left: 0;
   background: transparent;
   color: #999;
   border: none;
-  padding: 0;
 }
+.project-label, .updated-label {
+  float: right;
+  font-size: 10px;
+  clear: right;
+  padding: 0 2px;
+  /* margin: 0 0 1px; */
+}
+
 .task-title {
   display: inline;
 }
@@ -947,9 +952,13 @@ a:hover {
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .task-labels .label {
+  .task-labels {
+    position: absolute;
+    right: 0;
+  }
+  .project-label, .updated-label {
     clear: none;
-    margin: 0 1px;
+    margin: 2px 0 0px;
   }
   .task-item .task-label {
     padding: 1px;

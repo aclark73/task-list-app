@@ -155,10 +155,10 @@ export class TaskWidget extends Component {
           {toggleWidget}
           <div className="task-label" onClick={select} onDoubleClick={start}>
             <div className="task-labels">
-                {issue_label}
                 {project_label}
                 {updated_label}
             </div>
+            {issue_label}
             <div className="task-title">
                 {Task.getLabel(this.props.task)}
             </div>
