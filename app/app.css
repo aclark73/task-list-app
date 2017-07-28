@@ -307,20 +307,24 @@ a:hover {
 
 .toolbar {
     /* margin-bottom: .3em; */
-    border-bottom: 1px solid #ccc;
-    padding: 3px;
+    /* border-bottom: 1px solid #ccc; */
+    padding: 1px 3px;
     background: #eee;
+    font-size: 10px;
+    /* line-height: 1; */
 }
 
 .toolbar .btn {
     display: inline-block;
-    font-size: 13px;
-    padding: .1em .3em;
+    /* font-size: 10px; */
+    /* line-height: 1; */
+    padding: 0 3px;
     vertical-align: bottom;
+    /* margin: 0; */
 }
 
-.toolbar .btn-label {
-    font-size: 9px;
+.toolbar .btn {
+    /* font-size: 9px; */
 }
 
 @media (max-width: 330px) {
@@ -402,7 +406,7 @@ a:hover {
   font-size: 10px;
   clear: right;
   padding: 0 2px;
-  /* margin: 0 0 1px; */
+  margin: 0 0 1px;
 }
 
 .task-title {
