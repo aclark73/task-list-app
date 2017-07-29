@@ -111,12 +111,9 @@ function DailyChart(day, chartDayStart, chartDayEnd) {
             <div key={day + 'c' + i} className="chart-label" style={style}></div>
         );
     }
-    function createChartRows(logEntries) {
-        return logEntries.map(createChartRow);
-    }
     this.chartHeight = chartHeight;
     this.createMarkers = createMarkers;
-    this.createChartRows = createChartRows;
+    this.createChartRow = createChartRow;
 }
 
 /**
@@ -160,6 +157,8 @@ export default class Log extends Component {
     // 12:30 - 2:30 Documentation #21 35m (34%)
     // 2:30 - 4:00 Github Style 90m (100%)
 
+    console.log("Rendering log");
+
     // group by day
     const days = [];
     const entriesByDay = {};
@@ -172,10 +171,10 @@ export default class Log extends Component {
       const day = Utils.getDay(logEntry.startTime);
       if (lastEntry && day == lastDay
           && lastEntry.taskId == logEntry.taskId
-          && this.getDuration(lastEntry.endTime, logEntry.startTime) < mergeGapSize) {
+          && this.getDuration(logEntry.endTime, lastEntry.startTime) < mergeGapSize) {
         // Merge with previous entry
         console.log("Merging log");
-        lastEntry.endTime = logEntry.endTime;
+        lastEntry.startTime = logEntry.startTime;
         lastEntry.timeElapsed += logEntry.timeElapsed;
         lastEntry.taskName += "*";
       } else {
@@ -185,7 +184,8 @@ export default class Log extends Component {
           entriesByDay[day] = [];
         }
         // Add a copy since we might merge things into it
-        entriesByDay[day].push(Object.assign({}, logEntry));
+        lastEntry = Object.assign({}, logEntry);
+        entriesByDay[day].push(lastEntry);
       }
     });
     const rows = [];
@@ -232,9 +232,10 @@ export default class Log extends Component {
       const subrows = [];
       dayEntries.forEach( (logEntry, i) => {
         const label = logEntry.taskName || logEntry.task;
-        const duration = getDurationMS(logEntry.startTime, logEntry.endTime);
+        const duration = this.getDuration(logEntry.startTime, logEntry.endTime);
         const utilization = Math.floor((logEntry.timeElapsed * 100) / duration);
-
+        const timespan = "" + Utils.getTime(logEntry.startTime) + " - " + Utils.getTime(logEntry.endTime);
+        const chartRow = dailyChart.createChartRow(logEntry, i);
         const style = {
           background: getColor(logEntry)
         };
@@ -250,8 +251,12 @@ export default class Log extends Component {
         );
         subrows.push((
           <div key={day + 'r' + i} id={day + 'r' + i} className={className}>
+            <span className="chart">
+              {chartRow}
+            </span>
             <span className="colorsquare" style={style}></span>
             <span className="task-name"><a href="#" onClick={edit}>{label}</a></span>
+            <span className="timespan">{timespan}</span>
             <span className="stats">
               <span className="worked">{Utils.formatTimespan(logEntry.timeElapsed, true)}</span>
               <span className="duration">{Utils.formatTimespan(duration, true)}</span>
@@ -262,7 +267,10 @@ export default class Log extends Component {
       });
 
       rows.push((
-        <div className="work">
+        <div key={day + 'w'} className="work">
+          <span className="chart">
+            {chartMarkers}
+          </span>
           {subrows}
         </div>
       ));

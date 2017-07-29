@@ -37,8 +37,10 @@ export default class App extends Component {
       view: 'tasks',
       compactView: false,
 
+      task: null,
       taskId: null,
       taskLabel: '-',
+      taskIssueNumber: null,
       startTime: null,
       lastWorkTime: null,
       timeElapsed: 0,
@@ -60,6 +62,7 @@ export default class App extends Component {
       click: this.click.bind(this),
       start: this.start.bind(this),
       stop: this.stop.bind(this),
+      startStop: this.startStop.bind(this),
       pause: this.pause.bind(this),
       rewind: this.rewind.bind(this),
       setTask: this.setTask.bind(this),
@@ -150,7 +153,7 @@ export default class App extends Component {
     ];
     return Promise.resolve();
   }
-
+  /** DELETE - THESE SHOULD BE IN LOG **/
   fixLog(state) {
     if (state.log) {
       // Make sure logs are sorted (user edits can unsort them)
@@ -186,6 +189,7 @@ export default class App extends Component {
       console.log("Error! " + err);
     });
   }
+  /* END DELETE */
   refresh() {
     this.addMessage("Refreshing task data");
     console.log("refresh");
@@ -325,6 +329,9 @@ export default class App extends Component {
       (this.state.compactView ? 'fa-toggle-up' : 'fa-toggle-down')
       );
 
+    /* Simple button definition
+     * This should be moved elsewhere
+     **/
     function makeButton(action, label, glyphicon, title) {
       return (
           <span className="btn" title={title} onClick={action}>
@@ -352,39 +359,32 @@ export default class App extends Component {
         <div className="popup alert"><ul><li className="header">Alert</li><li>{this.state.alertMessage}</li></ul></div>
       </div>
     );
+    const issueNumber = this.state.taskIssueNumber ? '#' + this.state.taskIssueNumber : '';
     const statusMessage = this.handlers.status.component(this.state.status);
+    const timer = (
+      <div className="timer" onClick={actions.startStop} title="Click to start/stop">
+        <div className="time-remaining">{timeRemaining}</div>
+        <div className="current-task">
+          {currentTask}
+        </div>
+        <div className="status">
+          <div className="issue-number"><a>{issueNumber}</a></div>
+          <div className="start-time">
+            <span className="fa fa-clock-o"></span><span className="time">{startTime}</span>
+          </div>
+          <div className="time-elapsed" onClick={actions.rewind} title="Click to rewind">
+            <span className="fa fa-hourglass-o"></span><span className="time">{timeElapsed}</span>
+          </div>
+          <div className="time-idle">{timeIdle}</div>
+        </div>
+      </div>
+    );
     return(
       <div className={className} onClick={actions.click}>
         {statusMessage}
         <Toolbar actions={actions} handlers={this.handlers} />
-        <div className="timer-display">
-          <div className="btns">
-            <div className="btn btn-primary timer-btn timer-btn-task" onClick={actions.pause}>
-              <span className="time-remaining">{timeRemaining}</span>
-            </div>
-            <div className="btn timer-btn timer-btn-stop" onClick={actions.stop}>
-              Stop
-            </div>
-            <div className="btn timer-btn timer-btn-rewind" onClick={actions.rewind}>
-              Rewind
-            </div>
-          </div>
-          <div className="times">
-            <div className="start-time">
-              <div>Started</div><div clasName="time">{startTime}</div>
-            </div>
-            <div className="time-elapsed">
-              <div>Elapsed</div><div className="time">{timeElapsed}</div>
-            </div>
-            <div className="time-idle">{timeIdle}</div>
-          </div>
-          <div className="current-task">
-            {currentTask}
-          </div>
-        </div>
-
+        {timer}
         <div className="task-list">{taskList}</div>
-
         {popups}
       </div>
     );
@@ -392,13 +392,14 @@ export default class App extends Component {
   setTask(task) {
     this.addMessage("Changed task");
     const taskId = Task.getUID(task);
-    const taskLabel = Task.getLabel(task);
     if (taskId != this.state.taskId) {
       console.log("setTask: " + taskId);
       this.stop();
       this.setState({
         taskId: taskId,
-        taskLabel: taskLabel,
+        task: task,
+        taskLabel: Task.getLabel(task),
+        taskIssueNumber: task.issue_number,
         timeElapsed: 0,
         timeRemaining: 0
       });
@@ -511,6 +512,7 @@ export default class App extends Component {
         }
         if (gap > 60000) {
           console.log("Stopping due to time gap of " + gap);
+          this.stop();
           this.waitForUser("Stopping due to time gap of " + gap, "stopped");
           return;
         }
@@ -560,9 +562,18 @@ export default class App extends Component {
       });
     }
   }
+  startStop() {
+    if (! this.state.taskId) { return; }
+    if (this.state.currently == "working") {
+      this.stop();
+    } else {
+      this.start(this.getTask(this.state.taskId));
+    }
+  }
   pause() {
     if (! this.state.taskId) { return; }
     if (this.state.currently == "working") {
+
       this.setState({
         currently: "paused",
         timeRemaining: this.state.breakTime,
@@ -586,7 +597,8 @@ export default class App extends Component {
     });
     this.startTimer();
   }
-  rewind() {
+  rewind(e) {
+    e.stopPropagation();
     if (this.state.startTime) {
       const now = new Date();
       const totalTime = (now - this.state.startTime)/1000;

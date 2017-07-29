@@ -9,6 +9,7 @@ const DEFAULT_CONFIG = {
 const BASE_URL = 'http://dmscode.iris.washington.edu';
 const ISSUES_URL = BASE_URL + '/issues.json?&assigned_to_id=me&sort=updated_on:desc&status_id=open&limit=200&key=';
 const TIME_URL = BASE_URL + '/time_entries.json?key=';
+const ISSUE_URL = BASE_URL + '/issue/%s'
 
 const DEBUG = (os.hostname().indexOf('honu') < 0);
 
@@ -54,7 +55,8 @@ export default class RedmineClient {
             source: this.source,
             issue_id: json.id,
             issue_number: json.id,
-            updated_on: json.updated_on
+            updated_on: json.updated_on,
+            url: ISSUE_URL % json.id
         };
     }
 

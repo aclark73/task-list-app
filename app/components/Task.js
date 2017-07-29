@@ -83,6 +83,13 @@ const Task = {
     } else {
       return task.title;
     }
+  },
+  getIssueNumber: function(task) {
+    if (task.issue_number) {
+      return "#" + task.issue_number;
+    } else {
+      return '';
+    }
   }
 };
 export default Task;

@@ -8,7 +8,7 @@ const DEFAULT_CONFIG = {
 const BASE_URL = 'https://api.github.com';
 const ISSUES_URL = BASE_URL + '/issues';
 
-const DEBUG = (os.hostname().indexOf('honu') < 0);
+const DEBUG = false; // (os.hostname().indexOf('honu') < 0);
 
 export default class GitHubClient {
 
@@ -59,8 +59,15 @@ export default class GitHubClient {
             source: this.source,
             issue_id: json.id,
             issue_number: json.number,
-            updated_on: json.updated_at
+            updated_on: json.updated_at,
+            url: json.url
         };
+    }
+
+    load() {
+        return this.fetch().then(function(json) {
+            return this.parse(json);
+        }.bind(this));
     }
 
     parse(json) {
@@ -73,6 +80,9 @@ export default class GitHubClient {
         const projects = [];
         const projectsByName = {};
 
+        /* For each issue, create a task and
+         * a project if needed.
+         */
         for (var i=0; i<issues.length; i++) {
             var task = this.createTask(issues[i]);
             tasks.push(task);
@@ -143,12 +153,6 @@ export default class GitHubClient {
                 });
             }
         });
-    }
-
-    load() {
-        return this.fetch().then(function(json) {
-            return this.parse(json);
-        }.bind(this));
     }
 
   getIssueId(taskId) {

@@ -2,14 +2,17 @@ body {
   font-family: Helvetica;
   font-size: 14px;
   line-height: 1.2;
+  /* font-weight: 200; */
   margin: 0;
   /* padding: 8px; */
   /* position: relative; */
   white-space: nowrap;
+  /* box-sizing: border-box; */
 }
 div {
-  transition-property: opacity, background-color, background-image, color, height, top;
-  transition-duration: .5s;
+  transition-property: opacity, background-color, background-image, height, top;
+  transition-duration: .2s;
+  box-sizing: border-box;
 }
 
 .main {
@@ -21,6 +24,14 @@ div {
     /* padding: 8px; */
     /* height: 120px; */
     /* min-width: 242px; */
+}
+
+a {
+  color: inherit;
+  cursor: pointer;
+}
+a:hover {
+  color: #9f9;
 }
 
 .btn {
@@ -114,14 +125,14 @@ div {
 }
 
 .timer-btn-task {
-  width: 80px;
+  /* width: 80px; */
 }
 
 .has-task .timer-btn-task:hover {
   /* background: #9f9; */
 }
 
-.times {
+.times2 {
   position: absolute;
   top: 4px;
   right: 4px;
@@ -131,29 +142,29 @@ div {
   /* display: inline-block; */
 }
 
-.times > div {
+.old .times > div {
     /* display: inline-block; */
-    position: relative;
+    /* position: relative; */
     /* border: 1px solid; */
 }
 
-.times > div > div {
+.old .times > div > div {
     padding: 2px 7px;
     display: inline-block;
     border: 1px solid #dfe2e5;
     background-color: #fff;
     color: #000;
 }
-.times > div > div:first-child {
+.old .times > div > div:first-child {
     background-color: #f3f3f3;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
 }
-.times > div > div + div {
+.old .times > div > div + div {
     background-color: #fff;
     border-left-width: 0;
 }
-.times > div > div:last-child {
+.old .times > div > div:last-child {
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
     /* width: 40px; */
@@ -161,7 +172,7 @@ div {
 }
 
 
-.current-task {
+.current-task-old {
   /* white-space: normal !important; */
   height: 1.2em;
   font-size: 25px;
@@ -226,9 +237,9 @@ div {
 
 .task-list {
     position: absolute;
-    top: 127px;
+    top: 72px;
     bottom: 0;
-    left: 8px;
+    left: 0;
     right: 0;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -264,7 +275,7 @@ div {
     line-height: 1.2;
     /* background-image: radial-gradient(circle at center, #ddd, #fff); */
     background-color: #fff;
-    box-shadow: inset 0 0 16px 2px #fff;
+    /* box-shadow: inset 0 0 16px 2px #fff; */
 }
 
 .task-item .task-label {
@@ -295,21 +306,25 @@ div {
 }
 
 .toolbar {
-    margin-bottom: .3em;
-    border-bottom: 1px solid #ccc;
-    padding: 3px;
+    /* margin-bottom: .3em; */
+    /* border-bottom: 1px solid #ccc; */
+    padding: 1px 3px;
     background: #eee;
+    font-size: 10px;
+    /* line-height: 1; */
 }
 
 .toolbar .btn {
     display: inline-block;
-    font-size: 13px;
-    padding: .1em .3em;
+    /* font-size: 10px; */
+    /* line-height: 1; */
+    padding: 0 3px;
     vertical-align: bottom;
+    /* margin: 0; */
 }
 
-.toolbar .btn-label {
-    font-size: 9px;
+.toolbar .btn {
+    /* font-size: 9px; */
 }
 
 @media (max-width: 330px) {
@@ -325,7 +340,7 @@ div {
 }
 
 .btns {
-    display: inline-block;
+    /* display: inline-block; */
     /* flex: initial; */
     vertical-align: top;
 }
@@ -342,6 +357,10 @@ div {
 .btns .btn:not(:last-child) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+}
+
+.toolbar .btns {
+  display: inline-block;
 }
 
 .task-item .btn {
@@ -362,28 +381,34 @@ div {
 }
 
 .task-labels {
-  display: inline;
+  /* display: inline; */
+  /* float: right; */
+  /* position: absolute; */
+  /* right: 0; */
 }
 .task-labels .label {
-    float: right;
-    clear: right;
-    font-size: 73%;
-    margin-top: 1px;
-    padding: 0 2px;
+    /* float: right; */
+    /* clear: right; */
+    /* margin-top: 1px; */
     /* font-weight: normal; */
-    margin-right: 4px;
     /* text-align: right; */
 }
-.task-item .label {
-}
-.task-labels .issue-label {
-  float: none;
+.issue-label {
   font-size: 13px;
+  margin-right: 4px;
   margin-left: 0;
   background: transparent;
   color: #999;
   border: none;
 }
+.project-label, .updated-label {
+  float: right;
+  font-size: 10px;
+  clear: right;
+  padding: 0 2px;
+  margin: 0 0 1px;
+}
+
 .task-title {
   display: inline;
 }
@@ -404,10 +429,12 @@ div {
     margin-left: 19px;
     font-weight: bold;
     border-top-left-radius: 0;
+    font-size: 13px;
+    padding: 1px 5px;
 }
 
 .time-remaining {
-    font-size: 24px;
+    /* font-size: 24px; */
     /* line-height: 1; */
 }
 .time-idle {
@@ -439,13 +466,17 @@ div {
     margin-top: -20px;
 }
 
+.search {
+    color: #999;
+    position: relative;
+}
+
 .search input {
-    width: 80%;
+    width: 100%;
     border-radius: 2px;
     border: 1px solid #dfe2e5;
     box-sizing: border-box;
     outline: none;
-    color: #999;
     padding: 1px 4px;
     margin-bottom: 2px;
     background: transparent;
@@ -457,8 +488,11 @@ div {
     background: #fff;
 }
 
-.search button {
-    width: 20%;
+.search .clear-btn {
+    position: absolute;
+    top: 1px;
+    right: 2px;
+    cursor: pointer;
 }
 
 .popup {
@@ -523,7 +557,7 @@ div {
 }
 
 .alert li + li {
-  padding: 50% 20%;
+  padding: 20% 20%;
   font-size: 24px;
   text-align: center;
   background: #fff;
@@ -630,9 +664,15 @@ div {
     color: #060;
 }
 .working .task-item.selected .task-label {
-    background: #9f9;
+    background: #bfb;
     color: #060;
     /* box-shadow: inset 0 0 16px 4px #fff; */
+}
+.working .task-item.selected .task-label:hover {
+    background: #cfc;
+}
+.working .task-item.selected .task-label:active {
+    background: #fff;
 }
 
 .working .selected .btn-start {
@@ -749,11 +789,11 @@ div {
   top: 3px;
   bottom: 3px;
   left: 0;
-  width: 20px;
+  width: 0;
 }
 
 .log .chart > div {
-  width: 100%;
+  width: 20px;
   position: absolute;
 }
 
@@ -762,7 +802,7 @@ div {
   /* min-height: 4px; */
   padding: 2px 0;
   margin-bottom: -2px;
-  box-shadow: 0 0 2px 2px rgba(0,0,0,.1);
+  /* box-shadow: 0 0 2px 0px rgba(0,0,0,.05); */
 }
 .log-entry:hover .chart .chart-label, .log-entry:hover .colorsquare {
     border-color: rgba(0,0,0,.4);
@@ -851,14 +891,14 @@ div {
 
 @media all and (max-width: 350px) {
 
-  .times {
+  .old .times {
     position: initial;
     margin-left: 0;
     text-align: initial;
     margin-top: 4px;
   }
 
-  .times > div {
+  .old .times > div {
     /* margin-right: 8px; */
     display: inline-block;
   }
@@ -877,12 +917,12 @@ div {
   }
 
   .current-task {
-    white-space: normal;
-    height: 2.2em;
-    overflow: hidden;
+    /* white-space: normal; */
+    /* height: 2.2em; */
+    /* overflow: hidden; */
   }
 
-  .task-list {
+  .old .task-list {
     top: 177px;
   }
 
@@ -909,12 +949,31 @@ div {
 
 }
 
+@media all and (max-height: 350px) {
+  .task-item {
+    white-space: nowrap;
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .task-labels {
+    position: absolute;
+    right: 0;
+  }
+  .project-label, .updated-label {
+    clear: none;
+    margin: 2px 0 0px;
+  }
+  .task-item .task-label {
+    padding: 1px;
+  }
+}
 
-.hover-help {
+.old .hover-help {
   position: relative;
   overflow-y: hidden;
 }
-.hover-help .help {
+.old .hover-help .help {
     position: absolute;
     top: -1.8em;
     right: 0;
@@ -923,24 +982,100 @@ div {
   transition-property: top;
   transition-duration: .2s;
 }
-.hover-help:hover .help {
+.old .hover-help:hover .help {
   top: 0;
   transition-timing-function: ease-out;
 }
 
+.hover-help {
+  position: absolute;
+  border: 1px solid #000;
+  border-radius: 4px;
+  padding: 0 2px;
+  background: #ddd;
+  opacity: 1;
+}
 
-@keyframes help-on-hover {
+
+@keyframes help-drop-down {
   from { top: -1.8em; }
   10% { top: 0; }
   90% { top: 0; }
   to { top: -1.8em; }
 }
-div:hover > .hover-help {
-  top: 0;
+@keyframes help-fade {
+  from { opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  to { opacity: 0; }
 }
-.junk {
-  animation-name: help-on-hover;
+div:hover > .hover-help {
+/*  opacity: 1; */
+}
+div:hover > .hover-help {
+  animation-name: help-fade;
   animation-iteration-count: 1;
   animation-timing-function: ease;
   animation-duration: 2s;
+}
+
+
+.timer {
+  background-color: #eee;
+  padding: 4px 10px 0;
+  position: relative;
+  cursor: default;
+  height: 43px;
+}
+
+.time-remaining {
+  float: left;
+  width: 70px;
+  font-size: 28px;
+  margin: 3px 10px 0 0;
+  font-weight: lighter;
+}
+
+.current-task {
+  font-size: 20px;
+  margin: 2px 0 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  /* margin-right: 60px; */
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.status {
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.status > div {
+  display: inline-block;
+}
+
+.status > div + div {
+  margin-left: 8px;
+}
+
+.working .timer {
+  background-color: #090;
+  color: #fff;
+}
+
+.paused .timer {
+  background-color: #ff0;
+  color: #990;
+}
+
+.times > div > div {
+  display: inline-block;
+  /* min-width: 40px; */
+  margin-left: 2px;
+}
+
+.times > div > div:first-child {
+  font-size: 11px;
+  /* text-transform: capitalize; */
 }
