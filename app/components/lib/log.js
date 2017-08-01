@@ -31,6 +31,16 @@ function getStyle(logEntry) {
 function hoursToMS(h) {
     return h * 60 * 60 * 1000;
 }
+function roundToHour(t, offset) {
+    let d = new Date(t);
+    d.setMinutes(0);
+    d.setSeconds(0);
+    d.setMilliseconds(0);
+    if (offset) {
+      d.setHours(d.getHours() + offset);
+    }
+    return d;
+}
 function getDurationMS(t1, t2) {
   try {
     const duration = Math.floor((new Date(t2) - new Date(t1)));
@@ -45,62 +55,29 @@ function getDurationMS(t1, t2) {
     return 0;
   }
 }
+/* Format a short time, eg. '6a', '9p'*/
+function toShortTime(h) {
+    const am_pm = (h < 12) ? 'a' : 'p';
+    const hour = (h % 12) || 12;
+    return '' + hour + am_pm;
+}
 
-function DailyChart(day, chartDayStart, chartDayEnd) {
-    const chartDayDuration = (chartDayEnd - chartDayStart);
-    const chartDayDurationMS = hoursToMS(chartDayDuration);
+class GroupChart {
 
-    function chartHeight(duration) {
-      const height = parseInt((duration*100)/chartDayDurationMS);
-      if (isNaN(height)) {
-        console.log("NaN for " + duration + " / " + chartDayDurationMS);
-      }
-      return height;
+    constructor(id, startTime, endTime) {
+        this.id = id;
+        this.startTime = roundToHour(startTime, 0);
+        this.endTime = roundToHour(endTime, 1);
+        this.durationMS = getDurationMS(this.startTime, this.endTime);
     }
-    function toDateString(hour) {
-        return day + ' ' + Utils.pad2(hour) + ':00:00';
-    }
-    function getLogOffsetMS(logTime) {
-        const dayStart = toDateString(chartDayStart);
-        return getDurationMS(dayStart, logTime);
-    }
-    function toShortTime(h) {
-        const am_pm = (h < 12) ? 'a' : 'p';
-        const hour = (h % 12) || 12;
-        return '' + hour + am_pm;
-    }
-    function formatMarkerLabel(h) {
-        if (h == 12) { return 'n'; }
-        if (h == chartDayStart) { return toShortTime(h); }
-        if (h == chartDayEnd) { return toShortTime(h); }
-        return '';
-    }
-    function createMarker(h) {
-        const isTop = (h == chartDayEnd);
-        const className = classNames(
-          'chart-time-label',
-          { 'chart-time-label-top': isTop }
-        );
-        const style = isTop ?
-            {top:"0%"} :
-            {bottom:""+chartHeight(hoursToMS(h-chartDayStart))+'%'};
-        const label = formatMarkerLabel(h);
-        return (
-            <div key={day + 't' + h} style={style} className={className}><span>{label}</span></div>
-        );
-    }
-    function createMarkers(numRows) {
-        const chartMarkers = [];
-        const hoursPerMarker = parseInt(8/numRows);
-        for (var h=chartDayStart; h<=chartDayEnd; h+=hoursPerMarker) {
-            chartMarkers.push(createMarker(h));
-        }
-        return chartMarkers;
-    }
-    function createChartRow(logEntry, i) {
-        const offset = chartHeight(getLogOffsetMS(logEntry.startTime));
+
+    /* Create a row for the given entry. It is absolutely positioned
+     * and sized in proportion to its duration.
+     */
+    createChartRow(logEntry, i) {
+        const offset = this.chartHeight(this.getLogOffsetMS(logEntry.startTime));
         const height = Math.max(
-            chartHeight(getDurationMS(logEntry.startTime, logEntry.endTime)),
+            this.chartHeight(getDurationMS(logEntry.startTime, logEntry.endTime)),
             Math.min(2, 100-offset));
         const style = {
             bottom: '' + offset + '%',
@@ -108,12 +85,53 @@ function DailyChart(day, chartDayStart, chartDayEnd) {
             background: getColor(logEntry)
         };
         return (
-            <div key={day + 'c' + i} className="chart-label" style={style}></div>
+            <div key={this.id + '-' + i} className="chart-label" style={style}></div>
         );
     }
-    this.chartHeight = chartHeight;
-    this.createMarkers = createMarkers;
-    this.createChartRow = createChartRow;
+
+    /* Height in px for a chart of duration ms */
+    chartHeight(duration) {
+        const height = parseInt((duration*100)/this.durationMS);
+        if (isNaN(height)) {
+            console.log("NaN for " + duration + " / " + this.durationMS);
+        }
+        return height;
+    }
+    /* Get offset from start time */
+    getLogOffsetMS(logTime) {
+        return getDurationMS(this.startTime, logTime);
+    }
+    formatMarkerLabel(h) {
+        return toShortTime(h);
+        /*
+        if (h == 12) { return 'n'; }
+        if (h == startTime) { return toShortTime(h); }
+        if (h == endTime) { return toShortTime(h); }
+        return '';
+        */
+    }
+    createMarker(h) {
+        const isTop = (h == this.endTime.hour);
+        const className = classNames(
+          'chart-time-label',
+          { 'chart-time-label-top': isTop }
+        );
+        const style = isTop ?
+            {top:"0%"} :
+            {bottom:""+this.chartHeight(hoursToMS(h-this.startTime.hour))+'%'};
+        const label = this.formatMarkerLabel(h);
+        return (
+            <div key={this.id + '.' + h} style={style} className={className}><span>{label}</span></div>
+        );
+    }
+    createMarkers(numRows) {
+        const chartMarkers = [];
+        const hoursPerMarker = parseInt(8/numRows);
+        for (var h=this.startTime.hour; h<=this.endTime.hour; h+=hoursPerMarker) {
+            chartMarkers.append(this.createMarker(h));
+        }
+        return chartMarkers;
+    }
 }
 
 /**
@@ -159,83 +177,81 @@ export default class Log extends Component {
 
     console.log("Rendering log");
 
-    // group by day
-    const days = [];
-    const entriesByDay = {};
-    let lastDay = -1;
+    // grouped in chunks
+    const groups = [];
+    const entriesByGroup = {};
     let lastEntry = null;
 
     const mergeGapSize = 10*60;
+    const groupGapSize = 6*60*60;
 
     this.props.log.forEach( (logEntry, i) => {
-      const day = Utils.getDay(logEntry.startTime);
-      if (lastEntry && day == lastDay
+      const gap = (lastEntry ?
+        this.getDuration(logEntry.endTime, lastEntry.startTime) :
+        -1);
+      console.log("Gap:", gap, Utils.getDayTime(logEntry.endTime), Utils.getDayTime(lastEntry && lastEntry.startTime));
+      if (lastEntry
           && lastEntry.taskId == logEntry.taskId
-          && this.getDuration(logEntry.endTime, lastEntry.startTime) < mergeGapSize) {
+          && gap > 0 && gap < mergeGapSize) {
         // Merge with previous entry
         console.log("Merging log");
         lastEntry.startTime = logEntry.startTime;
         lastEntry.timeElapsed += logEntry.timeElapsed;
         lastEntry.taskName += "*";
       } else {
-        // create new day if necessary
-        if (!entriesByDay[day]) {
-          days.push(day);
-          entriesByDay[day] = [];
+        // create new group
+        if (!lastEntry || gap > groupGapSize) {
+          console.log("Creating new group");
+          groups.push([]);
         }
         // Add a copy since we might merge things into it
         lastEntry = Object.assign({}, logEntry);
-        entriesByDay[day].push(lastEntry);
+        groups[groups.length - 1].push(lastEntry);
       }
     });
     const rows = [];
-    days.forEach((day) => {
-      // append the day and its rows
-      const dayEntries = entriesByDay[day];
+    groups.forEach((group, groupIdx) => {
       // dayEntries.reverse();
-      const dayStats = {
-        numEntries: dayEntries.length,
+      const groupStats = {
+        numEntries: group.length,
         startTime: null,
         endTime: null,
         duration: 0,
         worked: 0
       };
-      // Cumulative day stats
-      dayEntries.forEach( (logEntry) => {
-        if (!dayStats.startTime || dayStats.startTime > logEntry.startTime) {
-          dayStats.startTime = logEntry.startTime;
+      // Cumulative stats
+      group.forEach( (logEntry) => {
+        if (!groupStats.startTime || groupStats.startTime > logEntry.startTime) {
+          groupStats.startTime = logEntry.startTime;
         }
-        if (!dayStats.endTime || dayStats.endTime < logEntry.endTime) {
-          dayStats.endTime = logEntry.endTime;
+        if (!groupStats.endTime || groupStats.endTime < logEntry.endTime) {
+          groupStats.endTime = logEntry.endTime;
         }
-        dayStats.worked += logEntry.timeElapsed;
+        groupStats.worked += logEntry.timeElapsed;
       });
-      dayStats.duration = this.getDuration(dayStats.startTime, dayStats.endTime);
+      groupStats.duration = this.getDuration(groupStats.startTime, groupStats.endTime);
+      const timespan = Utils.getDayTime(groupStats.startTime) + " - " + Utils.getDayTime(groupStats.endTime);
       rows.push((
-        <div key={day} className="day">
-          <span className="date">{day}</span>
+        <div key={groupIdx} className="day">
+          {timespan}
           <span className="stats">
-            <span className="worked">{Utils.formatTimespan(dayStats.worked, true)}</span>
-            <span className="duration"> ({Utils.formatTimespan(dayStats.duration, true)})</span>
+            <span className="worked">{Utils.formatTimespan(groupStats.worked, true)}</span>
+            <span className="duration"> ({Utils.formatTimespan(groupStats.duration, true)})</span>
           </span>
         </div>
       ));
 
-      const dailyChart = new DailyChart(day, 0, 24);
-      const chartMarkers = dailyChart.createMarkers(dayEntries.length);
-      const chartRows = dailyChart.createChartRows(dayEntries);
-
-      rows.push(({chartMarkers}));
-      rows.push(({chartRows}));
+      const groupChart = new GroupChart(groupIdx, groupStats.startTime, groupStats.endTime);
+      const chartMarkers = groupChart.createMarkers(group.length);
 
       // The log entries
       const subrows = [];
-      dayEntries.forEach( (logEntry, i) => {
+      group.forEach( (logEntry, i) => {
         const label = logEntry.taskName || logEntry.task;
         const duration = this.getDuration(logEntry.startTime, logEntry.endTime);
         const utilization = Math.floor((logEntry.timeElapsed * 100) / duration);
         const timespan = "" + Utils.getTime(logEntry.startTime) + " - " + Utils.getTime(logEntry.endTime);
-        const chartRow = dailyChart.createChartRow(logEntry, i);
+        const chartRow = groupChart.createChartRow(logEntry, i);
         const style = {
           background: getColor(logEntry)
         };
@@ -249,8 +265,9 @@ export default class Log extends Component {
           'log-entry',
           { 'editing': editing }
         );
+        const title = Utils.getDayTime(logEntry.startTime) + " - " + Utils.getDayTime(logEntry.endTime);
         subrows.push((
-          <div key={day + 'r' + i} id={day + 'r' + i} className={className}>
+          <div key={groupIdx + '.' + i} className={className} title={title}>
             <span className="chart">
               {chartRow}
             </span>
@@ -267,7 +284,7 @@ export default class Log extends Component {
       });
 
       rows.push((
-        <div key={day + 'w'} className="work">
+        <div key={groupIdx + 'w'} className="work">
           <span className="chart">
             {chartMarkers}
           </span>
@@ -283,162 +300,4 @@ export default class Log extends Component {
       </li>
     );
   }
-}
-
-/* Where is this used? */
-class StatusPopup extends HandlerPopup {
-
-    shouldComponentUpdate(nextProps, nextState) {
-      return nextProps.log.length != this.props.log.length;
-    }
-
-    getDuration(t1, t2) {
-      try {
-        return Math.floor((new Date(t2) - new Date(t1))/1000);
-      }
-      catch (e) {
-        console.log(e);
-        return 0;
-      }
-    }
-
-    render() {
-      // group by day
-      const days = [];
-      const entriesByDay = {};
-      let lastDay = -1;
-      this.props.log.forEach( (logEntry, i) => {
-        const day = Utils.getDay(logEntry.startTime);
-        // create new day if necessary
-        if (!entriesByDay[day]) {
-          days.push(day);
-          entriesByDay[day] = [];
-        }
-        entriesByDay[day].push(logEntry);
-      });
-      const rows = [];
-      days.forEach((day) => {
-        // append the day and its rows
-        const dayEntries = entriesByDay[day];
-        dayEntries.reverse();
-        const dayStats = {
-          numEntries: dayEntries.length,
-          startTime: null,
-          endTime: null,
-          duration: 0,
-          worked: 0
-        };
-        dayEntries.forEach( (logEntry) => {
-          if (!dayStats.startTime || dayStats.startTime > logEntry.startTime) {
-            dayStats.startTime = logEntry.startTime;
-          }
-          if (!dayStats.endTime || dayStats.endTime < logEntry.endTime) {
-            dayStats.endTime = logEntry.endTime;
-          }
-          dayStats.worked += logEntry.timeElapsed;
-        });
-        dayStats.duration = this.getDuration(dayStats.startTime, dayStats.endTime);
-        const colors = colormap({
-          colormap: 'summer',   // pick a builtin colormap or add your own
-          nshades: Math.max(dayStats.numEntries, 2)       // how many divisions
-        });
-
-        const chartDayStart = 8;
-        const chartDayEnd = 18;
-        const chartDayStats = {
-            startTime: day + 'T' + Utils.pad2(chartDayStart) + ':00:00',
-            endTime: day + 'T1' + Utils.pad2(chartDayEnd) + ':00:00',
-        };
-        chartDayStats.duration = this.getDuration(chartDayStats.startTime, chartDayStats.endTime);
-        // or
-        // const chartDayStats = dayStats;
-
-        const chartMarkers = [];
-        for (var i=chartDayStart; i<chartDayEnd; i++) {
-            const ypos = (i-chartDayStart)/(chartDayEnd-chartDayStart);
-            const style = {
-              bottom: '' + ypos + '%',
-            };
-            chartMarkers.push((
-                <div id={day + 't' + i} style={style} className="chart-time-label">{i}:00</div>
-            ));
-        }
-        chartMarkers.push((
-            <div id={day + 't' + chartDayEnd} style="top:0" className="chart-time-label chart-time-label-top">{chartDayEnd}:00</div>
-        ));
-
-        function chartHeight(duration) {
-          return parseInt((duration*100)/chartDayStats.duration);
-        }
-        const chartRows = dayEntries.map( (logEntry, i) => {
-          const start = chartHeight(this.getDuration(chartDayStats.startTime, logEntry.startTime));
-          const height = Math.max(
-            chartHeight(this.getDuration(logEntry.startTime, logEntry.endTime)),
-            Math.min(2, 100-start));
-          const style = {
-            bottom: '' + start + '%',
-            height: '' + height + '%',
-            background: getColor(logEntry.taskId)
-          };
-          return (
-            <div id={day + 'c' + i} key={day + 'c' + i} style={style}></div>
-          );
-        });
-        rows.push((
-          <tr key={day}>
-            <th></th>
-            <th colSpan="4">{day}</th>
-            <th>{Utils.formatTimespan(dayStats.duration)}</th>
-            <th>{Utils.formatTimespan(dayStats.worked)}</th>
-            <th></th>
-          </tr>
-        ));
-        dayEntries.forEach( (logEntry, i) => {
-          const label = logEntry.taskName || logEntry.task;
-          const duration = this.getDuration(logEntry.startTime, logEntry.endTime);
-          const utilization = Math.floor((logEntry.timeElapsed * 100) / duration);
-
-          const firstCol = (i == 0) ? (
-            <td className="chart" rowSpan={dayStats.numEntries}>
-              {chartMarkers}
-              {chartRows}
-            </td>
-          ) : undefined;
-          const style = {
-            background: getColor(logEntry.taskId)
-          };
-          rows.push((
-            <tr key={day + 'r' + i} id={day + 'r' + i}>
-              {firstCol}
-              <td className="chart2" style={style}></td>
-              <td className="start">{Utils.getTime(logEntry.startTime)}</td>
-              <td className="end">{Utils.getTime(logEntry.endTime)}</td>
-              <td className="task">{label}</td>
-              <td className="duration">{Utils.formatTimespan(duration)}</td>
-              <td className="work">{Utils.formatTimespan(logEntry.timeElapsed)}</td>
-              <td className="util">{utilization}%</td>
-            </tr>
-          ));
-        });
-      });
-
-      return (
-        <li>
-          <table>
-            <thead><tr><th colSpan="2"></th><th>Start</th><th>End</th><th>Task</th><th>Time</th><th>Work</th><th>Util</th></tr></thead>
-            <tbody>{rows}</tbody>
-          </table>
-        </li>
-      );
-    }
-
-  renderContents() {
-    return this.props.messages.map( (message, i) => {
-      return (
-        <li key={i}>{message}</li>
-      );
-    });
-  }
-
-
 }

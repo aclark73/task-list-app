@@ -26,6 +26,16 @@ const Utils = {
     }
   },
 
+  getDayTime: function(timestamp) {
+    if (!timestamp) { return '-'; }
+    const d = new Date(timestamp);
+    return "" + d.getFullYear() + "-" +
+      Utils.pad2(d.getMonth() + 1) + "-" +
+      Utils.pad2(d.getDate()) + " " +
+      d.getHours() + ":" +
+      Utils.pad2(d.getMinutes());
+  },
+
   getDay: function(timestamp) {
     if (!timestamp) { return '-'; }
     const d = new Date(timestamp);
