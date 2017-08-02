@@ -155,7 +155,29 @@ export default class App extends Component {
   }
   /** DELETE - THESE SHOULD BE IN LOG **/
   fixLog(state) {
+    function getDurationMS(t1, t2) {
+      try {
+        const duration = Math.floor((new Date(t2) - new Date(t1)));
+        if (isNaN(duration)) {
+          throw "NaN!";
+        }
+        // console.log("" + t2 + " - " + t1 + " = " + duration);
+        return duration;
+      }
+      catch (e) {
+        console.log("" + t1 + " - " + t2 + " = " + e);
+        return 0;
+      }
+    }
     if (state.log) {
+      // Truncate long entries
+      state.log.forEach(function(entry) {
+        if (getDurationMS(entry.startTime, entry.endTime) > 6*60*60*1000) {
+          entry.endTime = (new Date(
+            (new Date(entry.startTime)).getTime() + entry.timeElapsed*60*1000
+          )).toISOString();
+        }
+      });
       // Make sure logs are sorted (user edits can unsort them)
       state.log.sort(function(a, b) {
         const as = a.startTime;

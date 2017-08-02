@@ -111,14 +111,14 @@ class GroupChart {
         */
     }
     createMarker(h) {
-        const isTop = (h == this.endTime.hour);
+        const isTop = (h == this.endTime.getHours());
         const className = classNames(
           'chart-time-label',
           { 'chart-time-label-top': isTop }
         );
         const style = isTop ?
             {top:"0%"} :
-            {bottom:""+this.chartHeight(hoursToMS(h-this.startTime.hour))+'%'};
+            {bottom:""+this.chartHeight(hoursToMS(h-this.startTime.getHours()))+'%'};
         const label = this.formatMarkerLabel(h);
         return (
             <div key={this.id + '.' + h} style={style} className={className}><span>{label}</span></div>
@@ -127,8 +127,10 @@ class GroupChart {
     createMarkers(numRows) {
         const chartMarkers = [];
         const hoursPerMarker = parseInt(8/numRows);
-        for (var h=this.startTime.hour; h<=this.endTime.hour; h+=hoursPerMarker) {
-            chartMarkers.append(this.createMarker(h));
+        const t = new Date(this.startTime);
+        while (t <= this.endTime) {
+          chartMarkers.push(this.createMarker(t.getHours()));
+          t.setHours(t.getHours() + 1);
         }
         return chartMarkers;
     }
@@ -268,9 +270,9 @@ export default class Log extends Component {
         const title = Utils.getDayTime(logEntry.startTime) + " - " + Utils.getDayTime(logEntry.endTime);
         subrows.push((
           <div key={groupIdx + '.' + i} className={className} title={title}>
-            <span className="chart">
+            <div className="chart">
               {chartRow}
-            </span>
+            </div>
             <span className="colorsquare" style={style}></span>
             <span className="task-name"><a href="#" onClick={edit}>{label}</a></span>
             <span className="timespan">{timespan}</span>
@@ -285,9 +287,9 @@ export default class Log extends Component {
 
       rows.push((
         <div key={groupIdx + 'w'} className="work">
-          <span className="chart">
+          <div className="chart">
             {chartMarkers}
-          </span>
+          </div>
           {subrows}
         </div>
       ));
