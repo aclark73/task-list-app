@@ -85,7 +85,7 @@ class GroupChart {
             background: getColor(logEntry)
         };
         return (
-            <div key={this.id + '-' + i} className="chart-label" style={style}></div>
+            <div key={i} className="chart-label" style={style}></div>
         );
     }
 
@@ -110,7 +110,7 @@ class GroupChart {
         return '';
         */
     }
-    createMarker(h) {
+    createMarker(h, i) {
         const isTop = (h == this.endTime.getHours());
         const className = classNames(
           'chart-time-label',
@@ -121,15 +121,15 @@ class GroupChart {
             {bottom:""+this.chartHeight(hoursToMS(h-this.startTime.getHours()))+'%'};
         const label = this.formatMarkerLabel(h);
         return (
-            <div key={this.id + '.' + h} style={style} className={className}><span>{label}</span></div>
+            <div key={i + 'c'} style={style} className={className}><span>{label}</span></div>
         );
     }
     createMarkers(numRows) {
         const chartMarkers = [];
-        const hoursPerMarker = parseInt(8/numRows);
+        const hoursPerMarker = parseInt(numRows/2);
         const t = new Date(this.startTime);
         while (t <= this.endTime) {
-          chartMarkers.push(this.createMarker(t.getHours()));
+          chartMarkers.push(this.createMarker(t.getHours(), chartMarkers.length));
           t.setHours(t.getHours() + 1);
         }
         return chartMarkers;
@@ -191,7 +191,7 @@ export default class Log extends Component {
       const gap = (lastEntry ?
         this.getDuration(logEntry.endTime, lastEntry.startTime) :
         -1);
-      console.log("Gap:", gap, Utils.getDayTime(logEntry.endTime), Utils.getDayTime(lastEntry && lastEntry.startTime));
+      // console.log("Gap:", gap, Utils.getDayTime(logEntry.endTime), Utils.getDayTime(lastEntry && lastEntry.startTime));
       if (lastEntry
           && lastEntry.taskId == logEntry.taskId
           && gap > 0 && gap < mergeGapSize) {
@@ -234,7 +234,7 @@ export default class Log extends Component {
       groupStats.duration = this.getDuration(groupStats.startTime, groupStats.endTime);
       const timespan = Utils.getDayTime(groupStats.startTime) + " - " + Utils.getDayTime(groupStats.endTime);
       rows.push((
-        <div key={groupIdx} className="day">
+        <div key={groupIdx + 'd'} className="day">
           {timespan}
           <span className="stats">
             <span className="worked">{Utils.formatTimespan(groupStats.worked, true)}</span>
@@ -269,7 +269,7 @@ export default class Log extends Component {
         );
         const title = Utils.getDayTime(logEntry.startTime) + " - " + Utils.getDayTime(logEntry.endTime);
         subrows.push((
-          <div key={groupIdx + '.' + i} className={className} title={title}>
+          <div key={i + 'l'} className={className} title={title}>
             <div className="chart">
               {chartRow}
             </div>
