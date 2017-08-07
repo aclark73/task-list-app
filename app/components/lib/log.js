@@ -147,13 +147,21 @@ export default class Log extends Component {
       this.state = {
           edit: '',
           editStart: '',
-          editEnd: ''
+          editEnd: '',
+          lastTime: null,
       };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    if (!nextState.popup) { return false; }
     try {
-      if (nextProps.log[0].endTime != this.props.log[0].endTime) { return true; }
+      if (nextProps.log[0].endTime != this.state.lastTime) {
+        this.setState({
+          lastTime: nextProps.log[0].endTime
+        });
+        console.log("updating log");
+        return true;
+      }
     } catch (e) {}
     return (nextState.edit != this.state.edit);
   }
