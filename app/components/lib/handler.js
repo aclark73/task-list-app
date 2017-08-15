@@ -39,30 +39,23 @@ export class Handler {
     }
 
     /**
-    * Return the private state values to start with
+    * Override to private initial state values
     */
     initialState() {
         return {};
     }
 
     /**
-    * Update the state within this handler's namespace
-    * This is called before the app calls setState() and
-    * takes the namespaced value of the existing state and
-    * the update about to be sent to setState():
-    * - state = app.state[label]
-    * - newState = appStateUpdate[label]
-    * - returns: new value for appStateUpdate[label]
-    * Then the app will call:
-    * this.setState(appStateUpdate);
+    * Override to handle namespaced state changes.
+    * Shortcut for updateFullState below, which is basically
+    * newState[label] = updateState(oldState[label], newState[label]);
     */
     updateState(state, newState) {
         return null;
     }
 
     /**
-    * Update the full state, technically the plugin can do
-    * anything, but plugins should use updateState() where possible.
+    * Update the full state. Plugins shouldn't generally use this.
     */
     updateFullState(fullState, fullNewState) {
         // By default, do the private update on the private state

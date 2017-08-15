@@ -13,6 +13,7 @@ import GitHubClient from './lib/github';
 // import { LogChart } from './lib/chart';
 import Log from './lib/log';
 import StatusHandler from './lib/status';
+import LocalTasksHandler from './lib/local';
 
 // import pkg from '../../package.json';
 const pkg = {name: 'task-list-app'};
@@ -23,24 +24,30 @@ export default class App extends Component {
     window.app = this;
 
     this.state = {
+      // Config
       workTime: 30*60,
       breakTime: 60,
       alertTime: 60,
       idleTime: 0,
       rewindTime: 10*60,
 
+      // Main data: projects and tasks
       projects: [],
       tasks: [],
 
       localTasks: [],
 
+      // UI toaggles
       view: 'tasks',
       compactView: false,
 
+      // CUrrent task
       task: null,
       taskId: null,
       taskLabel: '-',
       taskIssueNumber: null,
+
+      // Ticking clock
       startTime: null,
       lastWorkTime: null,
       timeElapsed: 0,
@@ -49,11 +56,12 @@ export default class App extends Component {
       currently: 'stopped',
       timer: null,
 
+      // Log
       log: [],
       messages: [],
 
+      // Popup
       popup: '',
-
       alertMessage: "",
       showAlert: false,
       afterWaiting: null
@@ -520,7 +528,7 @@ export default class App extends Component {
     // Check for long gap -- usually means a system sleep
     const now = new Date();
     if (this.state.lastWorkTime) {
-      const gap = now - this.state.lastWorkTime;
+      const gap = now - this.state.lastWorkTime + this.state.timeIdle;
       if (gap > 2000) {
         console.log("Gap is " + gap + ' at ' + new Date());
       }
