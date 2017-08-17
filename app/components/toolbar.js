@@ -18,6 +18,7 @@ export default class Toolbar extends Component {
   render() {
     return (
       <div className="toolbar">
+        <div className="hamburger"><i className="fa fa-bars"></i></div>
         <div className="btns btn-pri1">
           <ToolbarButton label="Refresh" action={this.props.actions.refresh}
             icon="fa fa-refresh" title="Refresh task list" />
