@@ -140,26 +140,25 @@ class GroupChart {
  * Show the work log
  * <Log log=[log entries] />
  */
-export default class Log extends Component {
+const RECENT_HOURS = 3;
+const RECENT_HOURS_MS = RECENT_HOURS*3600*1000;
+
+export default class Recent extends Component {
 
   constructor(props) {
       super(props);
       this.state = {
-          edit: '',
-          editStart: '',
-          editEnd: '',
           lastTime: null,
       };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (!nextState.popup) { return false; }
     try {
       if (nextProps.log[0].endTime != this.state.lastTime) {
         this.setState({
           lastTime: nextProps.log[0].endTime
         });
-        console.log("updating log");
+        console.log("updating recent");
         return true;
       }
     } catch (e) {}
@@ -185,85 +184,24 @@ export default class Log extends Component {
     // 12:30 - 2:30 Documentation #21 35m (34%)
     // 2:30 - 4:00 Github Style 90m (100%)
 
-    console.log("Rendering log");
+    console.log("Rendering recent");
 
-    // grouped in chunks
-    const groups = [];
-    const entriesByGroup = {};
-    let lastEntry = null;
+    const oldestTime = (new Date()) - RECENT_HOURS_MS);
 
-    const mergeGapSize = 10*60;
-    const groupGapSize = 6*60*60;
-
-    this.props.log.forEach( (logEntry, i) => {
-      const gap = (lastEntry ?
-        this.getDuration(logEntry.endTime, lastEntry.startTime) :
-        -1);
-      console.log("Gap:", gap, Utils.getDayTime(logEntry.endTime), Utils.getDayTime(lastEntry && lastEntry.startTime));
-      if (lastEntry
-          && lastEntry.taskId == logEntry.taskId
-          && gap > 0 && gap < mergeGapSize) {
-        // Merge with previous entry
-        console.log("Merging log");
-        lastEntry.startTime = logEntry.startTime;
-        lastEntry.timeElapsed += logEntry.timeElapsed;
-        lastEntry.taskName += "*";
-      } else {
-        // create new group
-        if (!lastEntry || gap > groupGapSize) {
-          console.log("Creating new group");
-          groups.push([]);
-        }
-        // Add a copy since we might merge things into it
-        lastEntry = Object.assign({}, logEntry);
-        groups[groups.length - 1].push(lastEntry);
-      }
-    });
-    const rows = [];
-    groups.forEach((group, groupIdx) => {
-      // dayEntries.reverse();
-      const groupStats = {
-        numEntries: group.length,
-        startTime: null,
-        endTime: null,
-        duration: 0,
-        worked: 0
-      };
-      // Cumulative stats
-      group.forEach( (logEntry) => {
-        if (!groupStats.startTime || groupStats.startTime > logEntry.startTime) {
-          groupStats.startTime = logEntry.startTime;
-        }
-        if (!groupStats.endTime || groupStats.endTime < logEntry.endTime) {
-          groupStats.endTime = logEntry.endTime;
-        }
-        groupStats.worked += logEntry.timeElapsed;
-      });
-      groupStats.duration = this.getDuration(groupStats.startTime, groupStats.endTime);
-      const timespan = Utils.getDayTime(groupStats.startTime) + " - " + Utils.getDayTime(groupStats.endTime);
-      rows.push((
-        <div key={groupIdx} className="day">
-          {timespan}
-          <span className="stats">
-            <span className="worked">{Utils.formatTimespan(groupStats.worked, true)}</span>
-            <span className="duration"> ({Utils.formatTimespan(groupStats.duration, true)})</span>
-          </span>
-        </div>
-      ));
-
-      const groupChart = new GroupChart(groupIdx, groupStats.startTime, groupStats.endTime);
-      const chartMarkers = groupChart.createMarkers(group.length);
+    const entries = [];
 
       // The log entries
       const subrows = [];
-      group.forEach( (logEntry, i) => {
+      let done = false;
+      this.state.log.slice(0,10).forEach( (logEntry, i) => {
+        if (done) { return; }
+        if (logEntry.endTime < oldestTime) { return; }
         const label = logEntry.taskName || logEntry.task;
-        const duration = this.getDuration(logEntry.startTime, logEntry.endTime);
-        const utilization = Math.floor((logEntry.timeElapsed * 100) / duration);
-        const timespan = "" + Utils.getTime(logEntry.startTime) + " - " + Utils.getTime(logEntry.endTime);
-        const chartRow = groupChart.createChartRow(logEntry, i);
+        const duration = getDurationMS(logEntry.startTime, logEntry.endTime);
         const style = {
-          background: getColor(logEntry)
+          background: getColor(logEntry),
+          width: parseInt(100*duration/RECENT_HOURS_MS) + '%',
+          left: parseInt((logENtry.startTime - oldestTime)*100/RECENT_HOURS_MS) + '%'
         };
         const logEntryId = this.getLogEntryId(logEntry);
         const editing = (logEntryId == this.state.edit);
@@ -276,18 +214,13 @@ export default class Log extends Component {
           { 'editing': editing }
         );
         const title = Utils.getDayTime(logEntry.startTime) + " - " + Utils.getDayTime(logEntry.endTime);
-        subrows.push((
+        const now = new Date();
+        const x1 = getDurationMS(logEntry.start, now);
           <div key={groupIdx + '.' + i} className={className} title={title}>
-            <div className="chart">
-              {chartRow}
-            </div>
             <span className="colorsquare" style={style}></span>
             <span className="task-name"><a href="#" onClick={edit}>{label}</a></span>
             <span className="timespan">{timespan}</span>
             <span className="stats">
-              <span className="worked">{Utils.formatTimespan(logEntry.timeElapsed, true)}</span>
-              <span className="duration">{Utils.formatTimespan(duration, true)}</span>
-              <span className="util">{utilization}%</span>
             </span>
           </div>
         ));

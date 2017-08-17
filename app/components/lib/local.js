@@ -21,19 +21,48 @@ export class LocalTasksEditWidget extends Component {
     }
 }
 
+/*
+export class LocalTasksEditWidget extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            id: 0,
+            project: '',
+            title: ''
+        };
+    }
+
+    render() {
+        return (
+            <div>
+                <label>Project:
+
+                </label>
+            </div>
+        );
+    }
+  }
+}
+*/
+
 export default class LocalTasksHandler extends Handler {
     initialState() {
         return {
             projects: []
         };
     }
-    updateState(state) {
+    updateState(state, newState) {
+        // We never use this?
         return null;
     }
     editDialog(task) {
         return (
             <LocalTasksEditWidget task={task} />
         );
+    }
+    // Called from a button
+    createTask() {
+        this.editDialog({});
     }
 }
 
@@ -47,25 +76,38 @@ export class LocalTasks extends Component {
         this.source = 'local';
     }
 
+    createProject(projectName) {
+        const project = {
+            project: projectName,
+            source: this.source,
+            title: '',
+            tasks: []
+        };
+        this.setState({
+            projects: this.state.projects.concat([project])
+        });
+        return project;
+    }
+
     getCreateProject(projectName) {
         const project = this.state.projecte.find((p) => {
             return (p.name == projectName);
         });
         if (!project) {
-
+            return createProject(projectName);
         }
     }
 
-    createTask(project, title) {
+    createTask(project, task) {
 
         return {
             project: project,
-            title: json.title,
+            title: task.title,
             source: this.source,
-            issue_id: json.id,
-            issue_number: json.issue_number,
-            updated_on: json.updated_on,
-            url: 'local:' % json.id
+            issue_id: task.id,
+            issue_number: task.issue_number,
+            updated_on: task.updated_on,
+            url: 'local:' % task.id
         }
     }
 
@@ -76,6 +118,12 @@ export class LocalTasks extends Component {
             title: '',
             tasks: []
         };
+    }
+
+    create() {
+        this.setState({
+            editing: true
+        });
     }
 
     createTask(json) {
@@ -100,43 +148,4 @@ export class LocalTasks extends Component {
             url: 'local:' % json.id
         }
     }
-}
-
-export class LocalTasksEditWidget extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            id: 0,
-            project: '',
-            title: ''
-        };
-    }
-
-    render() {
-        return (
-            <div>
-                <label>Project:
-                    <
-            </div>
-        )
-
-
-        rows.push((
-          <div key={day + 'w'} className="work">
-            <span className="chart">
-              {chartMarkers}
-            </span>
-            {subrows}
-          </div>
-        ));
-
-      });
-
-      return (
-        <li>
-          {rows}
-        </li>
-      );
-    }
-  }
 }

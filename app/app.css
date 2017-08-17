@@ -451,19 +451,21 @@ a:hover {
     /* padding-left: 8px; */
     position: absolute;
     top: 1px;
-    left: 0;
     right: 0;
+    width: auto;
     text-align: center;
     opacity: .8;
     background: #fff;
-    padding: 2px;
+    padding: 4px 8px;
     z-index: 100;
-    border-bottom: 1px solid #666;
+    border: 1px solid #666;
+    border-width: 0 0 1px 1px;
+    border-bottom-left-radius: 2px;
 }
 .status-message.hide {
     opacity: 0;
     transition: opacity 2s, margin 1s;
-    margin-top: -20px;
+    margin-top: -30px;
 }
 
 .search {
@@ -522,7 +524,7 @@ a:hover {
 
 .popup li {
   border-bottom: 1px solid #ddd;
-  padding: 0 10px;
+  padding-left: 10px;
 }
 
 .popup li.header {
@@ -778,6 +780,10 @@ a:hover {
 
 .log .work {
     position: relative;
+    border: 0 solid #666;
+    border-width: 1px 0;
+    /* margin-top: 2px; */
+    padding-bottom: 1px;
 }
 
 .log .log-entry {
@@ -789,20 +795,23 @@ a:hover {
   top: 3px;
   bottom: 3px;
   left: 0;
-  width: 0;
+  width: 20px;
 }
 
-.log .chart > div {
-  width: 20px;
+.chart > div {
+  width: 100%;
   position: absolute;
 }
 
-.log .chart .chart-label {
+.chart-label {
   border: 1px solid rgba(0,0,0,.1);
   /* min-height: 4px; */
   padding: 2px 0;
   margin-bottom: -2px;
   /* box-shadow: 0 0 2px 0px rgba(0,0,0,.05); */
+  /* margin-left: 12px; */
+  width: 10px !important;
+  right: 0;
 }
 .log-entry:hover .chart .chart-label, .log-entry:hover .colorsquare {
     border-color: rgba(0,0,0,.4);
@@ -812,12 +821,12 @@ a:hover {
 
 .log .chart span {
   font-size: 9px;
-  position: absolute;
+  /* position: absolute; */
   border-style: solid;
   border-width: 0;
   /* background: #fff; */
   line-height: .9;
-  width: 100%;
+  /* width: 100%; */
 }
 
 .log .chart .start {
@@ -833,13 +842,13 @@ a:hover {
   text-align: right;
 }
 
-.log .chart .chart-time-label {
+.chart-time-label {
   border: 1px solid #AAA;
   font-size: 10px;
-  border-width: 0 0 1px 0;
+  border-width: 0px 0 1px 0;
 }
-.log .chart .chart-time-label-top {
-  border-width: 1px 0 0 0;
+.chart-time-label:last-child {
+  border-width: 1px 0 0px 0;
 }
 
 .log .chart2 {
@@ -851,6 +860,8 @@ a:hover {
     /* font-weight: bold; */
     position: relative;
     padding: 0 4px;
+    /* display: none; */
+    font-size: 12px;
 }
 
 .day .date {
@@ -862,7 +873,8 @@ a:hover {
 .log .stats {
     position: absolute;
     font-size: 11px;
-    right: 4px;
+    padding: 2px 0;
+    right: 0;
 }
 
 .work .stats {
@@ -876,7 +888,7 @@ a:hover {
 .log .colorsquare {
     width: 8px;
     display: inline-block;
-    height: .8em;
+    height: .6em;
     border: 1px solid rgba(0,0,0,.2);
 }
 
