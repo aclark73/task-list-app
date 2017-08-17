@@ -51,10 +51,13 @@ class StatusComponent extends Component {
 export default class StatusHandler extends Handler {
     initialState() {
         return {
+            // All messages collected
             messages: [],
+            // The last message is displayed until this time
             expires: 0
         };
     }
+    /* Public API: add a message */
     addMessage(state, message, timeout=1) {
         // Turn the timeout into an actual time
         const expires = (new Date()).getTime() + timeout*1000;
@@ -64,6 +67,7 @@ export default class StatusHandler extends Handler {
         };
     }
     updateState(state) {
+        // If expired, clear expiry. Is this needed?
         if (state.expires) {
             const now = (new Date()).getTime();
             if (state.expires < now) {
@@ -75,24 +79,27 @@ export default class StatusHandler extends Handler {
         }
         return null;
     }
+    /* Render the displayed widget. */
     component(state) {
         return (
             <StatusComponent expires={state.expires} messages={state.messages} />
         );
     }
+    /* Popup to show when the toolbar button is clicked. */
     popup(state) {
         return (
             <StatusPopup label={this.label} messages={state.messages} />
         );
     }
+    /* The toolbar button. */
     toolbarButton() {
         action = this.app.actions.showPopup[this.label];
         return (
             <ToolbarButton
-            label={this.label}
-            title="Show status messages"
-            icon="fa fa-exclamation-triangle"
-            action={action} />
+                label={this.label}
+                title="Show status messages"
+                icon="fa fa-exclamation-triangle"
+                action={action} />
         );
     }
 }
