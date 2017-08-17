@@ -525,26 +525,25 @@ export default class App extends Component {
   }
   /* Callback for timer ticks */
   tick() {
-    // Check for long gap -- usually means a system sleep
-    const now = new Date();
-    if (this.state.lastWorkTime) {
-      const gap = now - this.state.lastWorkTime + this.state.timeIdle;
-      if (gap > 2000) {
-        console.log("Gap is " + gap + ' at ' + new Date());
-      }
-      if (gap > 60000) {
-        console.log("Stopping due to time gap of " + gap);
-        this.stop();
-        this.waitForUser("Stopping due to time gap of " + gap, "stopped");
-        return;
-      }
-    }
-    // Otherwise, ~1s has elapsed since the last tick(). Update accordingly.
     const state = {};
     if (this.state.currently == "stopped" || this.state.popup == "alert") {
       state.timeIdle = this.state.timeIdle + 1;
     }
     else if (this.state.currently == "working") {
+      // Check for long gap -- usually means a system sleep
+      const now = new Date();
+      if (this.state.lastWorkTime) {
+        const gap = now - this.state.lastWorkTime;
+        if (gap > 2000) {
+          console.log("Gap is " + gap + ' at ' + new Date());
+        }
+        if (gap > 60000) {
+          console.log("Stopping due to time gap of " + gap);
+          this.stop();
+          this.waitForUser("Stopping due to time gap of " + gap, "stopped");
+          return;
+        }
+      }
       if (this.state.timeElapsed && !(this.state.timeElapsed % 60)) {
         this.save();
       }
