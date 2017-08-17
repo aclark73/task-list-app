@@ -237,7 +237,7 @@ a:hover {
 
 .task-list {
     position: absolute;
-    top: 72px;
+    top: 58px;
     bottom: 0;
     left: 0;
     right: 0;
@@ -313,18 +313,60 @@ a:hover {
 .toolbar {
     /* margin-bottom: .3em; */
     /* border-bottom: 1px solid #ccc; */
-    padding: 1px 3px;
-    background: #eee;
-    font-size: 10px;
+    /* padding: 2px 3px; */
+    /* width: 2em; */
+    /* height: 2em; */
+    /* font-size: 20px; */
     /* line-height: 1; */
     position: absolute;
+    right: 3px;
+    top: 3px;
     z-index: 1;
+    /* border: 1px solid #fff; */
+    background-color: inherit;
+}
+.toolbar:hover {
+    /* font-size: 10px; */
+    /* padding: 10px; */
+    /* margin: -10px; */
+    /* line-height: initial; */
+    border-width: 1px;
+    border-style: solid;
+    z-index: 100;
+}
+.toolbar:hover .hamburger {
+  display: none;
+}
+.hamburger {
+    /* color: #fff; */
+    border: 1px solid #000;
+    border-color: inherit;
+    padding: 0 4px;
+    font-size: 12px;
+    margin: 2px;
 }
 
 .toolbar .btn {
-    display: block;
     padding: 0 3px;
     vertical-align: bottom;
+    background: none;
+    border-radius: 0;
+    color: inherit;
+    font-weight: bold;
+    font-size: 10px;
+    border: none;
+}
+
+.toolbar .btn:hover {
+  background: rgba(255,255,255,.3);
+}
+
+.toolbar .btn, div.show-popup .toolbar .btn {
+  display: none;
+}
+
+.toolbar:hover .btn {
+    display: block;
 }
 
 /*
@@ -352,14 +394,16 @@ a:hover {
 }
 
 .btns .btn:not(:first-child) {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+    /* border-top-left-radius: 0; */
+    /* border-bottom-left-radius: 0; */
 }
 
+/*
 .btns .btn:not(:last-child) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
+*/
 
 .toolbar .btns {
   /* display: inline-block; */
@@ -473,13 +517,15 @@ a:hover {
 .search {
     color: #999;
     position: fixed;
-    width: 100%;
+    /* width: 100%; */
+    left: 0;
+    right: 0;
     /* height: 2em; */
     /* top: 0; */
     /* padding-right: 1em; */
     z-index: 1;
     background: white;
-    margin-top: 0em;
+    margin-top: -1em;
 }
 
 .search input {
@@ -1080,9 +1126,10 @@ div:hover > .hover-help {
   margin-left: 8px;
 }
 
-.working .timer {
+.working .timer, .working .toolbar {
   background-color: #090;
   color: #fff;
+  border-color: #fff;
 }
 
 .paused .timer {
