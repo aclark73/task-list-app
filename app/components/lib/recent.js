@@ -148,9 +148,6 @@ export default class Recent extends Component {
   constructor(props) {
       super(props);
       this.state = {
-          edit: '',
-          editStart: '',
-          editEnd: '',
           lastTime: null,
       };
   }
@@ -200,12 +197,11 @@ export default class Recent extends Component {
         if (done) { return; }
         if (logEntry.endTime < oldestTime) { return; }
         const label = logEntry.taskName || logEntry.task;
-        const duration = this.getDuration(logEntry.startTime, logEntry.endTime);
-        const utilization = Math.floor((logEntry.timeElapsed * 100) / duration);
-        const timespan = "" + Utils.getTime(logEntry.startTime) + " - " + Utils.getTime(logEntry.endTime);
-        const chartRow = groupChart.createChartRow(logEntry, i);
+        const duration = getDurationMS(logEntry.startTime, logEntry.endTime);
         const style = {
-          background: getColor(logEntry)
+          background: getColor(logEntry),
+          width: parseInt(100*duration/RECENT_HOURS_MS) + '%',
+          left: parseInt((logENtry.startTime - oldestTime)*100/RECENT_HOURS_MS) + '%'
         };
         const logEntryId = this.getLogEntryId(logEntry);
         const editing = (logEntryId == this.state.edit);
