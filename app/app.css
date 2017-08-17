@@ -245,12 +245,17 @@ a:hover {
     overflow-x: hidden;
     /* transition: top; */
     min-width: 238px;
+    z-index: 1;
 }
 
-.task-list ul {
-    margin: 0;
+.task-list > div {
+    position: relative;
+}
+
+.tasks {
+    margin: 0em 0 0 0;
     list-style: none;
-    padding: 0;
+    padding: 1em 0 0 0;
 }
 
 .task-list li {
@@ -279,7 +284,7 @@ a:hover {
 }
 
 .task-item .task-label {
-    padding: 5px;
+    padding: 5px 0 5px 5px;
 }
 
 .task-item:hover .task-label {
@@ -312,21 +317,17 @@ a:hover {
     background: #eee;
     font-size: 10px;
     /* line-height: 1; */
+    position: absolute;
+    z-index: 1;
 }
 
 .toolbar .btn {
-    display: inline-block;
-    /* font-size: 10px; */
-    /* line-height: 1; */
+    display: block;
     padding: 0 3px;
     vertical-align: bottom;
-    /* margin: 0; */
 }
 
-.toolbar .btn {
-    /* font-size: 9px; */
-}
-
+/*
 @media (max-width: 330px) {
     .toolbar .btn-pri2 .btn-label  {
         display: none;
@@ -338,6 +339,7 @@ a:hover {
         display: none;
     }
 }
+*/
 
 .btns {
     /* display: inline-block; */
@@ -346,7 +348,7 @@ a:hover {
 }
 
 .btns + .btns {
-    margin-left: 5px;
+    /* margin-left: 5px; */
 }
 
 .btns .btn:not(:first-child) {
@@ -360,7 +362,7 @@ a:hover {
 }
 
 .toolbar .btns {
-  display: inline-block;
+  /* display: inline-block; */
 }
 
 .task-item .btn {
@@ -470,7 +472,14 @@ a:hover {
 
 .search {
     color: #999;
-    position: relative;
+    position: fixed;
+    width: 100%;
+    /* height: 2em; */
+    /* top: 0; */
+    /* padding-right: 1em; */
+    z-index: 1;
+    background: white;
+    margin-top: 0em;
 }
 
 .search input {
@@ -1034,10 +1043,10 @@ div:hover > .hover-help {
 
 .timer {
   background-color: #eee;
-  padding: 4px 10px 0;
+  padding: 4px 10px;
   position: relative;
   cursor: default;
-  height: 43px;
+  /* height: 43px; */
 }
 
 .time-remaining {
