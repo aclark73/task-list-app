@@ -531,6 +531,7 @@ export default class App extends Component {
     const state = {};
     // Check for long gap -- usually means a system sleep
     const now = new Date();
+    state.lastTick = now.getTime();
     if (this.state.lastTick) {
       const gap = now - this.state.lastTick;
       if (gap > 2000) {
@@ -538,13 +539,13 @@ export default class App extends Component {
       }
       if (gap > 60000) {
         const msg = "Stopping due to time gap of " + gap + ' at ' + now;
-        console.log(msg)
+        console.log(msg);
         this.stop();
         this.waitForUser(msg, "stopped");
+        this.setState(state);
         return;
       }
     }
-    state.lastTick = now.getTime();
     if (this.state.currently == "stopped" || this.state.popup == "alert") {
       state.timeIdle = this.state.timeIdle + 1;
     }

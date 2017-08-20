@@ -85,7 +85,7 @@ class GroupChart {
             background: getColor(logEntry)
         };
         return (
-            <div key={this.id + '-' + i} className="chart-label" style={style}></div>
+            <div key={i} className="chart-label" style={style}></div>
         );
     }
 
@@ -112,8 +112,8 @@ class GroupChart {
     }
     createMarker(t) {
         // Truncate to the hour
-        const h = t.getHours ? t.getHours() : t;
-        const isTop = (h == this.endTime.getHours());
+        const h = roundToHour(t);
+        const isTop = (t >= this.endTime);
         const className = classNames(
           'chart-time-label',
           { 'chart-time-label-top': isTop }
@@ -123,14 +123,13 @@ class GroupChart {
             {bottom:""+this.chartHeight(hoursToMS(h-this.startTime.getHours()))+'%'};
         const label = this.formatMarkerLabel(h);
         return (
-            <div key={h} style={style} className={className}><span>{label}</span></div>
+            <div key={t} style={style} className={className}><span>{label}</span></div>
         );
     }
     createMarkers(numRows) {
         const chartMarkers = [];
         const hoursPerMarker = parseInt(8/numRows);
-        const st = this.startTime;
-        const t = new Date(st.getYear(), st.getMonth(), st.getDay(), st.getHours());
+        const t = roundToHour(this.startTime);
         while (t <= this.endTime) {
           chartMarkers.push(this.createMarker(t));
           t.setHours(t.getHours() + 1);
