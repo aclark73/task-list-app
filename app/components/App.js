@@ -415,7 +415,9 @@ export default class App extends Component {
         <Toolbar actions={actions} handlers={this.handlers} />
         {timer}
         <div className="task-list">{taskList}</div>
-        {popups}
+        <div>
+          {popups}
+        </div>
       </div>
     );
   }
@@ -525,22 +527,24 @@ export default class App extends Component {
   }
   /* Callback for timer ticks */
   tick() {
+    // Update to state (if any)
+    const state = {};
     // Check for long gap -- usually means a system sleep
     const now = new Date();
-    if (this.state.lastWorkTime) {
-      const gap = now - this.state.lastWorkTime + this.state.timeIdle;
+    if (this.state.lastTick) {
+      const gap = now - this.state.lastTick;
       if (gap > 2000) {
-        console.log("Gap is " + gap + ' at ' + new Date());
+        console.log("Gap is " + gap + ' at ' + now);
       }
       if (gap > 60000) {
-        console.log("Stopping due to time gap of " + gap);
+        const msg = "Stopping due to time gap of " + gap + ' at ' + now;
+        console.log(msg)
         this.stop();
-        this.waitForUser("Stopping due to time gap of " + gap, "stopped");
+        this.waitForUser(msg, "stopped");
         return;
       }
     }
-    // Otherwise, ~1s has elapsed since the last tick(). Update accordingly.
-    const state = {};
+    state.lastTick = now.getTime();
     if (this.state.currently == "stopped" || this.state.popup == "alert") {
       state.timeIdle = this.state.timeIdle + 1;
     }
