@@ -237,7 +237,7 @@ a:hover {
 
 .task-list {
     position: absolute;
-    top: 72px;
+    top: 58px;
     bottom: 0;
     left: 0;
     right: 0;
@@ -245,12 +245,17 @@ a:hover {
     overflow-x: hidden;
     /* transition: top; */
     min-width: 238px;
+    z-index: 1;
 }
 
-.task-list ul {
-    margin: 0;
+.task-list > div {
+    position: relative;
+}
+
+.tasks {
+    margin: 0em 0 0 0;
     list-style: none;
-    padding: 0;
+    padding: 0em 0 0 0;
 }
 
 .task-list li {
@@ -279,7 +284,7 @@ a:hover {
 }
 
 .task-item .task-label {
-    padding: 5px;
+    padding: 5px 0 5px 5px;
 }
 
 .task-item:hover .task-label {
@@ -308,25 +313,78 @@ a:hover {
 .toolbar {
     /* margin-bottom: .3em; */
     /* border-bottom: 1px solid #ccc; */
-    padding: 1px 3px;
-    background: #eee;
-    font-size: 10px;
+    /* padding: 2px 3px; */
+    /* width: 2em; */
+    /* height: 2em; */
+    /* font-size: 20px; */
     /* line-height: 1; */
+    position: absolute;
+    right: 3px;
+    top: 3px;
+    z-index: 1;
+    border: 1px solid #000;
+    border-color: inherit;
+    background-color: inherit;
 }
-
-.toolbar .btn {
-    display: inline-block;
+.toolbar-inner {
+    position: relative;
+}
+.toolbar:hover {
     /* font-size: 10px; */
-    /* line-height: 1; */
-    padding: 0 3px;
-    vertical-align: bottom;
-    /* margin: 0; */
+    /* padding: 10px; */
+    /* margin: -10px; */
+    /* line-height: initial; */
+    border-width: 1px;
+    border-style: solid;
+    z-index: 100;
+}
+.toolbar:hover .hamburger {
+  /* display: none; */
+  height: 0;
+  opacity: 0;
+}
+.hamburger, div.show-popup .toolbar .hamburger {
+    /* color: #fff; */
+    padding: 0 4px;
+    font-size: 12px;
+    margin: 2px;
 }
 
 .toolbar .btn {
-    /* font-size: 9px; */
+    padding: 0px 6px;
+    vertical-align: bottom;
+    background: none;
+    border-radius: 0;
+    color: inherit;
+    /* font-weight: bold; */
+    font-size: 11px;
+    border: none;
+    display: block;
+    /* height: 0; */
 }
 
+.toolbar .btn:hover {
+  background: rgba(255,255,255,.3);
+}
+
+.toolbar .btns, div.show-popup .toolbar .btns {
+  /* display: none; */
+  /* position: absolute; */
+  width: 20px;
+  height: 0;
+  overflow: hidden;
+  transition: width .4s linear;
+  background: inherit;
+}
+
+.toolbar:hover .btns {
+    /* display: block; */
+    /* right: 0; */
+    width: 60px;
+    height: auto;
+}
+
+/*
 @media (max-width: 330px) {
     .toolbar .btn-pri2 .btn-label  {
         display: none;
@@ -338,6 +396,7 @@ a:hover {
         display: none;
     }
 }
+*/
 
 .btns {
     /* display: inline-block; */
@@ -346,21 +405,23 @@ a:hover {
 }
 
 .btns + .btns {
-    margin-left: 5px;
+    /* margin-left: 5px; */
 }
 
 .btns .btn:not(:first-child) {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+    /* border-top-left-radius: 0; */
+    /* border-bottom-left-radius: 0; */
 }
 
+/*
 .btns .btn:not(:last-child) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
+*/
 
 .toolbar .btns {
-  display: inline-block;
+  /* display: inline-block; */
 }
 
 .task-item .btn {
@@ -447,30 +508,40 @@ a:hover {
 
 .status-message {
     color: #666;
-    font-size: 13px;
+    font-size: 10px;
     /* padding-left: 8px; */
     position: absolute;
-    top: 1px;
+    top: 27px;
     right: 0;
-    width: auto;
-    text-align: center;
+    /* width: auto; */
+    /* text-align: center; */
     opacity: .8;
     background: #fff;
-    padding: 4px 8px;
+    padding: 1px 8px;
     z-index: 100;
     border: 1px solid #666;
     border-width: 0 0 1px 1px;
-    border-bottom-left-radius: 2px;
+    border-radius: 2px 0 0 2px;
 }
 .status-message.hide {
     opacity: 0;
     transition: opacity 2s, margin 1s;
-    margin-top: -30px;
+    /* margin-top: -30px; */
+    margin-right: -60px;
 }
 
 .search {
     color: #999;
-    position: relative;
+    position: fixed;
+    /* width: 100%; */
+    left: 0;
+    right: 0;
+    /* height: 2em; */
+    /* top: 0; */
+    /* padding-right: 1em; */
+    z-index: 1;
+    background: white;
+    margin-top: -1em;
 }
 
 .search input {
@@ -1031,13 +1102,17 @@ div:hover > .hover-help {
   animation-duration: 2s;
 }
 
+.timer, .toolbar {
+  background-color: #eee;
+  color: #333;
+  border-color: #666;
+}
 
 .timer {
-  background-color: #eee;
-  padding: 4px 10px 0;
+  padding: 4px 10px;
   position: relative;
   cursor: default;
-  height: 43px;
+  /* height: 43px; */
 }
 
 .time-remaining {
@@ -1071,9 +1146,10 @@ div:hover > .hover-help {
   margin-left: 8px;
 }
 
-.working .timer {
+.working .timer, .working .toolbar {
   background-color: #090;
   color: #fff;
+  border-color: #fff;
 }
 
 .paused .timer {

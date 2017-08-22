@@ -85,7 +85,7 @@ class GroupChart {
             background: getColor(logEntry)
         };
         return (
-            <div key={this.id + '-' + i} className="chart-label" style={style}></div>
+            <div key={i} className="chart-label" style={style}></div>
         );
     }
 
@@ -110,8 +110,10 @@ class GroupChart {
         return '';
         */
     }
-    createMarker(h) {
-        const isTop = (h == this.endTime.getHours());
+    createMarker(t) {
+        // Truncate to the hour
+        const h = roundToHour(t);
+        const isTop = (t >= this.endTime);
         const className = classNames(
           'chart-time-label',
           { 'chart-time-label-top': isTop }
@@ -121,15 +123,15 @@ class GroupChart {
             {bottom:""+this.chartHeight(hoursToMS(h-this.startTime.getHours()))+'%'};
         const label = this.formatMarkerLabel(h);
         return (
-            <div key={this.id + '.' + h} style={style} className={className}><span>{label}</span></div>
+            <div key={t} style={style} className={className}><span>{label}</span></div>
         );
     }
     createMarkers(numRows) {
         const chartMarkers = [];
         const hoursPerMarker = parseInt(8/numRows);
-        const t = new Date(this.startTime);
+        const t = roundToHour(this.startTime);
         while (t <= this.endTime) {
-          chartMarkers.push(this.createMarker(t.getHours()));
+          chartMarkers.push(this.createMarker(t));
           t.setHours(t.getHours() + 1);
         }
         return chartMarkers;
@@ -155,9 +157,9 @@ export default class Log extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     if (!nextState.popup) { return false; }
     try {
-      if (nextProps.log[0].endTime != this.state.lastTime) {
+      if (nextProps.log[0].endTime != this.state.lastLogTime) {
         this.setState({
-          lastTime: nextProps.log[0].endTime
+          lastLogTime: nextProps.log[0].endTime
         });
         console.log("updating log");
         return true;
@@ -298,7 +300,9 @@ export default class Log extends Component {
           <div className="chart">
             {chartMarkers}
           </div>
-          {subrows}
+          <div>
+            {subrows}
+          </div>
         </div>
       ));
 
