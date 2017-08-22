@@ -520,7 +520,7 @@ a:hover {
     padding: 1px 8px;
     z-index: 100;
     border: 1px solid #666;
-    border-width: 0 0 1px 1px;
+    border-width: 1px 0 1px 1px;
     border-radius: 2px 0 0 2px;
 }
 .status-message.hide {
