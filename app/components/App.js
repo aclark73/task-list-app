@@ -528,6 +528,9 @@ export default class App extends Component {
     const state = {};
     if (this.state.currently == "stopped" || this.state.popup == "alert") {
       state.timeIdle = this.state.timeIdle + 1;
+      if (state.timeIdle == 60 && this.state.currently == "paused") {
+        alert("Hey there!");
+      }
     }
     else if (this.state.currently == "working") {
       // Check for long gap -- usually means a system sleep
