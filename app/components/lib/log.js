@@ -201,7 +201,7 @@ export default class Log extends Component {
       const gap = (lastEntry ?
         this.getDuration(logEntry.endTime, lastEntry.startTime) :
         -1);
-      console.log("Gap:", gap, Utils.getDayTime(logEntry.endTime), Utils.getDayTime(lastEntry && lastEntry.startTime));
+      // console.log("Gap:", gap, Utils.getDayTime(logEntry.endTime), Utils.getDayTime(lastEntry && lastEntry.startTime));
       if (lastEntry
           && lastEntry.taskId == logEntry.taskId
           && gap > 0 && gap < mergeGapSize) {

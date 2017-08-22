@@ -7,7 +7,7 @@ const DEFAULT_CONFIG = {
 };
 
 const BASE_URL = 'http://dmscode.iris.washington.edu';
-const ISSUES_URL = BASE_URL + '/issues.json?&assigned_to_id=me&sort=updated_on:desc&status_id=open&limit=200&key=';
+const ISSUES_URL = BASE_URL + '/issues.json?&assigned_to_id=me&sort=priority:desc,updated_on:desc&status_id=open&limit=200&key=';
 const TIME_URL = BASE_URL + '/time_entries.json?key=';
 const ISSUE_URL = BASE_URL + '/issue/%s'
 

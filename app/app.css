@@ -237,7 +237,7 @@ a:hover {
 
 .task-list {
     position: absolute;
-    top: 58px;
+    top: 59px;
     bottom: 0;
     left: 0;
     right: 0;
@@ -252,10 +252,10 @@ a:hover {
     position: relative;
 }
 
-.tasks {
+.tasks, .projects {
     margin: 0em 0 0 0;
     list-style: none;
-    padding: 0em 0 0 0;
+    padding: 0;
 }
 
 .task-list li {
@@ -541,7 +541,7 @@ a:hover {
     /* padding-right: 1em; */
     z-index: 1;
     background: white;
-    margin-top: -1em;
+    margin-top: -16px;
 }
 
 .search input {
