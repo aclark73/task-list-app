@@ -412,8 +412,8 @@ export default class App extends Component {
     return(
       <div className={className} onClick={actions.click}>
         {statusMessage}
-        <Toolbar actions={actions} handlers={this.handlers} />
         {timer}
+        <Toolbar actions={actions} handlers={this.handlers} />
         <div className="task-list">{taskList}</div>
         <div>
           {popups}
