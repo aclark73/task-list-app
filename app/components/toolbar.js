@@ -24,11 +24,11 @@ class ToolbarButton extends Component {
 
 class IssueToolbarButton extends ToolbarButton {
     render() {
-        const taskNumber = Task.getIssueNumber(this.props.currentTask);
+        const taskNumber = this.props.taskIssueNumber;
         return this.renderInner(
             taskNumber, 
             "fa fa-database",
-            this.props.actions.refresh,
+            this.props.action,
             "Refresh"
         );
     }
@@ -40,20 +40,31 @@ class StartTimeToolbarButton extends ToolbarButton {
         return this.renderInner(
             startTime, 
             "fa fa-clock-o",
-            this.props.actions.rewind,
+            this.props.action,
+            "Click to rewind"
+        );
+    }
+}
+
+class ElapsedTimeToolbarButton extends ToolbarButton {
+    render() {
+        const timeElapsed = Utils.formatTimespan(this.props.timeElapsed, true);
+        return this.renderInner(
+            timeElapsed, 
+            "fa fa-hourglass",
+            this.props.action,
             "Click to rewind"
         );
     }
 }
 
 
-
 export default class Toolbar extends Component {
   render() {
     return (
       <div className="toolbar">
-        <div className="toolber-options">
-          <div className="hamburger"><i className="fa fa-bars"></i></div>
+        <div className="toolbar-options">
+          <div className="btn hamburger"><i className="fa fa-bars"></i></div>
           <div className="btns">
             <ToolbarButton label="Refresh" action={this.props.actions.refresh}
               icon="fa fa-refresh" title="Refresh task list" />
@@ -69,6 +80,9 @@ export default class Toolbar extends Component {
               icon="fa fa-arrows-v" title="Toggle compact view" />
           </div>
         </div>
+        <IssueToolbarButton taskIssueNumber={this.props.taskIssueNumber} action={this.props.actions.refresh} />
+        <StartTimeToolbarButton startTime={this.props.startTime} action={this.props.actions.rewind} />
+        <ElapsedTimeToolbarButton timeElapsed={this.props.timeElapsed} action={this.props.actions.rewind} />
       </div>
     );
   }

@@ -397,23 +397,28 @@ export default class App extends Component {
         <div className="current-task">
           {currentTask}
         </div>
-        <div className="status">
-          <div className="issue-number"><a>{issueNumber}</a></div>
-          <div className="start-time">
-            <span className="fa fa-clock-o"></span><span className="time">{startTime}</span>
-          </div>
-          <div className="time-elapsed" onClick={actions.rewind} title="Click to rewind">
-            <span className="fa fa-hourglass-o"></span><span className="time">{timeElapsed}</span>
-          </div>
-          <div className="time-idle">{timeIdle}</div>
-        </div>
       </div>
     );
+    const toolbar = (
+      <div className="status">
+        <div className="issue-number"><a>{issueNumber}</a></div>
+        <div className="start-time">
+          <span className="fa fa-clock-o"></span><span className="time">{startTime}</span>
+        </div>
+        <div className="time-elapsed" onClick={actions.rewind} title="Click to rewind">
+          <span className="fa fa-hourglass-o"></span><span className="time">{timeElapsed}</span>
+        </div>
+        <div className="time-idle">{timeIdle}</div>
+      </div>
+
+    )
     return(
       <div className={className} onClick={actions.click}>
         {statusMessage}
         {timer}
-        <Toolbar actions={actions} handlers={this.handlers} />
+        <Toolbar actions={actions} handlers={this.handlers} 
+            taskIssueNumber={this.state.taskIssueNumber} startTime={this.state.startTime}
+            timeElapsed={this.state.timeElapsed} />
         <div className="task-list">{taskList}</div>
         <div>
           {popups}
@@ -548,7 +553,7 @@ export default class App extends Component {
     }
     if (this.state.currently == "stopped" || this.state.popup == "alert") {
       state.timeIdle = this.state.timeIdle + 1;
-      if (state.timeIdle == 60 && this.state.currently == "paused") {
+      if (state.timeIdle == 60) {
         alert("Hey there!");
       }
     }
