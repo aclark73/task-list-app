@@ -40,6 +40,7 @@ export default class App extends Component {
       // UI toaggles
       view: 'tasks',
       compactView: false,
+      search: "",
 
       // CUrrent task
       task: null,
@@ -75,6 +76,7 @@ export default class App extends Component {
       rewind: this.rewind.bind(this),
       setTask: this.setTask.bind(this),
       refresh: this.refresh.bind(this),
+      setSearch: this.setSearch.bind(this),
       save: this.save.bind(this),
       uploadLogs: this.uploadLogs.bind(this),
       toggleView: this.toggleView.bind(this),
@@ -309,7 +311,11 @@ export default class App extends Component {
       selectedTaskId: this.state.taskId,
       currently: this.state.currently,
       actions: actions,
-      view: this.state.view
+      view: this.state.view,
+      search: this.state.search,
+      taskIssueNumber: this.state.taskIssueNumber,
+      startTime: this.state.startTime,
+      timeElapsed: this.state.timeElapsed
     };
 
     // Task/project list
@@ -416,9 +422,8 @@ export default class App extends Component {
       <div className={className} onClick={actions.click}>
         {statusMessage}
         {timer}
-        <Toolbar actions={actions} handlers={this.handlers} 
-            taskIssueNumber={this.state.taskIssueNumber} startTime={this.state.startTime}
-            timeElapsed={this.state.timeElapsed} />
+        <Toolbar actions={actions} handlers={this.handlers}
+            context={context} />
         <div className="task-list">{taskList}</div>
         <div>
           {popups}
@@ -714,5 +719,7 @@ export default class App extends Component {
     const logEntryStr = JSON.stringify(logEntry);
     console.log(`LOG: task: ${logEntryStr}`);
   }
-
+  setSearch(search) {
+    this.setState({search: search});
+  }
 }

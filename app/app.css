@@ -237,7 +237,7 @@ a:hover {
 
 .task-list {
     position: absolute;
-    top: 75px;
+    top: 59px;
     bottom: 0;
     left: 0;
     right: 0;
@@ -326,8 +326,10 @@ a:hover {
     /* border-color: inherit; */
     /* background-color: inherit; */
 }
-.toolbar > * {
-    display: inline-block !important;
+.toolbar > .btn {
+    /* display: inline-block !important; */
+    float: left;
+    /* display: block; */
 }
 .toolbar-inner {
     position: relative;
@@ -360,7 +362,7 @@ a:hover {
     border-radius: 0;
     color: inherit;
     /* font-weight: bold; */
-    font-size: 11px;
+    font-size: 12px;
     border: 1px solid #000;
     display: block;
     /* height: 0; */
@@ -383,6 +385,8 @@ a:hover {
 .toolbar-options {
   /* z-index: 100; */
   /* background: inherit; */
+  /* display: inline-block; */
+  float: left;
 }
 
 .toolbar-options:hover .btns {
@@ -543,16 +547,17 @@ a:hover {
 
 .search {
     color: #999;
-    /* position: fixed; */
+    position: relative;
     /* width: 100%; */
-    left: 0;
-    right: 0;
+    /* left: 0; */
+    /* right: 0; */
     /* height: 2em; */
     /* top: 0; */
     /* padding-right: 1em; */
-    z-index: 1;
-    background: white;
-    margin-top: -16px;
+    /* z-index: 1; */
+    /* background: white; */
+    /* margin-top: -16px; */
+    display: block;
 }
 
 .search input {
@@ -561,8 +566,8 @@ a:hover {
     border: 1px solid #dfe2e5;
     box-sizing: border-box;
     outline: none;
-    padding: 1px 4px;
-    margin-bottom: 2px;
+    padding: 0px 4px;
+    /* margin-bottom: 2px; */
     background: transparent;
 }
 
@@ -574,7 +579,7 @@ a:hover {
 
 .search .clear-btn {
     position: absolute;
-    top: 1px;
+    top: 0px;
     right: 2px;
     cursor: pointer;
 }

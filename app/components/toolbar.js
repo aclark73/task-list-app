@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import Task from './task';
 import Utils from './utils';
+import Search from './lib/search';
 
 
 class ToolbarButton extends Component {
@@ -17,7 +18,7 @@ class ToolbarButton extends Component {
   }
   render() {
     return this.renderInner(
-        this.props.label, this.props.icon, 
+        this.props.label, this.props.icon,
         this.props.action, this.props.title);
   }
 }
@@ -26,7 +27,7 @@ class IssueToolbarButton extends ToolbarButton {
     render() {
         const taskNumber = this.props.taskIssueNumber;
         return this.renderInner(
-            taskNumber, 
+            taskNumber,
             "fa fa-database",
             this.props.action,
             "Refresh"
@@ -38,7 +39,7 @@ class StartTimeToolbarButton extends ToolbarButton {
     render() {
         const startTime = Utils.getTime(this.props.startTime);
         return this.renderInner(
-            startTime, 
+            startTime,
             "fa fa-clock-o",
             this.props.action,
             "Click to rewind"
@@ -50,7 +51,7 @@ class ElapsedTimeToolbarButton extends ToolbarButton {
     render() {
         const timeElapsed = Utils.formatTimespan(this.props.timeElapsed, true);
         return this.renderInner(
-            timeElapsed, 
+            timeElapsed,
             "fa fa-hourglass",
             this.props.action,
             "Click to rewind"
@@ -80,9 +81,10 @@ export default class Toolbar extends Component {
               icon="fa fa-arrows-v" title="Toggle compact view" />
           </div>
         </div>
-        <IssueToolbarButton taskIssueNumber={this.props.taskIssueNumber} action={this.props.actions.refresh} />
-        <StartTimeToolbarButton startTime={this.props.startTime} action={this.props.actions.rewind} />
-        <ElapsedTimeToolbarButton timeElapsed={this.props.timeElapsed} action={this.props.actions.rewind} />
+        <IssueToolbarButton taskIssueNumber={this.props.context.taskIssueNumber} action={this.props.actions.refresh} />
+        <StartTimeToolbarButton startTime={this.props.context.startTime} action={this.props.actions.rewind} />
+        <ElapsedTimeToolbarButton timeElapsed={this.props.context.timeElapsed} action={this.props.actions.rewind} />
+        <Search search={this.props.context.search} setSearch={this.props.actions.setSearch} />
       </div>
     );
   }
