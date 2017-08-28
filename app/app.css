@@ -237,7 +237,7 @@ a:hover {
 
 .task-list {
     position: absolute;
-    top: 59px;
+    top: 75px;
     bottom: 0;
     left: 0;
     right: 0;
@@ -245,7 +245,7 @@ a:hover {
     overflow-x: hidden;
     /* transition: top; */
     min-width: 238px;
-    z-index: 1;
+    z-index: 0;
 }
 
 .task-list > div {
@@ -318,13 +318,16 @@ a:hover {
     /* height: 2em; */
     /* font-size: 20px; */
     /* line-height: 1; */
-    position: absolute;
-    right: 3px;
-    top: 3px;
+    /* position: absolute; */
+    /* right: 3px; */
+    /* top: 3px; */
     z-index: 1;
-    border: 1px solid #000;
-    border-color: inherit;
-    background-color: inherit;
+    /* border: 1px solid #000; */
+    /* border-color: inherit; */
+    /* background-color: inherit; */
+}
+.toolbar > * {
+    display: inline-block !important;
 }
 .toolbar-inner {
     position: relative;
@@ -334,54 +337,60 @@ a:hover {
     /* padding: 10px; */
     /* margin: -10px; */
     /* line-height: initial; */
-    border-width: 1px;
-    border-style: solid;
-    z-index: 100;
+    /* border-width: 1px; */
+    /* border-style: solid; */
+    z-index: 1;
 }
 .toolbar:hover .hamburger {
   /* display: none; */
-  height: 0;
-  opacity: 0;
+  /* height: 0; */
+  /* opacity: 0; */
 }
 .hamburger, div.show-popup .toolbar .hamburger {
     /* color: #fff; */
     padding: 0 4px;
     font-size: 12px;
-    margin: 2px;
+    /* margin: 2px; */
 }
 
 .toolbar .btn {
     padding: 0px 6px;
     vertical-align: bottom;
-    background: none;
+    background: inherit;
     border-radius: 0;
     color: inherit;
     /* font-weight: bold; */
     font-size: 11px;
-    border: none;
+    border: 1px solid #000;
     display: block;
     /* height: 0; */
 }
 
 .toolbar .btn:hover {
-  background: rgba(255,255,255,.3);
+  /* background: rgba(255,255,255,.3); */
 }
 
 .toolbar .btns, div.show-popup .toolbar .btns {
   /* display: none; */
-  /* position: absolute; */
-  width: 20px;
-  height: 0;
+  position: absolute;
+  /* width: 20px; */
+  height: 0px;
   overflow: hidden;
-  transition: width .4s linear;
+  transition: height .4s linear;
   background: inherit;
 }
 
-.toolbar:hover .btns {
+.toolbar-options {
+  /* z-index: 100; */
+  /* background: inherit; */
+}
+
+.toolbar-options:hover .btns {
     /* display: block; */
     /* right: 0; */
-    width: 60px;
+    /* width: 60px; */
     height: auto;
+    /* overflow: visible; */
 }
 
 /*
@@ -420,8 +429,10 @@ a:hover {
 }
 */
 
-.toolbar .btns {
+.toolbar-options .btns {
   /* display: inline-block; */
+  position: absolute;
+  z-index: 1;
 }
 
 .task-item .btn {
@@ -532,7 +543,7 @@ a:hover {
 
 .search {
     color: #999;
-    position: fixed;
+    /* position: fixed; */
     /* width: 100%; */
     left: 0;
     right: 0;
@@ -869,7 +880,13 @@ a:hover {
   width: 20px;
 }
 
-.chart > div {
+.chart-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.chart-inner > div {
   width: 100%;
   position: absolute;
 }
@@ -1102,7 +1119,7 @@ div:hover > .hover-help {
   animation-duration: 2s;
 }
 
-.timer, .toolbar {
+.timer, .toolbar .btn {
   background-color: #eee;
   color: #333;
   border-color: #666;
@@ -1112,7 +1129,7 @@ div:hover > .hover-help {
   padding: 4px 10px;
   position: relative;
   cursor: default;
-  /* height: 43px; */
+  height: 43px;
 }
 
 .time-remaining {
@@ -1146,7 +1163,7 @@ div:hover > .hover-help {
   margin-left: 8px;
 }
 
-.working .timer, .working .toolbar {
+.working .timer, .working .toolbar .btn {
   background-color: #090;
   color: #fff;
   border-color: #fff;

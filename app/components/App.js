@@ -320,7 +320,7 @@ export default class App extends Component {
 
     // Contents of various popups
     const logPopupContents = (
-      <Log log={this.state.log}/>
+      <Log log={this.state.log} visible={this.state.popup == 'log'}/>
     );
     // Log chart dialog contents
     const logChartPopupContents = '';
@@ -397,23 +397,28 @@ export default class App extends Component {
         <div className="current-task">
           {currentTask}
         </div>
-        <div className="status">
-          <div className="issue-number"><a>{issueNumber}</a></div>
-          <div className="start-time">
-            <span className="fa fa-clock-o"></span><span className="time">{startTime}</span>
-          </div>
-          <div className="time-elapsed" onClick={actions.rewind} title="Click to rewind">
-            <span className="fa fa-hourglass-o"></span><span className="time">{timeElapsed}</span>
-          </div>
-          <div className="time-idle">{timeIdle}</div>
-        </div>
       </div>
     );
+    const toolbar = (
+      <div className="status">
+        <div className="issue-number"><a>{issueNumber}</a></div>
+        <div className="start-time">
+          <span className="fa fa-clock-o"></span><span className="time">{startTime}</span>
+        </div>
+        <div className="time-elapsed" onClick={actions.rewind} title="Click to rewind">
+          <span className="fa fa-hourglass-o"></span><span className="time">{timeElapsed}</span>
+        </div>
+        <div className="time-idle">{timeIdle}</div>
+      </div>
+
+    )
     return(
       <div className={className} onClick={actions.click}>
         {statusMessage}
-        <Toolbar actions={actions} handlers={this.handlers} />
         {timer}
+        <Toolbar actions={actions} handlers={this.handlers} 
+            taskIssueNumber={this.state.taskIssueNumber} startTime={this.state.startTime}
+            timeElapsed={this.state.timeElapsed} />
         <div className="task-list">{taskList}</div>
         <div>
           {popups}
@@ -548,8 +553,8 @@ export default class App extends Component {
     }
     if (this.state.currently == "stopped" || this.state.popup == "alert") {
       state.timeIdle = this.state.timeIdle + 1;
-      if (state.timeIdle == 60 && this.state.currently == "paused") {
-        alert("Hey there!");
+      if (state.timeIdle == 60) {
+        new Notification("Hey there!");
       }
     }
     else if (this.state.currently == "working") {
@@ -567,7 +572,7 @@ export default class App extends Component {
           return;
         }
       }
-      if (this.state.timeElapsed && !(this.state.timeElapsed % 60)) {
+      if (this.state.timeElapsed && !(this.state.timeElapsed % (4*60))) {
         this.save();
       }
       state.lastWorkTime = now;
