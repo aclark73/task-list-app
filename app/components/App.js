@@ -4,6 +4,7 @@ import TaskList from './tasklist';
 import { TaskWidget, ProjectWidget } from './widgets';
 import Utils from './utils';
 import Toolbar from './toolbar';
+import Search from './lib/Search';
 
 import classNames from 'classnames';
 import Configstore from 'configstore';
@@ -424,6 +425,7 @@ export default class App extends Component {
         {timer}
         <Toolbar actions={actions} handlers={this.handlers}
             context={context} />
+        <Search search={context.search} setSearch={actions.setSearch} />
         <div className="task-list">{taskList}</div>
         <div>
           {popups}

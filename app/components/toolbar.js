@@ -10,10 +10,10 @@ import Search from './lib/search';
 class ToolbarButton extends Component {
   renderInner(label, icon, action, title) {
     return (
-      <span className="btn" title={title} onClick={action}>
+      <div className="btn" title={title} onClick={action}>
         <i className={icon}></i>
         <span className="btn-label"> {label}</span>
-      </span>
+      </div>
     );
   }
   render() {
@@ -84,7 +84,6 @@ export default class Toolbar extends Component {
         <IssueToolbarButton taskIssueNumber={this.props.context.taskIssueNumber} action={this.props.actions.refresh} />
         <StartTimeToolbarButton startTime={this.props.context.startTime} action={this.props.actions.rewind} />
         <ElapsedTimeToolbarButton timeElapsed={this.props.context.timeElapsed} action={this.props.actions.rewind} />
-        <Search search={this.props.context.search} setSearch={this.props.actions.setSearch} />
       </div>
     );
   }
