@@ -880,7 +880,13 @@ a:hover {
   width: 20px;
 }
 
-.chart > div {
+.chart-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.chart-inner > div {
   width: 100%;
   position: absolute;
 }

@@ -85,7 +85,11 @@ class GroupChart {
             background: getColor(logEntry)
         };
         return (
-            <div key={i} className="chart-label" style={style}></div>
+            <div className="chart">
+              <div className="chart-inner">
+                <div key={i} className="chart-label" style={style}></div>
+              </div>
+            </div>
         );
     }
 
@@ -101,14 +105,8 @@ class GroupChart {
     getLogOffsetMS(logTime) {
         return getDurationMS(this.startTime, logTime);
     }
-    formatMarkerLabel(h) {
-        return toShortTime(h);
-        /*
-        if (h == 12) { return 'n'; }
-        if (h == startTime) { return toShortTime(h); }
-        if (h == endTime) { return toShortTime(h); }
-        return '';
-        */
+    formatMarkerLabel(t) {
+        return toShortTime(t.getHours());
     }
     createMarker(t) {
         // Truncate to the hour
@@ -120,7 +118,7 @@ class GroupChart {
         );
         const style = isTop ?
             {top:"0%"} :
-            {bottom:""+this.chartHeight(hoursToMS(h-this.startTime.getHours()))+'%'};
+            {bottom:""+this.chartHeight(h-this.startTime)+'%'};
         const label = this.formatMarkerLabel(h);
         return (
             <div key={t} style={style} className={className}><span>{label}</span></div>
@@ -128,13 +126,19 @@ class GroupChart {
     }
     createMarkers(numRows) {
         const chartMarkers = [];
-        const hoursPerMarker = parseInt(8/numRows);
+        const hoursPerMarker = Math.max(parseInt(8/numRows),1);
         const t = roundToHour(this.startTime);
         while (t <= this.endTime) {
           chartMarkers.push(this.createMarker(t));
-          t.setHours(t.getHours() + 1);
+          t.setHours(t.getHours() + hoursPerMarker);
         }
-        return chartMarkers;
+        return (
+          <div className="chart">
+            <div className="chart-inner">
+              {chartMarkers}
+            </div>
+          </div>
+        );
     }
 }
 
@@ -150,13 +154,17 @@ export default class Log extends Component {
           edit: '',
           editStart: '',
           editEnd: '',
-          lastTime: null,
+          lastLogTime: null,
       };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (!nextState.popup) { return false; }
+    if (!nextProps.visible) { return false; }
     try {
+        if (nextState.lastLogTime != this.state.lastLogTime) {
+            console.log("updating log (again?)");
+            return true;
+        }
       if (nextProps.log[0].endTime != this.state.lastLogTime) {
         this.setState({
           lastLogTime: nextProps.log[0].endTime
@@ -280,9 +288,7 @@ export default class Log extends Component {
         const title = Utils.getDayTime(logEntry.startTime) + " - " + Utils.getDayTime(logEntry.endTime);
         subrows.push((
           <div key={groupIdx + '.' + i} className={className} title={title}>
-            <div className="chart">
-              {chartRow}
-            </div>
+            {chartRow}
             <span className="colorsquare" style={style}></span>
             <span className="task-name"><a href="#" onClick={edit}>{label}</a></span>
             <span className="timespan">{timespan}</span>
@@ -297,9 +303,7 @@ export default class Log extends Component {
 
       rows.push((
         <div key={groupIdx + 'w'} className="work">
-          <div className="chart">
-            {chartMarkers}
-          </div>
+          {chartMarkers}
           <div>
             {subrows}
           </div>

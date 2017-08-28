@@ -320,7 +320,7 @@ export default class App extends Component {
 
     // Contents of various popups
     const logPopupContents = (
-      <Log log={this.state.log}/>
+      <Log log={this.state.log} visible={this.state.popup == 'log'}/>
     );
     // Log chart dialog contents
     const logChartPopupContents = '';
@@ -554,7 +554,7 @@ export default class App extends Component {
     if (this.state.currently == "stopped" || this.state.popup == "alert") {
       state.timeIdle = this.state.timeIdle + 1;
       if (state.timeIdle == 60) {
-        alert("Hey there!");
+        new Notification("Hey there!");
       }
     }
     else if (this.state.currently == "working") {
@@ -572,7 +572,7 @@ export default class App extends Component {
           return;
         }
       }
-      if (this.state.timeElapsed && !(this.state.timeElapsed % 60)) {
+      if (this.state.timeElapsed && !(this.state.timeElapsed % (4*60))) {
         this.save();
       }
       state.lastWorkTime = now;
