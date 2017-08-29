@@ -423,9 +423,11 @@ export default class App extends Component {
       <div className={className} onClick={actions.click}>
         {statusMessage}
         {timer}
-        <Toolbar actions={actions} handlers={this.handlers}
-            context={context} />
-        <Search search={context.search} setSearch={actions.setSearch} />
+        <div className="tools">
+          <Toolbar actions={actions} handlers={this.handlers}
+              context={context} />
+          <Search search={context.search} setSearch={actions.setSearch} />
+        </div>
         <div className="task-list">{taskList}</div>
         <div>
           {popups}

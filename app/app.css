@@ -237,7 +237,7 @@ a:hover {
 
 .task-list {
     position: absolute;
-    top: 59px;
+    top: 60px;
     bottom: 0;
     left: 0;
     right: 0;
@@ -310,6 +310,10 @@ a:hover {
   display: inherit;
 }
 
+.tools {
+  position: relative;
+}
+
 .toolbar {
     /* margin-bottom: .3em; */
     /* border-bottom: 1px solid #ccc; */
@@ -325,10 +329,12 @@ a:hover {
     /* border: 1px solid #000; */
     /* border-color: inherit; */
     /* background-color: inherit; */
-}
-.toolbar > .btn {
-    /* display: inline-block !important; */
     float: left;
+    line-height: 15px;
+}
+.toolbar > * {
+    display: inline-block !important;
+    /* float: left; */
     /* display: block; */
 }
 .toolbar-inner {
@@ -358,7 +364,7 @@ a:hover {
 .toolbar .btn {
     padding: 0px 6px;
     vertical-align: bottom;
-    background: inherit;
+    background: initial;
     border-radius: 0;
     color: inherit;
     /* font-weight: bold; */
@@ -366,10 +372,12 @@ a:hover {
     border: 1px solid #000;
     display: block;
     /* height: 0; */
+    border-color: inherit;
 }
 
 .toolbar .btn:hover {
-  /* background: rgba(255,255,255,.3); */
+  /* box-shadow: inset 0 0 6px rgba(0,0,0,.5); */
+  background: rgba(255,255,255,.3) !important;
 }
 
 .toolbar .btns, div.show-popup .toolbar .btns {
@@ -380,13 +388,15 @@ a:hover {
   overflow: hidden;
   transition: height .4s linear;
   background: inherit;
+  border-color: inherit;
 }
 
 .toolbar-options {
   /* z-index: 100; */
-  /* background: inherit; */
+  background: inherit;
   /* display: inline-block; */
-  float: left;
+  /* float: left; */
+  border: inherit;
 }
 
 .toolbar-options:hover .btns {
@@ -547,7 +557,7 @@ a:hover {
 
 .search {
     color: #999;
-    position: relative;
+    /* position: relative; */
     /* width: 100%; */
     /* left: 0; */
     /* right: 0; */
@@ -569,6 +579,7 @@ a:hover {
     padding: 0px 4px;
     /* margin-bottom: 2px; */
     background: transparent;
+    font-size: 12px;
 }
 
 .search input:focus {
@@ -1124,10 +1135,10 @@ div:hover > .hover-help {
   animation-duration: 2s;
 }
 
-.timer, .toolbar .btn {
+.timer, .toolbar {
   background-color: #eee;
   color: #333;
-  border-color: #666;
+  border-color: #aaa;
 }
 
 .timer {
@@ -1168,7 +1179,7 @@ div:hover > .hover-help {
   margin-left: 8px;
 }
 
-.working .timer, .working .toolbar .btn {
+.working .timer, .working .toolbar {
   background-color: #090;
   color: #fff;
   border-color: #fff;
