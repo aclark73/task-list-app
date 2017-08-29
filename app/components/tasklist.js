@@ -9,8 +9,7 @@ export default class TaskList extends Component {
         return (nextProps.projects != this.props.projects) ||
             (nextProps.tasks != this.props.tasks) ||
             (JSON.stringify(nextState) != JSON.stringify(this.state)) ||
-            (JSON.stringify(nextProps.context) != JSON.stringify(this.props.context)) ||
-            (nextProps.search != this.props.search);
+            (JSON.stringify(nextProps.context) != JSON.stringify(this.props.context));
     }
 
     render() {

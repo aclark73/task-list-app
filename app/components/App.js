@@ -4,7 +4,7 @@ import TaskList from './tasklist';
 import { TaskWidget, ProjectWidget } from './widgets';
 import Utils from './utils';
 import Toolbar from './toolbar';
-import Search from './lib/Search';
+import Search from './lib/search';
 
 import classNames from 'classnames';
 import Configstore from 'configstore';
@@ -204,7 +204,8 @@ export default class App extends Component {
       state.log = [tempLog].concat(state.log);
       const outage = (new Date()) - (new Date(tempLog.endTime));
       console.log("Last activity was " + tempLog.endTime + " (" + outage + ")");
-      if (outage < 2*60*1000) {
+      // This needs to be at least the length between automatic saves
+      if (outage < 4*60*1000) {
         state.resumeTaskId = tempLog.taskId;
       }
     }
@@ -314,9 +315,6 @@ export default class App extends Component {
       actions: actions,
       view: this.state.view,
       search: this.state.search,
-      taskIssueNumber: this.state.taskIssueNumber,
-      startTime: this.state.startTime,
-      timeElapsed: this.state.timeElapsed
     };
 
     // Task/project list
@@ -399,33 +397,25 @@ export default class App extends Component {
     const issueNumber = this.state.taskIssueNumber ? '#' + this.state.taskIssueNumber : '';
     const statusMessage = this.handlers.status.component(this.state.status);
     const timer = (
-      <div className="timer" onClick={actions.startStop} title="Click to start/stop">
+      <div className="timer btn" onClick={actions.startStop} title="Click to start/stop">
         <div className="time-remaining">{timeRemaining}</div>
         <div className="current-task">
           {currentTask}
         </div>
       </div>
     );
-    const toolbar = (
-      <div className="status">
-        <div className="issue-number"><a>{issueNumber}</a></div>
-        <div className="start-time">
-          <span className="fa fa-clock-o"></span><span className="time">{startTime}</span>
-        </div>
-        <div className="time-elapsed" onClick={actions.rewind} title="Click to rewind">
-          <span className="fa fa-hourglass-o"></span><span className="time">{timeElapsed}</span>
-        </div>
-        <div className="time-idle">{timeIdle}</div>
-      </div>
-
-    )
+    const toolbarContext = Object.assign({}, context, {
+      taskIssueNumber: this.state.taskIssueNumber,
+      startTime: this.state.startTime,
+      timeElapsed: this.state.timeElapsed
+    });
     return(
       <div className={className} onClick={actions.click}>
         {statusMessage}
         {timer}
         <div className="tools">
           <Toolbar actions={actions} handlers={this.handlers}
-              context={context} />
+              context={toolbarContext} />
           <Search search={context.search} setSearch={actions.setSearch} />
         </div>
         <div className="task-list">{taskList}</div>
