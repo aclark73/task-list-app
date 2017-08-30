@@ -532,27 +532,45 @@ export default class App extends Component {
     });
     this.startTimer();
   }
-  /* Callback for timer ticks */
-  tick() {
-    // Update to state (if any)
-    const state = {};
-    // Check for long gap -- usually means a system sleep
+  /* Check the gap between ticks which can indicate the system went to sleep.
+   * :returns: a state update
+   * :throws: the gap since the last tick if it is over a threshold
+   * Will also stop and display a message if the gap is exceeded.
+   */
+  checkTick() {
     const now = new Date();
-    state.lastTick = now.getTime();
+    const state = {
+      lastTick: now.getTime()
+    };
+    // Check for long gap -- usually means a system sleep
     if (this.state.lastTick) {
       const gap = now - this.state.lastTick;
+      const gapStr = Utils.formatTimespan(parseInt(gap/1000));
       if (gap > 2000) {
-        console.log("Gap is " + gap + ' at ' + now);
+        console.log("Gap is " + gapStr + ' at ' + now);
       }
       if (gap > 60000) {
-        const msg = "Stopping due to time gap of " + gap + ' at ' + now;
+        const msg = "Stopping due to time gap of " + gapStr + ' at ' + now;
         console.log(msg);
         this.stop();
         this.waitForUser(msg, "stopped");
         this.setState(state);
-        return;
+        throw gap;
       }
     }
+    return state;
+  }
+  /* Callback for timer ticks */
+  tick() {
+    const state = {};
+
+    try {
+      Object.assign(state, this.checkTick());
+    } catch (e) {
+      console.log("Error: " + e);
+      return;
+    }
+
     if (this.state.currently == "stopped" || this.state.popup == "alert") {
       state.timeIdle = this.state.timeIdle + 1;
       if (state.timeIdle == 60) {
@@ -563,7 +581,7 @@ export default class App extends Component {
       if (this.state.timeElapsed && !(this.state.timeElapsed % (4*60))) {
         this.save();
       }
-      state.lastWorkTime = now;
+      state.lastWorkTime = new Date();
       state.timeElapsed = this.state.timeElapsed + 1;
     }
     if (this.state.timeRemaining > 0) {
