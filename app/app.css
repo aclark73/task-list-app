@@ -1144,7 +1144,7 @@ div:hover > .hover-help {
 }
 
 .timer {
-  padding: 4px 10px;
+  padding: 3px 10px;
   position: relative;
   cursor: default;
   height: 43px;
@@ -1154,18 +1154,18 @@ div:hover > .hover-help {
   float: left;
   width: 70px;
   font-size: 28px;
-  margin: 3px 10px 0 0;
+  margin: 1px 10px 0 0;
   font-weight: lighter;
 }
 
 .current-task {
-  font-size: 20px;
-  margin: 2px 0 0;
+  font-size: 18px;
+  margin: 0;
   text-overflow: ellipsis;
   overflow: hidden;
   /* margin-right: 60px; */
   line-height: 1;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .status {
