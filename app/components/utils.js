@@ -1,19 +1,41 @@
+import humanizeDuration from 'humanize-duration';
+
+const shortEnglishHumanizer = humanizeDuration.humanizer({
+  language: 'shortEn',
+  largest: 1,
+  spacer: '',
+  languages: {
+    shortEn: {
+      y: function() { return 'y' },
+      mo: function() { return 'mo' },
+      w: function() { return 'w' },
+      d: function() { return 'd' },
+      h: function() { return 'h' },
+      m: function() { return 'm' },
+      s: function() { return 's' },
+      ms: function() { return 'ms' },
+    }
+  },
+  round: true
+});
+
+
 const Utils = {
   pad2: function(d) {
     return (d >= 10 ? '' : '0') + d;
   },
 
-  formatTimespan: function(t, humanize) {
-    var neg = (t < 0);
-    t = Math.abs(t);
-    var s = t%60;
-    var m = (Math.trunc(t/60)%60);
-    var h = Math.trunc(t/3600);
+  formatTimespan: function(seconds, humanize) {
+    var neg = (seconds < 0);
+    seconds = Math.abs(seconds);
+    var s = seconds%60;
+    var m = Math.trunc(seconds/60)%60;
+    var h = Math.trunc(seconds/3600);
 
     var sign = neg ? '-' : '';
     if (humanize) {
       if (h > 0) {
-        return sign + h + 'h' + Utils.pad2(m) + 'm';
+        return sign + h + 'h' +  m + 'm';
       } else {
         return sign + m + 'm';
       }
@@ -23,6 +45,25 @@ const Utils = {
       } else {
         return sign + m + ':' + Utils.pad2(s);
       }
+    }
+  },
+
+  humanTimespan: function(s) {
+    return shortEnglishHumanizer(s*1000);
+  },
+
+  getDuration: function(t1, t2) {
+    try {
+      const durationMS = Math.floor((new Date(t2) - new Date(t1)));
+      if (isNaN(durationMS)) {
+        throw "NaN!";
+      }
+      // console.log("" + t2 + " - " + t1 + " = " + duration);
+      return durationMS/1000;
+    }
+    catch (e) {
+      console.log("" + t1 + " - " + t2 + " = " + e);
+      return 0;
     }
   },
 

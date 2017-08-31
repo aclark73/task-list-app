@@ -166,24 +166,10 @@ export default class App extends Component {
   }
   /** DELETE - THESE SHOULD BE IN LOG **/
   fixLog(state) {
-    function getDurationMS(t1, t2) {
-      try {
-        const duration = Math.floor((new Date(t2) - new Date(t1)));
-        if (isNaN(duration)) {
-          throw "NaN!";
-        }
-        // console.log("" + t2 + " - " + t1 + " = " + duration);
-        return duration;
-      }
-      catch (e) {
-        console.log("" + t1 + " - " + t2 + " = " + e);
-        return 0;
-      }
-    }
     if (state.log) {
       // Truncate long entries
       state.log.forEach(function(entry) {
-        if (getDurationMS(entry.startTime, entry.endTime) > 6*60*60*1000) {
+        if (Utils.getDuration(entry.startTime, entry.endTime) > 6*60*60) {
           console.log("Truncating long entry (" + entry.startTime + ", " + entry.endTime + ")");
           entry.endTime = (new Date(
             (new Date(entry.startTime)).getTime() + entry.timeElapsed*1000
@@ -203,10 +189,10 @@ export default class App extends Component {
   handleTempLog(state, tempLog) {
     if (tempLog) {
       state.log = [tempLog].concat(state.log);
-      const outage = (new Date()) - (new Date(tempLog.endTime));
+      const outage = Utils.getDuration(tempLog.endTime, new Date());
       console.log("Last activity was " + tempLog.endTime + " (" + outage + ")");
       // This needs to be at least the length between automatic saves
-      if (outage < 4*60*1000) {
+      if (outage < 4*60) {
         state.resumeTaskId = tempLog.taskId;
       }
     }
@@ -336,10 +322,10 @@ export default class App extends Component {
     const statusMessages = this.handlers.status.popup(this.state.status);
 
     const startTime = Utils.getTime(this.state.startTime);
-    const timeElapsed = Utils.formatTimespan(this.state.timeElapsed);
+    const timeElapsed = Utils.humanTimespan(this.state.timeElapsed);
     const isIdle = (!this.state.timeRemaining && this.state.timeIdle);
     const timeRemaining = Utils.formatTimespan(this.state.timeRemaining);
-    const timeIdle = (this.state.timeIdle > 0) ? "Idle: " + Utils.formatTimespan(this.state.timeIdle) : '';
+    const timeIdle = (this.state.timeIdle > 0) ? "Idle: " + Utils.humanTime(this.state.timeIdle) : '';
     var idleLevel = '';
     if (this.state.timeIdle > 5) { idleLevel = 'idle-1'; }
     if (this.state.timeIdle > 10) { idleLevel = 'idle-2'; }

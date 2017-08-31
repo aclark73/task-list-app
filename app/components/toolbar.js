@@ -49,7 +49,7 @@ class StartTimeToolbarButton extends ToolbarButton {
 
 class ElapsedTimeToolbarButton extends ToolbarButton {
     render() {
-        const timeElapsed = Utils.formatTimespan(this.props.timeElapsed, true);
+        const timeElapsed = Utils.humanTimespan(this.props.timeElapsed);
         return this.renderInner(
             timeElapsed,
             "fa fa-hourglass",

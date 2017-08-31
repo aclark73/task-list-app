@@ -68,16 +68,16 @@ class GroupChart {
         this.id = id;
         this.startTime = roundToHour(startTime, 0);
         this.endTime = roundToHour(endTime, 1);
-        this.durationMS = getDurationMS(this.startTime, this.endTime);
+        this.duration = Utils.getDuration(this.startTime, this.endTime);
     }
 
     /* Create a row for the given entry. It is absolutely positioned
      * and sized in proportion to its duration.
      */
     createChartRow(logEntry, i) {
-        const offset = this.chartHeight(this.getLogOffsetMS(logEntry.startTime));
+        const offset = this.chartHeight(this.getLogOffset(logEntry.startTime));
         const height = Math.max(
-            this.chartHeight(getDurationMS(logEntry.startTime, logEntry.endTime)),
+            this.chartHeight(Utils.getDuration(logEntry.startTime, logEntry.endTime)),
             Math.min(2, 100-offset));
         const style = {
             bottom: '' + offset + '%',
@@ -93,17 +93,17 @@ class GroupChart {
         );
     }
 
-    /* Height in px for a chart of duration ms */
+    /* Height in px for a chart of duration in s */
     chartHeight(duration) {
-        const height = parseInt((duration*100)/this.durationMS);
+        const height = parseInt((duration*100)/this.duration);
         if (isNaN(height)) {
-            console.log("NaN for " + duration + " / " + this.durationMS);
+            console.log("NaN for " + duration + " / " + this.duration);
         }
         return height;
     }
     /* Get offset from start time */
-    getLogOffsetMS(logTime) {
-        return getDurationMS(this.startTime, logTime);
+    getLogOffset(logTime) {
+        return Utils.getDuration(this.startTime, logTime);
     }
     formatMarkerLabel(t) {
         return toShortTime(t.getHours());
@@ -118,7 +118,7 @@ class GroupChart {
         );
         const style = isTop ?
             {top:"0%"} :
-            {bottom:""+this.chartHeight(h-this.startTime)+'%'};
+            {bottom:""+this.chartHeight((h-this.startTime)/1000)+'%'};
         const label = this.formatMarkerLabel(h);
         return (
             <div key={t} style={style} className={className}><span>{label}</span></div>
@@ -126,7 +126,7 @@ class GroupChart {
     }
     createMarkers(numRows) {
         const chartMarkers = [];
-        const hoursPerMarker = Math.max(parseInt(8/numRows),1);
+        const hoursPerMarker = Math.max(parseInt(2/numRows),1);
         const t = roundToHour(this.startTime);
         while (t <= this.endTime) {
           chartMarkers.push(this.createMarker(t));
@@ -269,7 +269,7 @@ export default class Log extends Component {
       group.forEach( (logEntry, i) => {
         const label = logEntry.taskName || logEntry.task;
         const duration = this.getDuration(logEntry.startTime, logEntry.endTime);
-        const utilization = Math.floor((logEntry.timeElapsed * 100) / duration);
+        const utilization = duration ? Math.floor((logEntry.timeElapsed * 100) / duration) : 0;
         const timespan = "" + Utils.getTime(logEntry.startTime) + " - " + Utils.getTime(logEntry.endTime);
         const chartRow = groupChart.createChartRow(logEntry, i);
         const style = {
@@ -293,8 +293,8 @@ export default class Log extends Component {
             <span className="task-name"><a href="#" onClick={edit}>{label}</a></span>
             <span className="timespan">{timespan}</span>
             <span className="stats">
-              <span className="worked">{Utils.formatTimespan(logEntry.timeElapsed, true)}</span>
-              <span className="duration">{Utils.formatTimespan(duration, true)}</span>
+              <span className="worked">{Utils.humanTimespan(logEntry.timeElapsed)}</span>
+              <span className="duration">{Utils.humanTimespan(duration)}</span>
               <span className="util">{utilization}%</span>
             </span>
           </div>
