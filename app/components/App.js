@@ -184,8 +184,9 @@ export default class App extends Component {
       // Truncate long entries
       state.log.forEach(function(entry) {
         if (getDurationMS(entry.startTime, entry.endTime) > 6*60*60*1000) {
+          console.log("Truncating long entry (" + entry.startTime + ", " + entry.endTime + ")");
           entry.endTime = (new Date(
-            (new Date(entry.startTime)).getTime() + entry.timeElapsed*60*1000
+            (new Date(entry.startTime)).getTime() + entry.timeElapsed*1000
           )).toISOString();
         }
       });
