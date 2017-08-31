@@ -155,13 +155,16 @@ export default class App extends Component {
 
     this.handleTempLog(state, this.conf.get('tempLog'));
 
-    this.setState(state);
-
     const sourcesConf = this.conf.get('sources') || {};
     this.sources = [
       new RedmineClient(sourcesConf.redmine),
       new GitHubClient(sourcesConf.github)
     ];
+    this.sourceIcons = {};
+    this.sources.forEach( (s) => {
+      this.sourceIcons[s.source] = s.sourceIcon;
+    });
+    this.setState(state);
     return Promise.resolve();
   }
   /** DELETE - THESE SHOULD BE IN LOG **/

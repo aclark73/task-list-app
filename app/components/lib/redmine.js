@@ -18,6 +18,7 @@ export default class RedmineClient {
     constructor(config) {
         this.config = config || DEFAULT_CONFIG;
         this.source = 'redmine';
+        this.sourceIcon = 'fa fa-git';
         if (DEBUG) {
             console.log("RedmineClient in DEBUG");
         }
