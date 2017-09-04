@@ -39,23 +39,34 @@ export class Handler {
     }
 
     /**
-    * Override to private initial state values
+    * This is called on initialization.
+    * :returns the initial state to put in this handler's namespace
     */
     initialState() {
         return {};
     }
 
     /**
-    * Override to handle namespaced state changes.
-    * Shortcut for updateFullState below, which is basically
-    * newState[label] = updateState(oldState[label], newState[label]);
+    * This is called by updateFullState()
+    * :param state: this handler's namespace in the main app's current state
+    * :param newState: this handler's namespace in the main app's new state
+    * :returns: any update to this handler's namespace
+    * You should typically add values to newState then return it, but you
+    * can return a different object to overwrite it.
     */
     updateState(state, newState) {
         return null;
     }
 
     /**
-    * Update the full state. Plugins shouldn't generally use this.
+    * This is called by the main app before it runs setState().
+    *
+    * :param fullState: The app's current state
+    * :param fullNewState: The value being passed to setState()
+    *
+    * By default, this namespaces both parameters, calls
+    * updateState(), and updates the namespaced new state with
+    * anything returned.
     */
     updateFullState(fullState, fullNewState) {
         // By default, do the private update on the private state
