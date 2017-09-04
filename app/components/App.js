@@ -328,7 +328,7 @@ export default class App extends Component {
     const timeElapsed = Utils.humanTimespan(this.state.timeElapsed);
     const isIdle = (!this.state.timeRemaining && this.state.timeIdle);
     const timeRemaining = Utils.formatTimespan(this.state.timeRemaining);
-    const timeIdle = (this.state.timeIdle > 0) ? "Idle: " + Utils.humanTime(this.state.timeIdle) : '';
+    const timeIdle = (this.state.timeIdle > 0) ? "Idle: " + Utils.humanTimespan(this.state.timeIdle) : '';
     var idleLevel = '';
     if (this.state.timeIdle > 5) { idleLevel = 'idle-1'; }
     if (this.state.timeIdle > 10) { idleLevel = 'idle-2'; }
