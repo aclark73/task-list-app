@@ -200,7 +200,9 @@ export default class Log extends Component {
     const entriesByGroup = {};
     let lastEntry = null;
 
+    // Merge if gap is less than this
     const mergeGapSize = 10*60;
+    // Split group on gaps larger than this
     const groupGapSize = 6*60*60;
 
     this.props.log.forEach( (logEntry, i) => {
@@ -210,10 +212,15 @@ export default class Log extends Component {
       // console.log("Gap:", gap, Utils.getDayTime(logEntry.endTime), Utils.getDayTime(lastEntry && lastEntry.startTime));
       if (lastEntry
           && lastEntry.taskId == logEntry.taskId
-          && gap > 0 && gap < mergeGapSize) {
+          && gap < mergeGapSize) {
         // Merge with previous entry
         console.log("Merging log");
-        lastEntry.startTime = logEntry.startTime;
+        if (logEntry.startTime < lastEntry.startTime) {
+          lastEntry.startTime = logEntry.startTime;
+        }
+        if (logEntry.endTime > lastEntry.endTime) {
+          lastEntry.endTime = logEntry.endTime;
+        }
         lastEntry.timeElapsed += logEntry.timeElapsed;
         lastEntry.taskName += "*";
       } else {
