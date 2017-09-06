@@ -25,9 +25,6 @@ function getColor(logEntry) {
   const hue = Task.getProjectColor(logEntry.project);
   return 'hsl(' + hue + ',100%,85%)';
 }
-function getStyle(logEntry) {
-  const hue = Task.getProjectColor(logEntry.project);
-}
 function hoursToMS(h) {
     return h * 60 * 60 * 1000;
 }
