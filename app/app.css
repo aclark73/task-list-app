@@ -237,7 +237,7 @@ a:hover {
 
 .task-list {
     position: absolute;
-    top: 60px;
+    top: 62px;
     bottom: 0;
     left: 0;
     right: 0;
@@ -330,7 +330,7 @@ a:hover {
     /* border-color: inherit; */
     /* background-color: inherit; */
     float: left;
-    line-height: 15px;
+    line-height: 1em;
 }
 .toolbar > * {
     display: inline-block !important;
@@ -362,13 +362,13 @@ a:hover {
 }
 
 .toolbar .btn {
-    padding: 0px 6px;
+    padding: 1px 4px;
     vertical-align: bottom;
     background: initial;
     border-radius: 0;
     color: inherit;
     /* font-weight: bold; */
-    font-size: 12px;
+    font-size: 14px;
     border: 1px solid #000;
     display: block;
     /* height: 0; */

@@ -25,10 +25,15 @@ class ToolbarButton extends Component {
 
 class IssueToolbarButton extends ToolbarButton {
     render() {
-        const taskNumber = this.props.taskIssueNumber;
+        const buttonText = (this.props.task) ?
+          Task.getIssueNumber(this.props.task) :
+          '-';
+        const buttonIcon = (this.props.task) ?
+          this.props.task.source_icon :
+          '';
         return this.renderInner(
-            taskNumber,
-            "fa fa-database",
+            buttonText,
+            buttonIcon,
             this.props.action,
             "Refresh"
         );
@@ -81,7 +86,7 @@ export default class Toolbar extends Component {
               icon="fa fa-arrows-v" title="Toggle compact view" />
           </div>
         </div>
-        <IssueToolbarButton taskIssueNumber={this.props.context.taskIssueNumber} action={this.props.actions.refresh} />
+        <IssueToolbarButton task={this.props.context.task} action={this.props.actions.refresh} />
         <StartTimeToolbarButton startTime={this.props.context.startTime} action={this.props.actions.rewind} />
         <ElapsedTimeToolbarButton timeElapsed={this.props.context.timeElapsed} action={this.props.actions.rewind} />
       </div>

@@ -45,6 +45,7 @@ export default class App extends Component {
 
       // CUrrent task
       task: null,
+
       taskId: null,
       taskLabel: '-',
       taskIssueNumber: null,
@@ -240,7 +241,7 @@ export default class App extends Component {
         if (!found) {
             this.stop();
         }
-        this.sortTasks(projects, tasks);
+        this.prepareTasks(projects, tasks);
         Task.setProjectColors(projects, tasks);
         this.setState({projects: projects, tasks: tasks});
       },
@@ -249,7 +250,11 @@ export default class App extends Component {
       }
     );
   }
-  sortTasks(projects, tasks) {
+  prepareTasks(projects, tasks) {
+    // Set the source icon for each task
+    tasks.forEach((task) => {
+      task.source_icon = this.sourceIcons[task.source];
+    });
     // The task's updated_on should be the last logged work if that's newer
     const lastWork = Utils.lastWorkPerTask(this.state.log);
     tasks.forEach((task) => {
@@ -395,9 +400,10 @@ export default class App extends Component {
       </div>
     );
     const toolbarContext = Object.assign({}, context, {
+      task: this.state.task,
       taskIssueNumber: this.state.taskIssueNumber,
       startTime: this.state.startTime,
-      timeElapsed: this.state.timeElapsed
+      timeElapsed: this.state.timeElapsed,
     });
     return(
       <div className={className} onClick={actions.click}>
