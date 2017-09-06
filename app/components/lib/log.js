@@ -22,7 +22,8 @@ function getColor2(str) {
   return COLORS[hashCode(str) % NUM_COLORS];
 }
 function getColor(logEntry) {
-  const hue = Task.getProjectColor(logEntry.project);
+//  const hue = Task.getProjectColor(logEntry.project);
+  const hue = hashCode(logEntry.taskId) % 360;
   return 'hsl(' + hue + ',100%,85%)';
 }
 function hoursToMS(h) {
