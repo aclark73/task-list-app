@@ -548,9 +548,13 @@ a:hover {
     border-width: 1px 0 1px 1px;
     border-radius: 2px 0 0 2px;
 }
+.status-message.error {
+    background: #fcc;
+    color: #a00;
+}
 .status-message.hide {
     opacity: 0;
-    transition: opacity 2s, margin 1s;
+    transition: opacity 2s, margin 1s, background 6s;
     /* margin-top: -30px; */
     margin-right: -60px;
 }

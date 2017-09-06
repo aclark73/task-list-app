@@ -123,9 +123,14 @@ export default class App extends Component {
     this.save();
   }
   addMessage(message) {
+    this._addMessage(message, "info");
+  }
+  addErrorMessage(message) {
+    this._addMessage(message, "error");
+  }
+  _addMessage(message, level) {
     this.setState({
-      status: this.handlers.status.addMessage(this.state.status, message)
-      // messages: this.state.messages.concat(['' + message])
+      status: this.handlers.status.addMessage(this.state.status, message, level)
     });
   }
   click() {
@@ -243,9 +248,11 @@ export default class App extends Component {
         }
         this.prepareTasks(projects, tasks);
         Task.setProjectColors(projects, tasks);
+        this.addMessage("Refreshed task data");
         this.setState({projects: projects, tasks: tasks});
       },
       (err) => {
+        this.addMessage(err, level="error");
         console.log(err);
       }
     );
