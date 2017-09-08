@@ -604,7 +604,8 @@ export default class App extends Component {
     if (this.state.timer) {
       window.clearInterval(this.state.timer);
       this.setState({
-        timer: null
+        timer: null,
+        lastTick: 0
       });
     }
   }
