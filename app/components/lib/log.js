@@ -60,6 +60,54 @@ function toShortTime(h) {
     return '' + hour + am_pm;
 }
 
+// Compact if gap is less than this
+const compactMaxGapSize = 10*60*1000;
+
+function compactLogEntries(log) {
+  const clog = [];
+  let lastEntry = null;
+  log.forEach( (logEntry, i) => {
+    const gap = (lastEntry ?
+      getDurationMS(logEntry.endTime, lastEntry.startTime) :
+      -1);
+    // console.log("Gap:", gap, Utils.getDayTime(logEntry.endTime), Utils.getDayTime(lastEntry && lastEntry.startTime));
+    if (lastEntry
+        && lastEntry.taskId == logEntry.taskId
+        && gap < mergeGapSize) {
+      // Merge with previous entry
+      console.log("Merging log");
+      if (logEntry.startTime < lastEntry.startTime) {
+        lastEntry.startTime = logEntry.startTime;
+      }
+      if (logEntry.endTime > lastEntry.endTime) {
+        lastEntry.endTime = logEntry.endTime;
+      }
+      lastEntry.timeElapsed += logEntry.timeElapsed;
+      lastEntry.taskName += "*";
+    } else {
+      // Add a copy since we might merge things into it
+      lastEntry = Object.assign({}, logEntry);
+      clog.push(lastEntry);
+    }
+  });
+  return clog;
+}
+
+function groupLogEntries(log, max) {
+  const groups = [];
+  log.forEach( (logEntry, i) => {
+    const gap = (lastEntry ?
+      getDurationMS(logEntry.endTime, lastEntry.startTime) :
+      -1);
+    // console.log("Gap:", gap, Utils.getDayTime(logEntry.endTime), Utils.getDayTime(lastEntry && lastEntry.startTime));
+    if (!lastEntry || gap > groupGapSize) {
+      console.log("Creating new group");
+      groups.push([]);
+    }
+    groups[groups.length - 1].push(logEntry);
+  });
+}
+
 class GroupChart {
 
     constructor(id, startTime, endTime) {
