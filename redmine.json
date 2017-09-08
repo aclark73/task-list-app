@@ -1179,13 +1179,13 @@
             "name" : "Wilber",
             "id" : 18
          },
-         "description" : "Cache is expiring between each hit.\r\n(Or possibly each session, each browser should cache it for the duration of that session. Does it? Worth investigating, maybe.)\r\n\r\n!vnets.png!",
+         "description" : "Not relevant",
          "assigned_to" : {
             "name" : "Adam Clark",
             "id" : 3
          },
          "done_ratio" : 0,
-         "subject" : "Caching fail"
+         "subject" : "Vue.js version"
       },
       {
          "project" : {
