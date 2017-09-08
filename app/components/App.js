@@ -4,6 +4,7 @@ import TaskList from './tasklist';
 import { TaskWidget, ProjectWidget } from './widgets';
 import Utils from './utils';
 import Toolbar from './toolbar';
+import Search from './lib/search';
 
 import classNames from 'classnames';
 import Configstore from 'configstore';
@@ -40,9 +41,11 @@ export default class App extends Component {
       // UI toaggles
       view: 'tasks',
       compactView: false,
+      search: "",
 
       // CUrrent task
       task: null,
+
       taskId: null,
       taskLabel: '-',
       taskIssueNumber: null,
@@ -75,6 +78,7 @@ export default class App extends Component {
       rewind: this.rewind.bind(this),
       setTask: this.setTask.bind(this),
       refresh: this.refresh.bind(this),
+      setSearch: this.setSearch.bind(this),
       save: this.save.bind(this),
       uploadLogs: this.uploadLogs.bind(this),
       toggleView: this.toggleView.bind(this),
@@ -119,9 +123,14 @@ export default class App extends Component {
     this.save();
   }
   addMessage(message) {
+    this._addMessage(message, "info");
+  }
+  addErrorMessage(message) {
+    this._addMessage(message, "error");
+  }
+  _addMessage(message, level) {
     this.setState({
-      status: this.handlers.status.addMessage(this.state.status, message)
-      // messages: this.state.messages.concat(['' + message])
+      status: this.handlers.status.addMessage(this.state.status, message, level)
     });
   }
   click() {
@@ -152,37 +161,27 @@ export default class App extends Component {
 
     this.handleTempLog(state, this.conf.get('tempLog'));
 
-    this.setState(state);
-
     const sourcesConf = this.conf.get('sources') || {};
     this.sources = [
       new RedmineClient(sourcesConf.redmine),
       new GitHubClient(sourcesConf.github)
     ];
+    this.sourceIcons = {};
+    this.sources.forEach( (s) => {
+      this.sourceIcons[s.source] = s.sourceIcon;
+    });
+    this.setState(state);
     return Promise.resolve();
   }
   /** DELETE - THESE SHOULD BE IN LOG **/
   fixLog(state) {
-    function getDurationMS(t1, t2) {
-      try {
-        const duration = Math.floor((new Date(t2) - new Date(t1)));
-        if (isNaN(duration)) {
-          throw "NaN!";
-        }
-        // console.log("" + t2 + " - " + t1 + " = " + duration);
-        return duration;
-      }
-      catch (e) {
-        console.log("" + t1 + " - " + t2 + " = " + e);
-        return 0;
-      }
-    }
     if (state.log) {
       // Truncate long entries
       state.log.forEach(function(entry) {
-        if (getDurationMS(entry.startTime, entry.endTime) > 6*60*60*1000) {
+        if (Utils.getDuration(entry.startTime, entry.endTime) > 6*60*60) {
+          console.log("Truncating long entry (" + entry.startTime + ", " + entry.endTime + ")");
           entry.endTime = (new Date(
-            (new Date(entry.startTime)).getTime() + entry.timeElapsed*60*1000
+            (new Date(entry.startTime)).getTime() + entry.timeElapsed*1000
           )).toISOString();
         }
       });
@@ -199,9 +198,10 @@ export default class App extends Component {
   handleTempLog(state, tempLog) {
     if (tempLog) {
       state.log = [tempLog].concat(state.log);
-      const outage = (new Date()) - (new Date(tempLog.endTime));
+      const outage = Utils.getDuration(tempLog.endTime, new Date());
       console.log("Last activity was " + tempLog.endTime + " (" + outage + ")");
-      if (outage < 2*60*1000) {
+      // This needs to be at least the length between automatic saves
+      if (outage < 4*60) {
         state.resumeTaskId = tempLog.taskId;
       }
     }
@@ -246,16 +246,22 @@ export default class App extends Component {
         if (!found) {
             this.stop();
         }
-        this.sortTasks(projects, tasks);
+        this.prepareTasks(projects, tasks);
         Task.setProjectColors(projects, tasks);
+        this.addMessage("Refreshed task data");
         this.setState({projects: projects, tasks: tasks});
       },
       (err) => {
+        this.addMessage(err, level="error");
         console.log(err);
       }
     );
   }
-  sortTasks(projects, tasks) {
+  prepareTasks(projects, tasks) {
+    // Set the source icon for each task
+    tasks.forEach((task) => {
+      task.source_icon = this.sourceIcons[task.source];
+    });
     // The task's updated_on should be the last logged work if that's newer
     const lastWork = Utils.lastWorkPerTask(this.state.log);
     tasks.forEach((task) => {
@@ -309,7 +315,8 @@ export default class App extends Component {
       selectedTaskId: this.state.taskId,
       currently: this.state.currently,
       actions: actions,
-      view: this.state.view
+      view: this.state.view,
+      search: this.state.search,
     };
 
     // Task/project list
@@ -330,10 +337,10 @@ export default class App extends Component {
     const statusMessages = this.handlers.status.popup(this.state.status);
 
     const startTime = Utils.getTime(this.state.startTime);
-    const timeElapsed = Utils.formatTimespan(this.state.timeElapsed);
+    const timeElapsed = Utils.humanTimespan(this.state.timeElapsed);
     const isIdle = (!this.state.timeRemaining && this.state.timeIdle);
     const timeRemaining = Utils.formatTimespan(this.state.timeRemaining);
-    const timeIdle = (this.state.timeIdle > 0) ? "Idle: " + Utils.formatTimespan(this.state.timeIdle) : '';
+    const timeIdle = (this.state.timeIdle > 0) ? "Idle: " + Utils.humanTimespan(this.state.timeIdle) : '';
     var idleLevel = '';
     if (this.state.timeIdle > 5) { idleLevel = 'idle-1'; }
     if (this.state.timeIdle > 10) { idleLevel = 'idle-2'; }
@@ -392,33 +399,28 @@ export default class App extends Component {
     const issueNumber = this.state.taskIssueNumber ? '#' + this.state.taskIssueNumber : '';
     const statusMessage = this.handlers.status.component(this.state.status);
     const timer = (
-      <div className="timer" onClick={actions.startStop} title="Click to start/stop">
+      <div className="timer btn" onClick={actions.startStop} title="Click to start/stop">
         <div className="time-remaining">{timeRemaining}</div>
         <div className="current-task">
           {currentTask}
         </div>
       </div>
     );
-    const toolbar = (
-      <div className="status">
-        <div className="issue-number"><a>{issueNumber}</a></div>
-        <div className="start-time">
-          <span className="fa fa-clock-o"></span><span className="time">{startTime}</span>
-        </div>
-        <div className="time-elapsed" onClick={actions.rewind} title="Click to rewind">
-          <span className="fa fa-hourglass-o"></span><span className="time">{timeElapsed}</span>
-        </div>
-        <div className="time-idle">{timeIdle}</div>
-      </div>
-
-    )
+    const toolbarContext = Object.assign({}, context, {
+      task: this.state.task,
+      taskIssueNumber: this.state.taskIssueNumber,
+      startTime: this.state.startTime,
+      timeElapsed: this.state.timeElapsed,
+    });
     return(
       <div className={className} onClick={actions.click}>
         {statusMessage}
         {timer}
-        <Toolbar actions={actions} handlers={this.handlers} 
-            taskIssueNumber={this.state.taskIssueNumber} startTime={this.state.startTime}
-            timeElapsed={this.state.timeElapsed} />
+        <div className="tools">
+          <Toolbar actions={actions} handlers={this.handlers}
+              context={toolbarContext} />
+          <Search search={context.search} setSearch={actions.setSearch} />
+        </div>
         <div className="task-list">{taskList}</div>
         <div>
           {popups}
@@ -558,20 +560,6 @@ export default class App extends Component {
       }
     }
     else if (this.state.currently == "working") {
-      // Check for long gap -- usually means a system sleep
-      const now = new Date();
-      if (this.state.lastWorkTime) {
-        const gap = now - this.state.lastWorkTime;
-        if (gap > 2000) {
-          console.log("Gap is " + gap + ' at ' + new Date());
-        }
-        if (gap > 60000) {
-          console.log("Stopping due to time gap of " + gap);
-          this.stop();
-          this.waitForUser("Stopping due to time gap of " + gap, "stopped");
-          return;
-        }
-      }
       if (this.state.timeElapsed && !(this.state.timeElapsed % (4*60))) {
         this.save();
       }
@@ -616,7 +604,8 @@ export default class App extends Component {
     if (this.state.timer) {
       window.clearInterval(this.state.timer);
       this.setState({
-        timer: null
+        timer: null,
+        lastTick: 0
       });
     }
   }
@@ -714,5 +703,7 @@ export default class App extends Component {
     const logEntryStr = JSON.stringify(logEntry);
     console.log(`LOG: task: ${logEntryStr}`);
   }
-
+  setSearch(search) {
+    this.setState({search: search});
+  }
 }

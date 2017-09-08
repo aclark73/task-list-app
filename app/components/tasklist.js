@@ -4,36 +4,19 @@ import Task from './task';
 import { TaskWidget, ProjectWidget } from './widgets';
 
 export default class TaskList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            search: ''
-        };
-    }
-
     shouldComponentUpdate(nextProps, nextState) {
         // console.log("nextProps.context: " + JSON.stringify(nextProps.context));
         return (nextProps.projects != this.props.projects) ||
-        (nextProps.tasks != this.props.tasks) ||
-        (JSON.stringify(nextState) != JSON.stringify(this.state)) ||
-        (JSON.stringify(nextProps.context) != JSON.stringify(this.props.context));
-    }
-
-    updateSearch(event) {
-        console.log("search", event.target.value);
-        // this.props.context.actions.search(event.target.value);
-        this.setState({search: event.target.value});
-    }
-
-    clearSearch() {
-        this.setState({search: ""});
+            (nextProps.tasks != this.props.tasks) ||
+            (JSON.stringify(nextState) != JSON.stringify(this.state)) ||
+            (JSON.stringify(nextProps.context) != JSON.stringify(this.props.context));
     }
 
     render() {
         const rows = [];
         console.log("rendering tasklist");
         const tasks = (this.props.context.view == 'projects') ? this.props.projects : this.props.tasks;
-        const search = this.state.search.toLowerCase();
+        const search = this.props.context.search.toLowerCase();
         tasks.forEach( (task) => {
             const taskId = Task.getUID(task);
             if (search) {
@@ -49,17 +32,8 @@ export default class TaskList extends Component {
             );
             rows.push(widget);
         });
-        const updateSearch = this.updateSearch.bind(this);
-        const clearSearch = this.clearSearch.bind(this);
-        const searchWidget = (
-            <div className="search">
-                <input type="text" value={search} placeholder="Search" onChange={updateSearch} />
-                <span onClick={clearSearch} className="clear-btn"><span className="fa fa-times-circle"></span></span>
-            </div>
-        )
         return (
             <div>
-                {searchWidget}
                 <ul className={this.props.context.view}>
                     {rows}
                 </ul>

@@ -15,6 +15,7 @@ export default class GitHubClient {
     constructor(config) {
         this.config = config || DEFAULT_CONFIG;
         this.source = 'github';
+        this.sourceIcon = 'fa fa-github';
     }
 
     createProject(name) {

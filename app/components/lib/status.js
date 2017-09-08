@@ -35,6 +35,7 @@ class StatusComponent extends Component {
     render() {
         const className = classNames(
             'status-message',
+            this.props.level,
             this.props.expires ? 'show' : 'hide'
         );
         const message = this.props.messages[this.props.messages.length - 1];
@@ -58,11 +59,14 @@ export default class StatusHandler extends Handler {
         };
     }
     /* Public API: add a message */
-    addMessage(state, message, timeout=1) {
+    addMessage(state, message, level="info") {
+        // Should be a setting
+        const timeout = 1;
         // Turn the timeout into an actual time
         const expires = (new Date()).getTime() + timeout*1000;
         return {
             messages: state.messages.concat(['' + message]),
+            level: level,
             expires: expires
         };
     }
@@ -73,6 +77,7 @@ export default class StatusHandler extends Handler {
             if (state.expires < now) {
                 return {
                     messages: state.messages,
+                    level: state.level,
                     expires: 0
                 };
             }
@@ -82,7 +87,8 @@ export default class StatusHandler extends Handler {
     /* Render the displayed widget. */
     component(state) {
         return (
-            <StatusComponent expires={state.expires} messages={state.messages} />
+            <StatusComponent expires={state.expires}
+                level={state.level} messages={state.messages} />
         );
     }
     /* Popup to show when the toolbar button is clicked. */

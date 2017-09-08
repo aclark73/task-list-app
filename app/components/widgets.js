@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Task from './task';
-import humanizeDuration from 'humanize-duration';
+import Utils from './utils';
 import colormap from 'colormap';
 import { lighten, hexToHslTuple } from 'colorutilities';
 
@@ -35,10 +35,10 @@ for (var hue=50; hue<=360; hue+=4) {
 const num_colors = bg_colors.length;
 
 const ageColor = function(delta) {
-  // delta (ms)
+  // delta (s)
   const adj_delta = Math.sqrt(delta);
-  const min_delta = 0; // 1000*60*60*24; // 1 day
-  const max_delta = Math.sqrt(1000*60*60*24*365*1); // 1 year
+  const min_delta = 0; // Math.sqrt(60*60*24); // 1 day
+  const max_delta = Math.sqrt(60*60*24*365*1); // 1 year
   if (adj_delta < min_delta) {
     return bg_colors[0];
   }
@@ -50,25 +50,6 @@ const ageColor = function(delta) {
     return bg_colors[idx];
   }
 };
-
-const shortEnglishHumanizer = humanizeDuration.humanizer({
-  language: 'shortEn',
-  largest: 1,
-  spacer: '',
-  languages: {
-    shortEn: {
-      y: function() { return 'y' },
-      mo: function() { return 'mo' },
-      w: function() { return 'w' },
-      d: function() { return 'd' },
-      h: function() { return 'h' },
-      m: function() { return 'm' },
-      s: function() { return 's' },
-      ms: function() { return 'ms' },
-    }
-  },
-  round: true
-});
 
 export class TaskWidget extends Component {
   select() {
@@ -128,14 +109,13 @@ export class TaskWidget extends Component {
     const updated_label = ((updated_on) => {
       if (updated_on) {
         const d = new Date(updated_on);
-        const delta = (
-          ((new Date()).getTime() - d.getTime()));
+        const delta = Utils.getDuration(updated_on, new Date());
         const style = {
           backgroundColor: ageColor(delta)
         };
         return (
           <div className="label updated-label" style={style}>
-            {shortEnglishHumanizer(delta)}
+            {Utils.humanTimespan(delta)}
           </div>
         );
       } else {

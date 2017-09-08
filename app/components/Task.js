@@ -35,6 +35,7 @@ const Task = {
   },
   /* Really complicated way of assigning colors to projects! */
   setProjectColors: function(projects, tasks) {
+    /* Score each project by # of tasks */
     const score = {};
     const projectNames = [];
     tasks.forEach( (task, i) => {

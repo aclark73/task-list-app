@@ -31,29 +31,10 @@ Temporary Items
 .apdisk
 
 
-### Windows ###
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
-
-# Folder config file
-Desktop.ini
-
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
-
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
-
-# Windows shortcuts
-*.lnk
 npm-debug.log
 Electron-darwin-x64
 TaskListApp-darwin-x64
 
 # OmniGraffle docs
 *.graffle
-task-list-app.*.json
+task-list-app*.json
