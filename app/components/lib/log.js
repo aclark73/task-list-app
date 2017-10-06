@@ -35,7 +35,8 @@ function roundToHour(t, offset) {
     d.setSeconds(0);
     d.setMilliseconds(0);
     if (offset) {
-      d.setHours(d.getHours() + offset);
+        const h = d.getHours();
+        d.setHours(h + (offset > 0 ? 1 : -1)*(h%offset));
     }
     return d;
 }
@@ -112,8 +113,9 @@ class GroupChart {
 
     constructor(id, startTime, endTime) {
         this.id = id;
-        this.startTime = roundToHour(startTime, 0);
-        this.endTime = roundToHour(endTime, 1);
+        this.hoursPerMarker = 4; // Math.max(parseInt(4/numRows),1);
+        this.startTime = roundToHour(startTime, -this.hoursPerMarker);
+        this.endTime = roundToHour(endTime, this.hoursPerMarker);
         this.duration = Utils.getDuration(this.startTime, this.endTime);
     }
 
@@ -172,11 +174,10 @@ class GroupChart {
     }
     createMarkers(numRows) {
         const chartMarkers = [];
-        const hoursPerMarker = Math.max(parseInt(2/numRows),1);
         const t = roundToHour(this.startTime);
         while (t <= this.endTime) {
           chartMarkers.push(this.createMarker(t));
-          t.setHours(t.getHours() + hoursPerMarker);
+          t.setHours(t.getHours() + this.hoursPerMarker);
         }
         return (
           <div className="chart">

@@ -894,12 +894,37 @@ a:hover {
     margin-left: 25px;
 }
 
+.work .chart {
+  /* display: none; */
+}
+
+.work:hover .chart {
+  display: block;
+}
+
 .log .chart {
   position: absolute;
-  top: 3px;
-  bottom: 3px;
-  left: 0;
-  width: 20px;
+  top: 50%;
+  margin-top: -50px;
+  /* bottom: 3px; */
+  left: -4px;
+  /* width: 30px; */
+  height: 100px;
+  z-index: 1;
+  padding: 3px;
+  border-radius: 3px;
+}
+
+.work > .chart {
+  border: 1px solid #aaa;
+  background: #fff;
+  /* z-index: 2; */
+  /* height: 100px; */
+  width: 30px;
+}
+
+.log-entry .chart {
+  background: none;
 }
 
 .chart-inner {
@@ -921,7 +946,8 @@ a:hover {
   /* box-shadow: 0 0 2px 0px rgba(0,0,0,.05); */
   /* margin-left: 12px; */
   width: 10px !important;
-  right: 0;
+  right: -25px;
+  z-index: 1;
 }
 .log-entry:hover .chart .chart-label, .log-entry:hover .colorsquare {
     border-color: rgba(0,0,0,.4);
