@@ -525,10 +525,10 @@ a:hover {
 }
 .time-idle {
     color: #baa;
-    /* margin-left: 4px; */
     font-size: 10px;
     display: block;
-    /* white-space: normal; */
+    position: absolute;
+    bottom: 0;
 }
 
 .status-message {
@@ -1158,7 +1158,7 @@ div:hover > .hover-help {
   float: left;
   width: 70px;
   font-size: 28px;
-  margin: 1px 10px 0 0;
+  margin: 0 10px 0 0;
   font-weight: lighter;
 }
 

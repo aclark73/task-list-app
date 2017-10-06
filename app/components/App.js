@@ -404,6 +404,7 @@ export default class App extends Component {
         <div className="current-task">
           {currentTask}
         </div>
+        <div className="time-idle">{timeIdle}</div>
       </div>
     );
     const toolbarContext = Object.assign({}, context, {
