@@ -895,7 +895,7 @@ a:hover {
 }
 
 .work .chart {
-  /* display: none; */
+  display: none;
 }
 
 .work:hover .chart {
@@ -909,7 +909,7 @@ a:hover {
   /* bottom: 3px; */
   left: -4px;
   /* width: 30px; */
-  height: 100px;
+  /* height: 100px; */
   z-index: 1;
   padding: 3px;
   border-radius: 3px;

@@ -29,15 +29,16 @@ function getColor(logEntry) {
 function hoursToMS(h) {
     return h * 60 * 60 * 1000;
 }
-function roundToHour(t, offset) {
-    let d = new Date(t);
+function roundToHour(t, granularity, roundUp) {
+    const d = new Date(t);
     d.setMinutes(0);
     d.setSeconds(0);
     d.setMilliseconds(0);
-    if (offset) {
-        const h = d.getHours();
-        d.setHours(h + (offset > 0 ? 1 : -1)*(h%offset));
-    }
+    const h = d.getHours();
+    const g = granularity || 1;
+    const h2 = (h - h%g);
+    const h3 = roundUp ? h2 + g : h2;
+    d.setHours(h3);
     return d;
 }
 function getDurationMS(t1, t2) {
@@ -113,9 +114,9 @@ class GroupChart {
 
     constructor(id, startTime, endTime) {
         this.id = id;
-        this.hoursPerMarker = 4; // Math.max(parseInt(4/numRows),1);
-        this.startTime = roundToHour(startTime, -this.hoursPerMarker);
-        this.endTime = roundToHour(endTime, this.hoursPerMarker);
+        this.hoursPerMarker = 2; // Math.max(parseInt(4/numRows),1);
+        this.startTime = roundToHour(startTime, this.hoursPerMarker);
+        this.endTime = roundToHour(endTime, this.hoursPerMarker, true);
         this.duration = Utils.getDuration(this.startTime, this.endTime);
     }
 
@@ -126,10 +127,10 @@ class GroupChart {
         const offset = this.chartHeight(this.getLogOffset(logEntry.startTime));
         const height = Math.max(
             this.chartHeight(Utils.getDuration(logEntry.startTime, logEntry.endTime)),
-            Math.min(2, 100-offset));
+            2); // Math.min(2, 100-offset));
         const style = {
-            bottom: '' + offset + '%',
-            height: '' + height + '%',
+            bottom: '' + offset + 'px',
+            height: '' + height + 'px',
             background: getColor(logEntry)
         };
         return (
@@ -143,11 +144,17 @@ class GroupChart {
 
     /* Height in px for a chart of duration in s */
     chartHeight(duration) {
+        // Pixels
+        const pixelsPerHour = 20;
+        return parseInt((duration*pixelsPerHour)/(60*60));
+        /* Percentage
         const height = parseInt((duration*100)/this.duration);
         if (isNaN(height)) {
             console.log("NaN for " + duration + " / " + this.duration);
+            return 0;
         }
         return height;
+        */
     }
     /* Get offset from start time */
     getLogOffset(logTime) {
@@ -165,8 +172,8 @@ class GroupChart {
           { 'chart-time-label-top': isTop }
         );
         const style = isTop ?
-            {top:"0%"} :
-            {bottom:""+this.chartHeight((h-this.startTime)/1000)+'%'};
+            {top:"0"} :
+            {bottom:""+this.chartHeight((h-this.startTime)/1000)+'px'};
         const label = this.formatMarkerLabel(h);
         return (
             <div key={t} style={style} className={className}><span>{label}</span></div>
@@ -179,9 +186,12 @@ class GroupChart {
           chartMarkers.push(this.createMarker(t));
           t.setHours(t.getHours() + this.hoursPerMarker);
         }
+        const style = {
+            height: this.chartHeight(this.duration) + 'px'
+        };
         return (
           <div className="chart">
-            <div className="chart-inner">
+            <div className="chart-inner" style={style}>
               {chartMarkers}
             </div>
           </div>
