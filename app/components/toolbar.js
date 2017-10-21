@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import Task from './task';
 import Utils from './utils';
-import Search from './lib/search';
+import Search from './search';
 
 
 class ToolbarButton extends Component {

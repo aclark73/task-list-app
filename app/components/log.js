@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Utils from '../utils';
-import Task from '../task';
+import Utils from './utils';
+import Task from './task';
 import colormap from 'colormap';
 import { Handler, HandlerPopup } from './handler';
 import classNames from 'classnames';
@@ -64,6 +64,10 @@ function toShortTime(h) {
 
 // Compact if gap is less than this
 const compactMaxGapSize = 10*60*1000;
+
+function appendLog(log) {
+
+}
 
 function compactLogEntries(log) {
   const clog = [];
