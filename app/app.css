@@ -28,22 +28,22 @@ div {
 }
 
 .main {
-    border-width: 2px;
+    border-width: 1px;
 }
 
 .tools {
-    border-width: 2px 0;
+    border-width: 1px 0;
 }
 
 .toolbar .btn {
-    border-width: 0 2px 0 0;
+    border-width: 0 1px 0 0;
 }
 
 .toolbar-options:hover .btns {
-  border-width: 2px 2px 0 0;
+  border-width: 1px 1px 0 0;
 }
 .toolbar-options:hover .btns .btn {
-  border-width: 0 0 2px 0;
+  border-width: 0 0 1px 0;
 }
 
 .main {
@@ -268,9 +268,13 @@ a:hover {
     background-position: 0 0;
 }
 
+i.fa {
+  opacity: 0.8;
+}
+
 .task-list {
     position: absolute;
-    top: 63px;
+    top: 61px;
     bottom: 0;
     left: 0;
     right: 0;
@@ -520,7 +524,7 @@ a:hover {
     /* font-weight: normal; */
     /* text-align: right; */
 }
-.issue-label {
+.task-item .issue-label {
   font-size: 13px;
   margin-right: 4px;
   margin-left: 0;
@@ -1226,7 +1230,7 @@ div:hover > .hover-help {
 }
 
 .timer {
-  padding: 3px 9px;
+  /* padding: 3px 9px; */
   position: relative;
   cursor: default;
   height: 43px;
@@ -1236,9 +1240,36 @@ div:hover > .hover-help {
   float: left;
   width: 100px;
   font-size: 37px;
-  margin: 0;
+  margin: 3px 2px 3px 8px;
   font-weight: lighter;
   line-height: 1;
+}
+
+.timer .labels {
+  float: left;
+  width: 70px;
+  font-size: 15px;
+  line-height: 1.2;
+  padding: 2px 0;
+}
+
+.timer .labels i {
+  font-size: 18px;
+  margin-right: 2px;
+  vertical-align: top;
+}
+
+.timer .issue-label {
+  font-size: 15px;
+  /* font-weight: bold; */
+}
+
+.timer .timer-label {
+  font-size: 13px;
+}
+
+.timer .time-elapsed {
+  font-size: 11px;
 }
 
 .current-task {
@@ -1249,6 +1280,7 @@ div:hover > .hover-help {
   /* margin-right: 60px; */
   line-height: 1;
   white-space: normal;
+  padding: 3px 0;
 }
 
 .status {

@@ -398,9 +398,24 @@ export default class App extends Component {
     );
     const issueNumber = this.state.taskIssueNumber ? '#' + this.state.taskIssueNumber : '';
     const statusMessage = this.handlers.status.component(this.state.status);
+    const sourceIcon = (this.state.task) ?
+      this.state.task.source_icon :
+      '';
+
     const timer = (
       <div className="timer btn" onClick={actions.startStop} title="Click to start/stop">
         <div className="time-remaining">{timeRemaining}</div>
+        <div className="labels">
+          <div className="issue-label">
+            <i className={sourceIcon}></i>
+            <span>{issueNumber}</span>
+          </div>
+          <div className="timer-label">
+            <i className="fa fa-clock-o"></i>
+            <span>{startTime}</span>
+            <span className="time-elapsed"> {timeElapsed}</span>
+          </div>
+        </div>
         <div className="current-task">
           {currentTask}
         </div>

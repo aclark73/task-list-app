@@ -88,8 +88,15 @@ const Utils = {
   getTime: function(timestamp) {
     if (!timestamp) { return '-'; }
     const d = new Date(timestamp);
+    /*
     return "" + Utils.pad2(d.getHours()) + ":" +
       Utils.pad2(d.getMinutes());
+    */
+    const raw_h = d.getHours();
+    const h = raw_h == 0 ? 12 : raw_h > 12 ? raw_h - 12 : raw_h;
+    const ap = raw_h >= 12 ? "a" : "p";
+    const m = Utils.pad2(d.getMinutes());
+    return "" + h + ":" + m + ap;
   },
 
   timePerTaskPerDay: function(log) {

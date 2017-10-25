@@ -38,3 +38,4 @@ TaskListApp-darwin-x64
 # OmniGraffle docs
 *.graffle
 task-list-app*.json
+*.pxm
