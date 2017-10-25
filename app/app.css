@@ -7,12 +7,43 @@ body {
   /* padding: 8px; */
   /* position: relative; */
   white-space: nowrap;
-  /* box-sizing: border-box; */zoom:2;
+  /* box-sizing: border-box; */
+  /* zoom:2; */
 }
 div {
   transition-property: opacity, background-color, background-image, height, top;
   transition-duration: .2s;
   box-sizing: border-box;
+}
+
+/* borders */
+
+.main, .btns, .btn, .tools {
+    border: 0px solid #aaa;
+}
+
+.main.working, .working .btns, working .btn,
+.working .tools {
+  border-color: #fff;
+}
+
+.main {
+    border-width: 2px;
+}
+
+.tools {
+    border-width: 2px 0;
+}
+
+.toolbar .btn {
+    border-width: 0 2px 0 0;
+}
+
+.toolbar-options:hover .btns {
+  border-width: 2px 2px 0 0;
+}
+.toolbar-options:hover .btns .btn {
+  border-width: 0 0 2px 0;
 }
 
 .main {
@@ -24,6 +55,7 @@ div {
     /* padding: 8px; */
     /* height: 120px; */
     /* min-width: 242px; */
+    /* border-width: 2px; */
 }
 
 a {
@@ -34,8 +66,9 @@ a:hover {
   color: #9f9;
 }
 
+
 .btn {
-    border: 1px solid #ddd;
+    border: 0px solid #ddd;
     cursor: pointer;
     /* border-radius: 4px; */
     /* color: #444; */
@@ -237,7 +270,7 @@ a:hover {
 
 .task-list {
     position: absolute;
-    top: 62px;
+    top: 63px;
     bottom: 0;
     left: 0;
     right: 0;
@@ -312,6 +345,8 @@ a:hover {
 
 .tools {
   position: relative;
+  /* border-width: 1px 0; */
+  /* height: 1em; */
 }
 
 .toolbar {
@@ -331,6 +366,7 @@ a:hover {
     /* background-color: inherit; */
     float: left;
     line-height: 1em;
+    /* display: inline-block; */
 }
 .toolbar > * {
     display: inline-block !important;
@@ -372,7 +408,12 @@ a:hover {
     /* border: 1px solid #000; */
     /* display: block; */
     /* height: 0; */
-    border-color: inherit;
+    /* border-color: inherit; */
+    /* border-width: 0 1px 0 0; */
+}
+
+.toolbar .btn {
+    /* border-right: 1px solid #aaa; */
 }
 
 .toolbar .btn:hover {
@@ -395,7 +436,7 @@ a:hover {
   /* z-index: 100; */
   background: inherit;
   /* display: inline-block; */
-  /* float: left; */
+  float: left;
   border: inherit;
 }
 
@@ -561,29 +602,35 @@ a:hover {
 
 .search {
     color: #999;
-    /* position: relative; */
+    /* position: absolute; */
     /* width: 100%; */
     /* left: 0; */
     /* right: 0; */
-    /* height: 2em; */
+    height: 16px;
     /* top: 0; */
     /* padding-right: 1em; */
     /* z-index: 1; */
     /* background: white; */
     /* margin-top: -16px; */
-    display: block;
+    /* display: block; */
+    /* position: relative; */
 }
 
 .search input {
-    width: 100%;
+    /* position: absolute; */
+    /* right: 0; */
+    /* bottom:  0; */
+    /* width: 100%; */
     border-radius: 2px;
-    border: 1px solid #dfe2e5;
+    border: none;
+    /* border: 1px solid #dfe2e5; */
     box-sizing: border-box;
     outline: none;
     padding: 0px 4px;
     /* margin-bottom: 2px; */
     background: transparent;
     font-size: 12px;
+    /* display: block; */
 }
 
 .search input:focus {
@@ -607,16 +654,17 @@ a:hover {
   z-index: 1;
   overflow-x: hidden;
   overflow-y: auto;
-  left: 5%;
-  right: 5%;
-  top: 20%;
-  max-height: 75%;
-
-  background: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0 1px 2px 1px rgba(0,0,0,.2);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 61px;
+  /* max-height: 75%; */
+  /* background: #f9f9f9; */
+  /* border: 1px solid #ddd; */
+  /* border-radius: 4px; */
+  /* box-shadow: 0 1px 2px 1px rgba(0,0,0,.2); */
   color: #666;
+  opacity: .9;
 }
 
 .popup ul {
