@@ -7,8 +7,7 @@ body {
   /* padding: 8px; */
   /* position: relative; */
   white-space: nowrap;
-  /* box-sizing: border-box; */
-  /* zoom:2; */
+  /* box-sizing: border-box; */zoom:2;
 }
 div {
   transition-property: opacity, background-color, background-image, height, top;
@@ -570,10 +569,17 @@ i.fa {
 }
 .time-idle {
     color: #baa;
-    font-size: 10px;
+    background: rgba(255,255,255,.8);
+    border: 0 solid #cbb;
+    border-width: 0 1px 1px 0;
+    border-bottom-right-radius: 2px;
+    padding: 0 2px;
     display: block;
     position: absolute;
-    bottom: 0;
+    top: 0;
+    /* width: 100px; */
+    /* text-align: center; */
+    line-height: 1;
 }
 
 .status-message {
