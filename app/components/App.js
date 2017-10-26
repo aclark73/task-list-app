@@ -514,12 +514,18 @@ export default class App extends Component {
    * dismisses the dialog, go to the specified next state.
    */
   waitForUser(message, next) {
-    this.setState({
+    new Notification(message);
+    const s = {
       popup: 'alert',
       alertMessage: message,
-      afterWaiting: next,
       timeIdle: 0
-    });
+    };
+    if (next) {
+      Object.assign(s, {
+        afterWaiting: next,
+      });
+    }
+    this.setState(s);
   }
 
   /* Start timer */
@@ -580,6 +586,12 @@ export default class App extends Component {
   tick() {
     const state = {};
 
+    const idleTimeouts = {
+      60: function() {
+        this.waitForUser("", this.state.next)
+      }
+    }
+
     try {
       Object.assign(state, this.checkTick());
     } catch (e) {
@@ -590,6 +602,7 @@ export default class App extends Component {
     if (this.state.currently == "stopped" || this.state.popup == "alert") {
       state.timeIdle = this.state.timeIdle + 1;
       if (state.timeIdle == 60) {
+
         new Notification("Hey there!");
       }
     }
