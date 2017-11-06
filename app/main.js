@@ -4,6 +4,7 @@ const electron = require('electron')
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 const DEBUG = true
+const ALWAYS_ON_TOP = true
 let mainWindow
 
 
@@ -11,7 +12,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 400,
     height: 600,
-    alwaysOnTop: true,
+    alwaysOnTop: ALWAYS_ON_TOP,
     'web-preferences': {
       'web-security': false
     }
@@ -20,7 +21,9 @@ function createWindow() {
   mainWindow.loadURL('file://' + __dirname + '/index.html')
 
   /* Don't do it or it will open in production as well */
-  DEBUG && mainWindow.webContents.openDevTools()
+  if (DEBUG) {
+      mainWindow.webContents.openDevTools()
+  }
 
   mainWindow.on('closed', () => {
     mainWindow = null
