@@ -1,6 +1,6 @@
 import humanizeDuration from 'humanize-duration';
 
-const shortEnglishHumanizer = humanizeDuration.humanizer({
+const baseHumanizerConfig = {
   language: 'shortEn',
   largest: 1,
   spacer: '',
@@ -16,8 +16,15 @@ const shortEnglishHumanizer = humanizeDuration.humanizer({
       ms: function() { return 'ms' },
     }
   },
-  round: true
-});
+  round: true,
+  units: ['y', 'mo', 'd', 'h', 'm']
+};
+
+const englishHumanizer1 = humanizeDuration.humanizer(
+  Object.assign({}, baseHumanizerConfig));
+  
+const englishHumanizer2 = humanizeDuration.humanizer(
+  Object.assign({}, baseHumanizerConfig, {largest: 2}));
 
 
 const Utils = {
@@ -49,7 +56,7 @@ const Utils = {
   },
 
   humanTimespan: function(s) {
-    return shortEnglishHumanizer(s*1000);
+    return englishHumanizer1(s*1000);
   },
 
   getDuration: function(t1, t2) {
