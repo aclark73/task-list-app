@@ -4,17 +4,17 @@ import TaskList from './tasklist';
 import { TaskWidget, ProjectWidget } from './widgets';
 import Utils from './utils';
 import Toolbar from './toolbar';
-import Search from './lib/search';
+import Search from './search';
 
 import classNames from 'classnames';
 import Configstore from 'configstore';
 
-import RedmineClient from './lib/redmine';
-import GitHubClient from './lib/github';
-// import { LogChart } from './lib/chart';
-import Log from './lib/log';
-import StatusHandler from './lib/status';
-import LocalTasksHandler from './lib/local';
+import RedmineClient from './remotes/redmine';
+import GitHubClient from './remotes/github';
+// import { LogChart } from './chart';
+import Log from './log';
+import StatusHandler from './status';
+import LocalTasksHandler from './remotes/local';
 
 // import pkg from '../../package.json';
 const pkg = {name: 'task-list-app'};
@@ -398,9 +398,24 @@ export default class App extends Component {
     );
     const issueNumber = this.state.taskIssueNumber ? '#' + this.state.taskIssueNumber : '';
     const statusMessage = this.handlers.status.component(this.state.status);
+    const sourceIcon = (this.state.task) ?
+      this.state.task.source_icon :
+      '';
+
     const timer = (
       <div className="timer btn" onClick={actions.startStop} title="Click to start/stop">
         <div className="time-remaining">{timeRemaining}</div>
+        <div className="labels">
+          <div className="issue-label">
+            <i className={sourceIcon}></i>
+            <span>{issueNumber}</span>
+          </div>
+          <div className="timer-label">
+            <i className="fa fa-clock-o"></i>
+            <span>{startTime}</span>
+            <span className="time-elapsed"> {timeElapsed}</span>
+          </div>
+        </div>
         <div className="current-task">
           {currentTask}
         </div>
@@ -499,12 +514,18 @@ export default class App extends Component {
    * dismisses the dialog, go to the specified next state.
    */
   waitForUser(message, next) {
-    this.setState({
+    new Notification(message);
+    const s = {
       popup: 'alert',
       alertMessage: message,
-      afterWaiting: next,
       timeIdle: 0
-    });
+    };
+    if (next) {
+      Object.assign(s, {
+        afterWaiting: next,
+      });
+    }
+    this.setState(s);
   }
 
   /* Start timer */
@@ -565,6 +586,12 @@ export default class App extends Component {
   tick() {
     const state = {};
 
+    const idleTimeouts = {
+      60: function() {
+        this.waitForUser("", this.state.next)
+      }
+    }
+
     try {
       Object.assign(state, this.checkTick());
     } catch (e) {
@@ -575,6 +602,7 @@ export default class App extends Component {
     if (this.state.currently == "stopped" || this.state.popup == "alert") {
       state.timeIdle = this.state.timeIdle + 1;
       if (state.timeIdle == 60) {
+
         new Notification("Hey there!");
       }
     }

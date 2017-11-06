@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Utils from '../utils';
 import Task from '../task';
+import { Handler, HandlerPopup } from '../handler';
 import colormap from 'colormap';
-import { Handler, HandlerPopup } from './handler';
 import classNames from 'classnames';
 
 export class LocalTasksEditWidget extends Component {
