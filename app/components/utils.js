@@ -101,7 +101,7 @@ const Utils = {
     */
     const raw_h = d.getHours();
     const h = raw_h == 0 ? 12 : raw_h > 12 ? raw_h - 12 : raw_h;
-    const ap = raw_h >= 12 ? "a" : "p";
+    const ap = raw_h < 12 ? "a" : "p";
     const m = Utils.pad2(d.getMinutes());
     return "" + h + ":" + m + ap;
   },
