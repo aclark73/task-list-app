@@ -39,3 +39,4 @@ TaskListApp-darwin-x64
 *.graffle
 task-list-app*.json
 *.pxm
+user.js

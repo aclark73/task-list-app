@@ -1,8 +1,9 @@
 import fs from 'fs';
 import os from 'os';
+import user from '../../../user';
 
 const DEFAULT_CONFIG = {
-    auth_token: 'example'
+    auth_token: user.github.token
 };
 
 const BASE_URL = 'https://api.github.com';
@@ -139,7 +140,7 @@ export default class GitHubClient {
                 fetch(ISSUES_URL, {
                     headers: {
                         'User-Agent': 'Mozilla/5.0 (Mac OS X) task-list-app',
-                        'Authorization': 'Basic ' + auth_token
+                        'Authorization': 'token ' + auth_token
                     }
                 }).then(function(resp) {
                     if (resp.ok) {
