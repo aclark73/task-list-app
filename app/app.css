@@ -36,14 +36,14 @@ div {
 }
 
 .toolbar .btn {
-    border: 1px solid #aaa;
+    border: 1px solid #ccc;
 }
 
 .toolbar-options:hover .btns {
   border-width: 1px 1px 0 0;
 }
 .toolbar-options:hover .btns .btn {
-  border-width: 0 0 1px 0;
+  border-width: 1px;
 }
 
 .main {
@@ -425,8 +425,8 @@ i.fa {
 .toolbar .btn:first-child:hover {
   margin-left: 0;
   padding-left: 3px;
-/*   border-left-width: 1px !important; */
-/*   margin-left: 0 !important; */
+  /*   border-left-width: 1px !important; */
+  /*   margin-left: 0 !important; */
 }
 
 .toolbar .btn {
@@ -438,14 +438,14 @@ i.fa {
 .toolbar .btn:hover {
   /* box-shadow: inset 0 0 4px 3px rgba(255,255,255,.3); */
   background: #D8D8D8;
-  border-color: #848484 #aaa #BDBDBD #999;
+  /* border-color: #848484 #aaa #BDBDBD #999; */
   /* border-left-width: 1px; */
   /* margin-left: -1px; */
   /* z-index: 1; */
-  border-color: #f00;
+  border-color: #999;
 }
 
-.toolbar .btn:hover + .btn {/* border-left-color: transparent; */border-left: none;margin-left: 0;}
+.toolbar .btn:hover + .btn {/* border-left-color: transparent; */border-top-color: transparent;margin-top: 0;}
 
 .toolbar .btns, div.show-popup .toolbar .btns {
   /* display: none; */
@@ -454,7 +454,7 @@ i.fa {
   height: 0px;
   overflow: hidden;
   transition: height .4s linear;
-  background: inherit;
+  background: #fff;
   border-color: inherit;
 }
 
