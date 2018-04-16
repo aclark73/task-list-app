@@ -6,6 +6,8 @@ import { lighten, hexToHslTuple } from 'colorutilities';
 
 const plasma_map = colormap({
   // colormap: 'cool',   // pick a builtin colormap or add your own
+  colormap: 'rdbu',
+  /*
   colormap: [
     {"index":0,"rgb":[255, 255, 51]},
     {"index":0.1,"rgb":[255, 255, 51]},
@@ -13,6 +15,7 @@ const plasma_map = colormap({
     {"index":0.7,"rgb":[204, 204, 255]},
     {"index":1,"rgb":[204, 170, 255]}
   ],
+  */
   nshades: 72,       // how many divisions
   format: 'hex',     // "hex" or "rgb" or "rgbaString"
   alpha: 1           // set an alpha value or a linear alpha mapping [start, end]

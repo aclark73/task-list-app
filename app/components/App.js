@@ -336,20 +336,24 @@ export default class App extends Component {
     // Status dialog contents
     const statusMessages = this.handlers.status.popup(this.state.status);
 
+    // Various time displays
     const startTime = Utils.getTime(this.state.startTime);
     const timeElapsed = Utils.humanTimespan(this.state.timeElapsed);
     const isIdle = (!this.state.timeRemaining && this.state.timeIdle);
     const timeRemaining = Utils.formatTimespan(this.state.timeRemaining);
     const timeIdle = (this.state.timeIdle > 0) ? "Idle: " + Utils.humanTimespan(this.state.timeIdle) : '';
+
+    // Maybe do something different after being idle for a while
     var idleLevel = '';
     if (this.state.timeIdle > 5) { idleLevel = 'idle-1'; }
     if (this.state.timeIdle > 10) { idleLevel = 'idle-2'; }
 
-    // Popup
+    // Add a class indicating the popup being displayed, if any
     const popupClass = (this.state.popup) ?
       'show-' + this.state.popup :
       '';
 
+    // Set a bunch of classes for the main div
     const className = classNames(
       'main',
       this.state.currently,
@@ -401,19 +405,24 @@ export default class App extends Component {
     const sourceIcon = (this.state.task) ?
       this.state.task.source_icon :
       '';
+    const sourceName = (this.state.task) ?
+      this.state.task.source :
+      '';
 
+    // Main button
     const timer = (
       <div className="timer btn" onClick={actions.startStop} title="Click to start/stop">
         <div className="time-remaining">{timeRemaining}</div>
         <div className="labels">
           <div className="issue-label">
             <i className={sourceIcon}></i>
-            <span>{issueNumber}</span>
+            <span className="issue-source">{sourceName}</span>
+            <span className="issue-number">{issueNumber}</span>
           </div>
           <div className="timer-label">
             <i className="fa fa-clock-o"></i>
-            <span>{startTime}</span>
-            <span className="time-elapsed"> {timeElapsed}</span>
+            <span className="time-started">{startTime}</span>
+            <span className="time-elapsed">{timeElapsed}</span>
           </div>
         </div>
         <div className="current-task">
