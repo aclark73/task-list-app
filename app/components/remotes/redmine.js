@@ -1,9 +1,10 @@
 import fs from 'fs';
 import os from 'os';
 import Utils from '../utils';
+import user from '../../../user';
 
 const DEFAULT_CONFIG = {
-  redmine_key: 'example'
+    redmine_key: user.redmine.key
 };
 
 const BASE_URL = 'http://dmscode.iris.washington.edu';

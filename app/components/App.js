@@ -413,18 +413,6 @@ export default class App extends Component {
     const timer = (
       <div className="timer btn" onClick={actions.startStop} title="Click to start/stop">
         <div className="time-remaining">{timeRemaining}</div>
-        <div className="labels">
-          <div className="issue-label">
-            <i className={sourceIcon}></i>
-            <span className="issue-source">{sourceName}</span>
-            <span className="issue-number">{issueNumber}</span>
-          </div>
-          <div className="timer-label">
-            <i className="fa fa-clock-o"></i>
-            <span className="time-started">{startTime}</span>
-            <span className="time-elapsed">{timeElapsed}</span>
-          </div>
-        </div>
         <div className="current-task">
           {currentTask}
         </div>

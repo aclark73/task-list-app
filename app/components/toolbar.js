@@ -40,11 +40,12 @@ class IssueToolbarButton extends ToolbarButton {
     }
 }
 
-class StartTimeToolbarButton extends ToolbarButton {
+class TimerToolbarButton extends ToolbarButton {
     render() {
         const startTime = Utils.getTime(this.props.startTime);
+        const timeElapsed = Utils.humanTimespan(this.props.timeElapsed);
         return this.renderInner(
-            startTime,
+            startTime + " " + timeElapsed,
             "fa fa-clock-o",
             this.props.action,
             "Click to rewind"
@@ -87,8 +88,9 @@ export default class Toolbar extends Component {
           </div>
         </div>
         <IssueToolbarButton task={this.props.context.task} action={this.props.actions.refresh} />
-        <StartTimeToolbarButton startTime={this.props.context.startTime} action={this.props.actions.rewind} />
-        <ElapsedTimeToolbarButton timeElapsed={this.props.context.timeElapsed} action={this.props.actions.rewind} />
+        <TimerToolbarButton startTime={this.props.context.startTime} 
+          timeElapsed={this.props.context.timeElapsed} 
+          action={this.props.actions.rewind} />
       </div>
     );
   }
