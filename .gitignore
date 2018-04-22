@@ -40,3 +40,4 @@ TaskListApp-darwin-x64
 task-list-app*.json
 *.pxm
 user.js
+build.*
