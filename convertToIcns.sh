@@ -4,6 +4,8 @@
 
 # Copied and merged from
 # https://github.com/bacongravy/nativefier/tree/92a185ee59f1c54dea32b41da9d78d903afca49e/bin
+# see also
+# https://forum.xojo.com/13390-create-icns-file/53
 
 # ./convertToIcns <input png> <outp icns>
 # Example
