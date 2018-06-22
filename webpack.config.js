@@ -3,7 +3,7 @@ var path = require('path')
 
 module.exports = {
   // This enables access to node methods (like fs to access filesystem)
-  target: 'atom',
+  target: 'electron-renderer',
   context: __dirname + '/app',
   devtool: 'source-map',
   entry: {
@@ -22,27 +22,27 @@ module.exports = {
     progress: true
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.css', '.json', '.scss']
+    extensions: ['.js', '.jsx', '.css', '.json', '.scss']
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js/,
         exclude: /node_modules/,
-        loaders: ['react-hot', 'babel-loader']
+        use: ['react-hot-loader', 'babel-loader']
       },
       {
         test: /\.html$/,
         exclude: /node_modules/,
-        loader: 'file?name=[name].[ext]'
+        use: 'file?name=[name].[ext]'
       },
       {
         test: /\.json$/,
-        loader: 'json?name=[name].[ext]'
+        use: 'json?name=[name].[ext]'
       },
       {
         test: /\.scss$/,
-        loaders: ['style', 'css', 'sass']
+        use: ['style', 'css', 'sass']
       }
     ]
   },
@@ -54,19 +54,17 @@ module.exports = {
       { from: './../package.json', to: './../package.json'}
     ])
   ],
-  externals: {
-    commonjs: [
-      'desktop-capturer',
-      'electron',
-      'ipc',
-      'ipc-renderer',
-      'native-image',
-      'remote',
-      'web-frame',
-      'clipboard',
-      'crash-reporter',
-      'screen',
-      'shell'
-    ]
-  }
+  externals: [
+    'desktop-capturer',
+    'electron',
+    'ipc',
+    'ipc-renderer',
+    'native-image',
+    'remote',
+    'web-frame',
+    'clipboard',
+    'crash-reporter',
+    'screen',
+    'shell'
+  ]
 }
