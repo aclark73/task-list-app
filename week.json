@@ -1,0 +1,1178 @@
+[
+	{
+		"taskId": "T.redmine.6521",
+		"taskName": "Migrate DOIs from CDL",
+		"project": "DMC Website",
+		"startTime": "2018-04-18T22:46:03.538Z",
+		"endTime": "2018-04-18T23:26:02.619Z",
+		"timeElapsed": 2400
+	},
+	{
+		"taskId": "T.redmine.6310",
+		"taskName": "Configure dmscode1",
+		"project": "DMSCode",
+		"startTime": "2018-04-18T22:16:23.258Z",
+		"endTime": "2018-04-18T22:46:23.197Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.6521",
+		"taskName": "Migrate DOIs from CDL",
+		"project": "DMC Website",
+		"startTime": "2018-04-18T20:35:45.543Z",
+		"endTime": "2018-04-18T22:15:47.392Z",
+		"timeElapsed": 6002
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-04-18T19:02:21.515Z",
+		"endTime": "2018-04-18T19:38:03.093Z",
+		"timeElapsed": 2142
+	},
+	{
+		"taskId": "T.redmine.6521",
+		"taskName": "Migrate DOIs from CDL",
+		"project": "DMC Website",
+		"startTime": "2018-04-18T16:26:51.136Z",
+		"endTime": "2018-04-18T19:00:02.353Z",
+		"timeElapsed": 9000
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-04-18T16:16:16.316Z",
+		"endTime": "2018-04-18T16:26:50.294Z",
+		"timeElapsed": 634
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-04-18T00:09:38.479Z",
+		"endTime": "2018-04-18T00:37:12.452Z",
+		"timeElapsed": 1276
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-04-17T23:14:05.477Z",
+		"endTime": "2018-04-17T23:56:37.337Z",
+		"timeElapsed": 2544
+	},
+	{
+		"taskId": "T.redmine.6528",
+		"taskName": "Handling of missing data in record section",
+		"project": "Wilber",
+		"startTime": "2018-04-17T21:28:06.972Z",
+		"endTime": "2018-04-17T21:56:06.945Z",
+		"timeElapsed": 1680
+	},
+	{
+		"taskId": "T.redmine.6528",
+		"taskName": "Handling of missing data in record section",
+		"project": "Wilber",
+		"startTime": "2018-04-17T19:48:48.853Z",
+		"endTime": "2018-04-17T20:05:28.535Z",
+		"timeElapsed": 695
+	},
+	{
+		"taskId": "T.redmine.6528",
+		"taskName": "Handling of missing data in record section",
+		"project": "Wilber",
+		"startTime": "2018-04-17T18:51:22.493Z",
+		"endTime": "2018-04-17T19:22:31.186Z",
+		"timeElapsed": 1798
+	},
+	{
+		"taskId": "T.redmine.6527",
+		"taskName": "Error in plot",
+		"project": "Wilber",
+		"startTime": "2018-04-17T18:10:30.253Z",
+		"endTime": "2018-04-17T18:50:29.269Z",
+		"timeElapsed": 2400
+	},
+	{
+		"taskId": "T.redmine.6527",
+		"taskName": "Error in plot",
+		"project": "Wilber",
+		"startTime": "2018-04-17T16:24:56.058Z",
+		"endTime": "2018-04-17T16:54:55.996Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-04-17T16:21:43.712Z",
+		"endTime": "2018-04-17T16:24:55.706Z",
+		"timeElapsed": 192
+	},
+	{
+		"taskId": "T.redmine.6526",
+		"taskName": "Browsers are getting cached script versions",
+		"project": "Wilber",
+		"startTime": "2018-04-16T20:48:29.670Z",
+		"endTime": "2018-04-16T22:37:07.000Z",
+		"timeElapsed": 6240
+	},
+	{
+		"taskId": "T.redmine.6526",
+		"taskName": "Browsers are getting cached script versions",
+		"project": "Wilber",
+		"startTime": "2018-04-16T19:12:53.562Z",
+		"endTime": "2018-04-16T21:48:27.839Z",
+		"timeElapsed": 5401
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-04-16T17:08:06.137Z",
+		"endTime": "2018-04-16T18:23:47.784Z",
+		"timeElapsed": 3600
+	},
+	{
+		"taskId": "T.redmine.6525",
+		"taskName": "UI errors",
+		"project": "Wilber",
+		"startTime": "2018-04-13T22:06:04.633Z",
+		"endTime": "2018-04-13T23:58:59.840Z",
+		"timeElapsed": 5760
+	},
+	{
+		"taskId": "T.redmine.6524",
+		"taskName": "Deployment",
+		"project": "Wilber",
+		"startTime": "2018-04-13T21:00:40.096Z",
+		"endTime": "2018-04-13T21:25:59.043Z",
+		"timeElapsed": 1519
+	},
+	{
+		"taskId": "T.redmine.4118",
+		"taskName": "Look into Anaconda",
+		"project": "DMC Website",
+		"startTime": "2018-04-13T18:47:54.801Z",
+		"endTime": "2018-04-13T19:01:47.772Z",
+		"timeElapsed": 833
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-04-13T18:31:31.365Z",
+		"endTime": "2018-04-13T18:47:54.332Z",
+		"timeElapsed": 983
+	},
+	{
+		"taskId": "T.redmine.4118",
+		"taskName": "Look into Anaconda",
+		"project": "DMC Website",
+		"startTime": "2018-04-13T17:23:16.414Z",
+		"endTime": "2018-04-13T18:31:30.232Z",
+		"timeElapsed": 3883
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-04-13T17:19:53.953Z",
+		"endTime": "2018-04-13T17:23:15.947Z",
+		"timeElapsed": 202
+	},
+	{
+		"taskId": "T.redmine.4118",
+		"taskName": "Look into Anaconda",
+		"project": "DMC Website",
+		"startTime": "2018-04-13T16:29:50.318Z",
+		"endTime": "2018-04-13T17:19:52.527Z",
+		"timeElapsed": 3003
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-04-13T16:12:28.737Z",
+		"endTime": "2018-04-13T16:30:07.589Z",
+		"timeElapsed": 1059
+	},
+	{
+		"taskId": "T.redmine.4118",
+		"taskName": "Look into Anaconda",
+		"project": "DMC Website",
+		"startTime": "2018-04-12T22:54:26.463Z",
+		"endTime": "2018-04-13T00:22:40.119Z",
+		"timeElapsed": 5280
+	},
+	{
+		"taskId": "T.redmine.4118",
+		"taskName": "Look into Anaconda",
+		"project": "DMC Website",
+		"startTime": "2018-04-12T17:32:07.435Z",
+		"endTime": "2018-04-12T22:34:48.736Z",
+		"timeElapsed": 11401
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-04-12T17:02:24.311Z",
+		"endTime": "2018-04-12T17:32:06.250Z",
+		"timeElapsed": 1778
+	},
+	{
+		"taskId": "T.redmine.6482",
+		"taskName": "JSON-LD for Products",
+		"project": "DMC Website",
+		"startTime": "2018-04-12T16:25:40.154Z",
+		"endTime": "2018-04-12T16:55:40.091Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.6524",
+		"taskName": "Deployment",
+		"project": "Wilber",
+		"startTime": "2018-04-11T22:48:44.792Z",
+		"endTime": "2018-04-12T00:22:40.056Z",
+		"timeElapsed": 5280
+	},
+	{
+		"taskId": "T.redmine.6174",
+		"taskName": "Federated data",
+		"project": "Wilber",
+		"startTime": "2018-04-11T22:48:02.773Z",
+		"endTime": "2018-04-11T22:48:15.773Z",
+		"timeElapsed": 13
+	},
+	{
+		"taskId": "T.redmine.4118",
+		"taskName": "Look into Anaconda",
+		"project": "DMC Website",
+		"startTime": "2018-04-11T21:07:24.210Z",
+		"endTime": "2018-04-11T22:48:01.696Z",
+		"timeElapsed": 5940
+	},
+	{
+		"taskId": "T.redmine.6523",
+		"taskName": "Error in ObsPy SACPZ conversion",
+		"project": "Wilber",
+		"startTime": "2018-04-11T20:39:10.509Z",
+		"endTime": "2018-04-11T21:09:10.447Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.4118",
+		"taskName": "Look into Anaconda",
+		"project": "DMC Website",
+		"startTime": "2018-04-11T20:22:33.256Z",
+		"endTime": "2018-04-11T20:39:10.221Z",
+		"timeElapsed": 997
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-04-11T19:19:54.339Z",
+		"endTime": "2018-04-11T19:29:54.362Z",
+		"timeElapsed": 601
+	},
+	{
+		"taskId": "T.redmine.4118",
+		"taskName": "Look into Anaconda",
+		"project": "DMC Website",
+		"startTime": "2018-04-11T18:45:42.805Z",
+		"endTime": "2018-04-11T19:17:16.621Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-04-11T18:45:05.765Z",
+		"endTime": "2018-04-11T18:45:41.764Z",
+		"timeElapsed": 36
+	},
+	{
+		"taskId": "T.redmine.6482",
+		"taskName": "JSON-LD for Products",
+		"project": "DMC Website",
+		"startTime": "2018-04-11T17:04:47.194Z",
+		"endTime": "2018-04-11T18:44:53.665Z",
+		"timeElapsed": 6007
+	},
+	{
+		"taskId": "T.redmine.6522",
+		"taskName": "Release Notes app",
+		"project": "DMC Website",
+		"startTime": "2018-04-11T16:29:53.855Z",
+		"endTime": "2018-04-11T17:43:54.988Z",
+		"timeElapsed": 3360
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-04-11T16:09:50.121Z",
+		"endTime": "2018-04-11T16:29:53.591Z",
+		"timeElapsed": 1204
+	},
+	{
+		"taskId": "T.redmine.6522",
+		"taskName": "Release Notes app",
+		"project": "DMC Website",
+		"startTime": "2018-04-10T21:42:56.617Z",
+		"endTime": "2018-04-11T00:03:04.010Z",
+		"timeElapsed": 8084
+	},
+	{
+		"taskId": "T.redmine.6520",
+		"taskName": "Add release date to assembled datasets",
+		"project": "Netpeople2",
+		"startTime": "2018-04-10T21:15:11.168Z",
+		"endTime": "2018-04-10T21:45:50.414Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.6521",
+		"taskName": "Migrate DOIs from CDL",
+		"project": "DMC Website",
+		"startTime": "2018-04-10T21:14:49.113Z",
+		"endTime": "2018-04-10T21:15:07.112Z",
+		"timeElapsed": 18
+	},
+	{
+		"taskId": "T.redmine.6521",
+		"taskName": "Migrate DOIs from CDL",
+		"project": "DMC Website",
+		"startTime": "2018-04-10T19:52:32.932Z",
+		"endTime": "2018-04-10T20:03:30.888Z",
+		"timeElapsed": 658
+	},
+	{
+		"taskId": "T.redmine.6521",
+		"taskName": "Migrate DOIs from CDL",
+		"project": "DMC Website",
+		"startTime": "2018-04-10T18:36:42.687Z",
+		"endTime": "2018-04-10T19:24:53.397Z",
+		"timeElapsed": 2785
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-04-10T18:35:04.532Z",
+		"endTime": "2018-04-10T18:36:42.529Z",
+		"timeElapsed": 98
+	},
+	{
+		"taskId": "T.redmine.6517",
+		"taskName": "Show subscriber count and moderator",
+		"project": "Message Center",
+		"startTime": "2018-04-10T18:19:45.969Z",
+		"endTime": "2018-04-10T18:33:50.941Z",
+		"timeElapsed": 845
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-04-10T18:19:43.670Z",
+		"endTime": "2018-04-10T18:19:45.670Z",
+		"timeElapsed": 2
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-04-10T16:13:24.894Z",
+		"endTime": "2018-04-10T17:16:44.444Z",
+		"timeElapsed": 3757
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-04-09T22:01:06.365Z",
+		"endTime": "2018-04-09T22:37:44.673Z",
+		"timeElapsed": 2160
+	},
+	{
+		"taskId": "T.redmine.6517",
+		"taskName": "Show subscriber count and moderator",
+		"project": "Message Center",
+		"startTime": "2018-04-09T21:30:21.055Z",
+		"endTime": "2018-04-09T22:00:20.991Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-04-09T21:21:44.509Z",
+		"endTime": "2018-04-09T21:30:20.491Z",
+		"timeElapsed": 516
+	},
+	{
+		"taskId": "T.redmine.6517",
+		"taskName": "Show subscriber count and moderator",
+		"project": "Message Center",
+		"startTime": "2018-04-09T19:36:27.533Z",
+		"endTime": "2018-04-09T19:58:58.485Z",
+		"timeElapsed": 1351
+	},
+	{
+		"taskId": "T.redmine.6517",
+		"taskName": "Show subscriber count and moderator",
+		"project": "Message Center",
+		"startTime": "2018-04-09T18:49:55.650Z",
+		"endTime": "2018-04-09T19:04:30.840Z",
+		"timeElapsed": 876
+	},
+	{
+		"taskId": "T.redmine.6517",
+		"taskName": "Show subscriber count and moderator",
+		"project": "Message Center",
+		"startTime": "2018-04-09T17:41:40.333Z",
+		"endTime": "2018-04-09T17:58:30.298Z",
+		"timeElapsed": 1010
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-04-09T16:06:07.314Z",
+		"endTime": "2018-04-09T17:41:39.608Z",
+		"timeElapsed": 4289
+	},
+	{
+		"taskId": "T.redmine.518",
+		"taskName": "User Request: depth slider for events",
+		"project": "Wilber",
+		"startTime": "2018-03-23T23:04:31.073Z",
+		"endTime": "2018-03-24T00:15:34.027Z",
+		"timeElapsed": 4201
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-23T22:34:25.346Z",
+		"endTime": "2018-03-23T23:04:29.896Z",
+		"timeElapsed": 1805
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-23T21:43:04.224Z",
+		"endTime": "2018-03-23T22:11:04.166Z",
+		"timeElapsed": 1680
+	},
+	{
+		"taskId": "T.redmine.6482",
+		"taskName": "JSON-LD for Products",
+		"project": "DMC Website",
+		"startTime": "2018-03-23T21:13:35.553Z",
+		"endTime": "2018-03-23T21:43:03.810Z",
+		"timeElapsed": 1769
+	},
+	{
+		"taskId": "T.redmine.518",
+		"taskName": "User Request: depth slider for events",
+		"project": "Wilber",
+		"startTime": "2018-03-23T20:11:40.140Z",
+		"endTime": "2018-03-23T21:23:34.489Z",
+		"timeElapsed": 3602
+	},
+	{
+		"taskId": "T.redmine.518",
+		"taskName": "User Request: depth slider for events",
+		"project": "Wilber",
+		"startTime": "2018-03-23T19:07:58.672Z",
+		"endTime": "2018-03-23T19:28:59.152Z",
+		"timeElapsed": 1208
+	},
+	{
+		"taskId": "T.redmine.6482",
+		"taskName": "JSON-LD for Products",
+		"project": "DMC Website",
+		"startTime": "2018-03-23T18:51:03.935Z",
+		"endTime": "2018-03-23T19:07:57.901Z",
+		"timeElapsed": 1014
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-23T17:31:31.040Z",
+		"endTime": "2018-03-23T18:51:03.077Z",
+		"timeElapsed": 4202
+	},
+	{
+		"taskId": "T.redmine.6482",
+		"taskName": "JSON-LD for Products",
+		"project": "DMC Website",
+		"startTime": "2018-03-23T17:05:28.202Z",
+		"endTime": "2018-03-23T17:31:30.237Z",
+		"timeElapsed": 1553
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-23T16:26:01.369Z",
+		"endTime": "2018-03-23T17:05:27.317Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.6507",
+		"taskName": "Look into user-managed datacenter listings",
+		"project": "FDSN Website",
+		"startTime": "2018-03-22T22:20:42.714Z",
+		"endTime": "2018-03-22T23:18:42.062Z",
+		"timeElapsed": 3129
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-22T21:54:48.839Z",
+		"endTime": "2018-03-22T22:20:42.259Z",
+		"timeElapsed": 1554
+	},
+	{
+		"taskId": "T.redmine.6482",
+		"taskName": "JSON-LD for Products",
+		"project": "DMC Website",
+		"startTime": "2018-03-22T20:13:16.080Z",
+		"endTime": "2018-03-22T21:17:17.380Z",
+		"timeElapsed": 3737
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-22T20:11:19.985Z",
+		"endTime": "2018-03-22T20:13:14.981Z",
+		"timeElapsed": 115
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-22T18:20:08.439Z",
+		"endTime": "2018-03-22T19:20:21.172Z",
+		"timeElapsed": 3600
+	},
+	{
+		"taskId": "T.redmine.6482",
+		"taskName": "JSON-LD for Products",
+		"project": "DMC Website",
+		"startTime": "2018-03-22T17:44:18.539Z",
+		"endTime": "2018-03-22T18:07:22.481Z",
+		"timeElapsed": 1076
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-22T16:44:11.752Z",
+		"endTime": "2018-03-22T17:44:17.397Z",
+		"timeElapsed": 3606
+	},
+	{
+		"taskId": "T.redmine.6114",
+		"taskName": "Vue.js version",
+		"project": "Wilber",
+		"startTime": "2018-03-21T23:24:07.788Z",
+		"endTime": "2018-03-22T00:04:10.140Z",
+		"timeElapsed": 2403
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-21T22:53:42.283Z",
+		"endTime": "2018-03-21T23:23:42.221Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.4435",
+		"taskName": "Web Team Manager Duties",
+		"project": "adam",
+		"startTime": "2018-03-21T22:02:55.119Z",
+		"endTime": "2018-03-21T22:53:41.754Z",
+		"timeElapsed": 3002
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-21T21:32:36.150Z",
+		"endTime": "2018-03-21T22:02:53.287Z",
+		"timeElapsed": 1818
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-21T19:28:10.360Z",
+		"endTime": "2018-03-21T19:50:18.045Z",
+		"timeElapsed": 1276
+	},
+	{
+		"taskId": "T.redmine.6482",
+		"taskName": "JSON-LD for Products",
+		"project": "DMC Website",
+		"startTime": "2018-03-21T18:04:07.636Z",
+		"endTime": "2018-03-21T19:28:09.243Z",
+		"timeElapsed": 5042
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-21T15:56:49.251Z",
+		"endTime": "2018-03-21T17:54:19.947Z",
+		"timeElapsed": 4800
+	},
+	{
+		"taskId": "T.redmine.6114",
+		"taskName": "Vue.js version",
+		"project": "Wilber",
+		"startTime": "2018-03-20T22:08:09.938Z",
+		"endTime": "2018-03-21T00:42:57.165Z",
+		"timeElapsed": 8187
+	},
+	{
+		"taskId": "T.redmine.6114",
+		"taskName": "Vue.js version",
+		"project": "Wilber",
+		"startTime": "2018-03-20T21:38:43.886Z",
+		"endTime": "2018-03-20T21:59:07.573Z",
+		"timeElapsed": 1181
+	},
+	{
+		"taskId": "T.redmine.6482",
+		"taskName": "JSON-LD for Products",
+		"project": "DMC Website",
+		"startTime": "2018-03-20T20:08:13.392Z",
+		"endTime": "2018-03-20T20:10:38.387Z",
+		"timeElapsed": 145
+	},
+	{
+		"taskId": "T.redmine.4118",
+		"taskName": "Look into Anaconda",
+		"project": "DMC Website",
+		"startTime": "2018-03-20T18:38:48.701Z",
+		"endTime": "2018-03-20T19:09:22.932Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.6482",
+		"taskName": "JSON-LD for Products",
+		"project": "DMC Website",
+		"startTime": "2018-03-20T16:58:41.281Z",
+		"endTime": "2018-03-20T18:38:44.105Z",
+		"timeElapsed": 6003
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-20T16:18:00.652Z",
+		"endTime": "2018-03-20T16:48:00.660Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.6482",
+		"taskName": "JSON-LD for Products",
+		"project": "DMC Website",
+		"startTime": "2018-03-19T23:47:52.897Z",
+		"endTime": "2018-03-20T00:05:33.861Z",
+		"timeElapsed": 1061
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-19T23:47:51.011Z",
+		"endTime": "2018-03-19T23:47:52.013Z",
+		"timeElapsed": 1
+	},
+	{
+		"taskId": "T.redmine.6504",
+		"taskName": "Error in parsing PASSCAL network form",
+		"project": "FDSN Website",
+		"startTime": "2018-03-19T18:26:51.710Z",
+		"endTime": "2018-03-19T19:17:41.692Z",
+		"timeElapsed": 2574
+	},
+	{
+		"taskId": "T.redmine.6504",
+		"taskName": "Error in parsing PASSCAL network form",
+		"project": "FDSN Website",
+		"startTime": "2018-03-19T18:26:51.710Z",
+		"endTime": "2018-03-19T19:17:41.692Z",
+		"timeElapsed": 2574
+	},
+	{
+		"taskId": "T.redmine.6506",
+		"taskName": "Look into json-api",
+		"project": "DMC Website",
+		"startTime": "2018-03-19T18:08:45.500Z",
+		"endTime": "2018-03-19T18:26:51.464Z",
+		"timeElapsed": 1086
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-19T16:23:09.256Z",
+		"endTime": "2018-03-19T18:08:44.369Z",
+		"timeElapsed": 5312
+	},
+	{
+		"taskId": "T.redmine.4118",
+		"taskName": "Look into Anaconda",
+		"project": "DMC Website",
+		"startTime": "2018-03-16T21:44:41.815Z",
+		"endTime": "2018-03-16T23:12:55.122Z",
+		"timeElapsed": 5280
+	},
+	{
+		"taskId": "T.redmine.4118",
+		"taskName": "Look into Anaconda",
+		"project": "DMC Website",
+		"startTime": "2018-03-16T17:07:24.827Z",
+		"endTime": "2018-03-16T19:07:21.456Z",
+		"timeElapsed": 3600
+	},
+	{
+		"taskId": "T.redmine.6482",
+		"taskName": "JSON-LD for Products",
+		"project": "DMC Website",
+		"startTime": "2018-03-15T23:55:46.067Z",
+		"endTime": "2018-03-16T00:26:24.487Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.6482",
+		"taskName": "JSON-LD for Products",
+		"project": "DMC Website",
+		"startTime": "2018-03-15T23:55:46.067Z",
+		"endTime": "2018-03-16T00:26:24.487Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-15T23:49:45.759Z",
+		"endTime": "2018-03-15T23:55:45.747Z",
+		"timeElapsed": 360
+	},
+	{
+		"taskId": "T.redmine.4426",
+		"taskName": "React builder",
+		"project": "Service Interfaces",
+		"startTime": "2018-03-15T20:39:27.994Z",
+		"endTime": "2018-03-15T23:49:41.611Z",
+		"timeElapsed": 11414
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-15T15:52:52.273Z",
+		"endTime": "2018-03-15T18:50:11.552Z",
+		"timeElapsed": 6000
+	},
+	{
+		"taskId": "T.redmine.4426",
+		"taskName": "React builder",
+		"project": "Service Interfaces",
+		"startTime": "2018-03-14T23:40:56.975Z",
+		"endTime": "2018-03-15T00:10:56.913Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.4426",
+		"taskName": "React builder",
+		"project": "Service Interfaces",
+		"startTime": "2018-03-14T23:40:56.975Z",
+		"endTime": "2018-03-15T00:10:56.913Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.6174",
+		"taskName": "Federated data",
+		"project": "Wilber",
+		"startTime": "2018-03-14T23:02:52.513Z",
+		"endTime": "2018-03-14T23:32:52.450Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.4118",
+		"taskName": "Look into Anaconda",
+		"project": "DMC Website",
+		"startTime": "2018-03-14T22:29:26.107Z",
+		"endTime": "2018-03-14T23:02:51.829Z",
+		"timeElapsed": 1808
+	},
+	{
+		"taskId": "T.redmine.4118",
+		"taskName": "Look into Anaconda",
+		"project": "DMC Website",
+		"startTime": "2018-03-14T20:38:23.994Z",
+		"endTime": "2018-03-14T21:08:23.927Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.4435",
+		"taskName": "Web Team Manager Duties",
+		"project": "adam",
+		"startTime": "2018-03-14T20:18:20.084Z",
+		"endTime": "2018-03-14T20:38:21.931Z",
+		"timeElapsed": 1202
+	},
+	{
+		"taskId": "T.redmine.4118",
+		"taskName": "Look into Anaconda",
+		"project": "DMC Website",
+		"startTime": "2018-03-14T19:21:39.771Z",
+		"endTime": "2018-03-14T20:24:55.271Z",
+		"timeElapsed": 3600
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-13T23:14:37.584Z",
+		"endTime": "2018-03-14T00:15:03.318Z",
+		"timeElapsed": 3414
+	},
+	{
+		"taskId": "T.redmine.6482",
+		"taskName": "JSON-LD for Products",
+		"project": "DMC Website",
+		"startTime": "2018-03-13T21:19:17.138Z",
+		"endTime": "2018-03-13T23:14:37.414Z",
+		"timeElapsed": 6509
+	},
+	{
+		"taskId": "T.redmine.6482",
+		"taskName": "JSON-LD for Products",
+		"project": "DMC Website",
+		"startTime": "2018-03-13T18:37:53.428Z",
+		"endTime": "2018-03-13T19:07:53.367Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-13T17:44:24.073Z",
+		"endTime": "2018-03-13T18:14:10.011Z",
+		"timeElapsed": 1786
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-13T16:40:27.702Z",
+		"endTime": "2018-03-13T17:03:58.374Z",
+		"timeElapsed": 1354
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-13T16:14:16.181Z",
+		"endTime": "2018-03-13T16:29:28.150Z",
+		"timeElapsed": 912
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-12T22:59:34.418Z",
+		"endTime": "2018-03-12T23:53:19.126Z",
+		"timeElapsed": 2713
+	},
+	{
+		"taskId": "T.redmine.4435",
+		"taskName": "Web Team Manager Duties",
+		"project": "adam",
+		"startTime": "2018-03-12T22:39:32.095Z",
+		"endTime": "2018-03-12T22:59:33.931Z",
+		"timeElapsed": 1202
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-12T22:14:21.282Z",
+		"endTime": "2018-03-12T22:55:13.312Z",
+		"timeElapsed": 2400
+	},
+	{
+		"taskId": "T.redmine.4118",
+		"taskName": "Look into Anaconda",
+		"project": "DMC Website",
+		"startTime": "2018-03-12T20:57:10.205Z",
+		"endTime": "2018-03-12T21:27:10.142Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-12T19:31:41.126Z",
+		"endTime": "2018-03-12T20:00:57.071Z",
+		"timeElapsed": 1756
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-12T17:59:45.672Z",
+		"endTime": "2018-03-12T19:10:59.362Z",
+		"timeElapsed": 4200
+	},
+	{
+		"taskId": "T.redmine.4426",
+		"taskName": "React builder",
+		"project": "Service Interfaces",
+		"startTime": "2018-03-12T17:24:48.374Z",
+		"endTime": "2018-03-12T17:54:48.326Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-12T16:29:59.157Z",
+		"endTime": "2018-03-12T17:00:33.126Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.4426",
+		"taskName": "React builder",
+		"project": "Service Interfaces",
+		"startTime": "2018-03-09T23:37:12.494Z",
+		"endTime": "2018-03-10T00:05:45.434Z",
+		"timeElapsed": 1713
+	},
+	{
+		"taskId": "T.redmine.6364",
+		"taskName": "Identify data center in logged stats",
+		"project": "Wilber",
+		"startTime": "2018-03-09T20:26:20.660Z",
+		"endTime": "2018-03-09T22:27:53.868Z",
+		"timeElapsed": 7200
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-09T19:57:50.043Z",
+		"endTime": "2018-03-09T20:28:44.466Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.6364",
+		"taskName": "Identify data center in logged stats",
+		"project": "Wilber",
+		"startTime": "2018-03-08T22:26:19.588Z",
+		"endTime": "2018-03-09T00:55:20.643Z",
+		"timeElapsed": 7802
+	},
+	{
+		"taskId": "T.redmine.4435",
+		"taskName": "Web Team Manager Duties",
+		"project": "adam",
+		"startTime": "2018-03-08T21:56:17.240Z",
+		"endTime": "2018-03-08T22:26:18.850Z",
+		"timeElapsed": 1802
+	},
+	{
+		"taskId": "T.redmine.6364",
+		"taskName": "Identify data center in logged stats",
+		"project": "Wilber",
+		"startTime": "2018-03-08T21:27:04.792Z",
+		"endTime": "2018-03-08T21:57:04.729Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-08T21:15:56.806Z",
+		"endTime": "2018-03-08T21:27:03.783Z",
+		"timeElapsed": 667
+	},
+	{
+		"taskId": "T.redmine.6364",
+		"taskName": "Identify data center in logged stats",
+		"project": "Wilber",
+		"startTime": "2018-03-07T21:17:48.276Z",
+		"endTime": "2018-03-07T22:18:23.633Z",
+		"timeElapsed": 3235
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-07T18:32:16.543Z",
+		"endTime": "2018-03-07T20:03:55.097Z",
+		"timeElapsed": 5400
+	},
+	{
+		"taskId": "T.redmine.6364",
+		"taskName": "Identify data center in logged stats",
+		"project": "Wilber",
+		"startTime": "2018-03-07T00:23:46.745Z",
+		"endTime": "2018-03-07T00:53:46.698Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-06T22:47:09.718Z",
+		"endTime": "2018-03-07T00:18:44.765Z",
+		"timeElapsed": 3600
+	},
+	{
+		"taskId": "T.redmine.4435",
+		"taskName": "Web Team Manager Duties",
+		"project": "adam",
+		"startTime": "2018-03-06T22:17:04.691Z",
+		"endTime": "2018-03-06T22:47:07.030Z",
+		"timeElapsed": 1803
+	},
+	{
+		"taskId": "T.redmine.6364",
+		"taskName": "Identify data center in logged stats",
+		"project": "Wilber",
+		"startTime": "2018-03-06T21:57:28.353Z",
+		"endTime": "2018-03-06T22:27:56.668Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-06T21:12:32.297Z",
+		"endTime": "2018-03-06T21:57:27.611Z",
+		"timeElapsed": 2821
+	},
+	{
+		"taskId": "T.redmine.6174",
+		"taskName": "Federated data",
+		"project": "Wilber",
+		"startTime": "2018-03-02T23:02:16.427Z",
+		"endTime": "2018-03-03T00:03:22.735Z",
+		"timeElapsed": 3600
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-02T22:11:34.288Z",
+		"endTime": "2018-03-02T23:02:16.240Z",
+		"timeElapsed": 3009
+	},
+	{
+		"taskId": "T.redmine.6174",
+		"taskName": "Federated data",
+		"project": "Wilber",
+		"startTime": "2018-03-02T20:33:17.545Z",
+		"endTime": "2018-03-02T22:11:33.723Z",
+		"timeElapsed": 5177
+	},
+	{
+		"taskId": "T.redmine.6174",
+		"taskName": "Federated data",
+		"project": "Wilber",
+		"startTime": "2018-03-02T19:14:14.553Z",
+		"endTime": "2018-03-02T19:46:21.029Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.4118",
+		"taskName": "Look into Anaconda",
+		"project": "DMC Website",
+		"startTime": "2018-03-01T23:52:56.280Z",
+		"endTime": "2018-03-02T01:05:10.967Z",
+		"timeElapsed": 3600
+	},
+	{
+		"taskId": "T.redmine.4426",
+		"taskName": "React builder",
+		"project": "Service Interfaces",
+		"startTime": "2018-03-01T23:52:41.978Z",
+		"endTime": "2018-03-01T23:52:55.979Z",
+		"timeElapsed": 14
+	},
+	{
+		"taskId": "T.redmine.6321",
+		"taskName": "Switch database server",
+		"project": "DMC Website",
+		"startTime": "2018-03-01T21:14:51.047Z",
+		"endTime": "2018-03-01T21:45:40.403Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-03-01T17:12:16.390Z",
+		"endTime": "2018-03-01T17:47:30.084Z",
+		"timeElapsed": 1800
+	},
+	{
+		"taskId": "T.redmine.4426",
+		"taskName": "React builder",
+		"project": "Service Interfaces",
+		"startTime": "2018-03-01T00:21:09.171Z",
+		"endTime": "2018-03-01T00:42:55.420Z",
+		"timeElapsed": 999
+	},
+	{
+		"taskId": "T.redmine.4297",
+		"taskName": "Webmaster Duties",
+		"project": "adam",
+		"startTime": "2018-02-28T23:17:03.267Z",
+		"endTime": "2018-03-01T00:21:08.062Z",
+		"timeElapsed": 3535
+	},
+	{
+		"taskId": "T.redmine.6323",
+		"taskName": "Provide service for and emmbed the user-specified keywords in the DS data products pages",
+		"project": "DMC Website",
+		"startTime": "2018-02-28T23:14:56.527Z",
+		"endTime": "2018-02-28T23:17:02.523Z",
+		"timeElapsed": 126
+	},
+	{
+		"taskId": "T.redmine.4435",
+		"taskName": "Web Team Manager Duties",
+		"project": "adam",
+		"startTime": "2018-02-28T21:31:23.385Z",
+		"endTime": "2018-02-28T21:41:25.098Z",
+		"timeElapsed": 602
+	},
+	{
+		"taskId": "T.redmine.4118",
+		"taskName": "Look into Anaconda",
+		"project": "DMC Website",
+		"startTime": "2018-02-28T21:03:46.630Z",
+		"endTime": "2018-02-28T21:33:46.568Z",
+		"timeElapsed": 1800
+	}
+]
