@@ -1,6 +1,6 @@
 import fs from 'fs';
 import os from 'os';
-import user from '../../../user';
+import user from '../../user';
 
 const DEFAULT_CONFIG = {
     auth_token: user.github.token

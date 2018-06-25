@@ -16,6 +16,8 @@ import Log from './log';
 import StatusHandler from './status';
 import LocalTasksHandler from './remotes/local';
 
+import '../assets/css/App.css';
+
 // import pkg from '../../package.json';
 const pkg = {name: 'task-list-app'};
 
