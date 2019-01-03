@@ -272,7 +272,7 @@ export default class Log extends Component {
   // Split group on gaps larger than this
   const groupGapSize = 6*60*60;
 
-  this.props.log.forEach( (logEntry, i) => {
+  this.props.log.slice(0, 100).forEach( (logEntry, i) => {
     const gap = (lastEntry ?
     this.getDuration(logEntry.endTime, lastEntry.startTime) :
     -1);

@@ -35,7 +35,7 @@ class IssueToolbarButton extends ToolbarButton {
             buttonText,
             buttonIcon,
             this.props.action,
-            "Refresh"
+            "Current Issue. Click to refresh issue list"
         );
     }
 }
@@ -48,7 +48,7 @@ class TimerToolbarButton extends ToolbarButton {
             startTime + " " + timeElapsed,
             "fa fa-clock-o",
             this.props.action,
-            "Click to rewind"
+            "Start time / elapsed time. Click to rewind"
         );
     }
 }
@@ -88,8 +88,8 @@ export default class Toolbar extends Component {
           </div>
         </div>
         <IssueToolbarButton task={this.props.context.task} action={this.props.actions.refresh} />
-        <TimerToolbarButton startTime={this.props.context.startTime} 
-          timeElapsed={this.props.context.timeElapsed} 
+        <TimerToolbarButton startTime={this.props.context.startTime}
+          timeElapsed={this.props.context.timeElapsed}
           action={this.props.actions.rewind} />
       </div>
     );

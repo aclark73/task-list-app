@@ -10,7 +10,7 @@ const url = require('url')
 let mainWindow;
 
 // Keep a reference for dev mode
-let dev = false;
+let dev = true;
 if ( process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) || /[\\/]electron[\\/]/.test(process.execPath) ) {
   dev = true;
 }
@@ -18,7 +18,10 @@ if ( process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) 
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1024, height: 768, show: false
+    width: 1024, height: 768, show: false,
+    webPreferences: {
+      webSecurity: false,
+    },
   });
 
   // and load the index.html of the app.

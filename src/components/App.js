@@ -17,6 +17,10 @@ import StatusHandler from './status';
 import LocalTasksHandler from './remotes/local';
 
 import '../assets/css/App.css';
+import 'font-awesome/css/font-awesome.min.css';
+// import 'font-awesome-webpack-4';
+
+import { BrowserWindow } from 'electron';
 
 // import pkg from '../../package.json';
 const pkg = {name: 'task-list-app'};
@@ -98,6 +102,9 @@ export default class App extends Component {
     this.registerHandler(new StatusHandler('status', this));
 
     this.conf = new Configstore(pkg.name);
+  }
+  getBrowserWindow() {
+    return BrowserWindow;
   }
   /* Add a pluggable handler */
   registerHandler(handler) {

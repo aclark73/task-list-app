@@ -26,7 +26,7 @@ module.exports = {
           fallback: 'style-loader',
           use: 'css-loader'
         }),
-        include: defaultInclude
+        include: defaultInclude,
       },
       {
         test: /\.jsx?$/,
@@ -38,9 +38,19 @@ module.exports = {
         use: [{ loader: 'file-loader?name=img/[name]__[hash:base64:5].[ext]' }],
         include: defaultInclude
       },
+      // {
+      //   test: /\.(eot|svg|ttf|woff|woff2)$/,
+      //   use: [{ loader: 'file-loader?name=font/[name]__[hash:base64:5].[ext]' }],
+      //   include: defaultInclude
+      // }
       {
-        test: /\.(eot|svg|ttf|woff|woff2)$/,
-        use: [{ loader: 'file-loader?name=font/[name]__[hash:base64:5].[ext]' }],
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: [{ loader: "url-loader?limit=10000&mimetype=application/font-woff" }],
+        include: defaultInclude
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: [{ loader: "file-loader" }],
         include: defaultInclude
       }
     ]

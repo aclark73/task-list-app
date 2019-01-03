@@ -9,6 +9,9 @@
 
 export default {
   github: {
-    token: 'example'
+    token: '0aa4ed5d8c113d5ecba70aa4ed5d8c113d5ecba7'
+  },
+  redmine: {
+    key: '0aa4ed5d8c113d5ecba70aa4ed5d8c113d5ecba7'
   }
 }
