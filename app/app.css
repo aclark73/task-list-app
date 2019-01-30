@@ -326,12 +326,14 @@ i.fa {
 
 .task-item:hover .task-label {
     /* background-color: rgba(0,0,0,.1); */
-    /* background-image: radial-gradient(circle at center, rgb(221, 221, 221), rgb(221, 221, 221)); */
+    /* background-image: radial-gradient(circle at center, #aaa, #fff); */
     background-color: #f4f4f4;
+    background-image: linear-gradient(to right, #f4f4f4, #fff);
 }
 
 .task-item.selected .task-label {
-    background: #ddd;
+    background-color: #ddd;
+    background-image: linear-gradient(to right, #ddd, #fff);
 }
 
 .compact .task-item {
@@ -877,12 +879,14 @@ i.fa {
     color: #060;
 }
 .working .task-item.selected .task-label {
-    background: #bfb;
+    background-color: #bfb;
+    background-image: linear-gradient(to right, #bfb, #fff);
     color: #060;
     /* box-shadow: inset 0 0 16px 4px #fff; */
 }
 .working .task-item.selected .task-label:hover {
-    background: #cfc;
+    background-color: #cfc;
+    background-image: linear-gradient(to right, #cfc, #fff);
 }
 .working .task-item.selected .task-label:active {
     background: #fff;
@@ -935,7 +939,8 @@ i.fa {
 }
 
 .paused .task-item.selected .task-label {
-    background: #ffc;
+    background-color: #ffc;
+    background-image: linear-gradient(to right, #ffc, #fff);
     color: #660;
 }
 .paused .selected .btn-start {
