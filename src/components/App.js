@@ -574,6 +574,7 @@ export default class App extends Component {
     if (this.state.lastTick) {
       const gap = now - this.state.lastTick;
       const gapStr = Utils.formatTimespan(parseInt(gap/1000));
+
       if (gap > 2000) {
         console.log("Gap is " + gapStr + ' at ' + now);
       }

@@ -4,7 +4,6 @@ import Utils from '../utils';
 import user from '../../user';
 
 const DEFAULT_CONFIG = {
-    redmine_key: user.redmine.key
 };
 
 const BASE_URL = 'http://dmscode.iris.washington.edu';
@@ -17,7 +16,13 @@ const DEBUG = (os.hostname().indexOf('honu') < 0);
 export default class RedmineClient {
 
     constructor(config) {
-        this.config = config || DEFAULT_CONFIG;
+        config = config || {};
+        if (!config.redmine_key) {
+          if (user.redmine && user.redmine.key) {
+            config.redmine_key = user.redmine.key;
+          }
+        }
+        this.config = config;
         this.source = 'redmine';
         this.sourceIcon = 'fa fa-git';
         if (DEBUG) {
@@ -91,6 +96,13 @@ export default class RedmineClient {
     }
 
     fetch() {
+        if (!this.config.redmine_key) {
+            console.log("Redmine not configured");
+            return Promise.resolve({
+                tasks: [],
+                projects: [],
+            });
+        }
         const issues_url = ISSUES_URL + this.config.redmine_key;
         return new Promise(function(resolve, reject) {
             console.log("Fetching redmine");

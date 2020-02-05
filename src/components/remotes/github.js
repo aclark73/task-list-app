@@ -3,7 +3,6 @@ import os from 'os';
 import user from '../../user';
 
 const DEFAULT_CONFIG = {
-    auth_token: user.github.token
 };
 
 const BASE_URL = 'https://api.github.com';
@@ -14,7 +13,13 @@ const DEBUG = false; // (os.hostname().indexOf('honu') < 0);
 export default class GitHubClient {
 
     constructor(config) {
-        this.config = config || DEFAULT_CONFIG;
+        config = config || DEFAULT_CONFIG;
+        if (!config.github_token) {
+            if (user.github && user.github.token) {
+                config.github_token  = user.github.token;
+            }
+        }
+        this.config = config;
         this.source = 'github';
         this.sourceIcon = 'fa fa-github';
     }
@@ -67,6 +72,11 @@ export default class GitHubClient {
     }
 
     load() {
+        if (!this.config.github_token) {
+            console.log("No github");
+            return Promise.resolve({});
+        }
+        console.log("Fetching for " + this.config.github_token);
         return this.fetch().then(function(json) {
             return this.parse(json);
         }.bind(this));
@@ -104,7 +114,7 @@ export default class GitHubClient {
     }
 
     fetch() {
-        const auth_token = this.config.auth_token;
+        const auth_token = this.config.github_token;
         return new Promise(function(resolve, reject) {
             console.log("Fetching github");
             function handleData(err, data) {
