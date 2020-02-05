@@ -44,7 +44,7 @@ export default class App extends Component {
 
       localTasks: [],
 
-      // UI toaggles
+      // UI toggles
       view: 'tasks',
       compactView: false,
       search: "",
