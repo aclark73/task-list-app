@@ -12,7 +12,7 @@
     "build": "node_modules/.bin/webpack . && node_modules/.bin/electron-packager ./dist TaskListApp --platform=darwin --arch=x64 --version=0.36.5 --asar=true --icon=icon.icns"
   },
   "devDependencies": {
-    "babel-loader": "^6.2.1",
+    "babel-loader": "^9.1.0",
     "babel-plugin-transform-class-properties": "^6.5.2",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
@@ -20,9 +20,9 @@
     "concurrently": "^1.0.0",
     "copy-webpack-plugin": "^1.1.1",
     "electron-packager": "^5.2.1",
-    "file-loader": "^0.8.5",
+    "file-loader": "^6.2.0",
     "react-hot-loader": "^1.3.0",
-    "webpack": "^1.12.10",
+    "webpack": "^5.74.0",
     "webpack-dev-server": "^1.14.1",
     "electron-rebuild": "~1.1.3"
   },
